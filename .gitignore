@@ -1,0 +1,35 @@
+# Godot 4+
+# ---
+# 엔진이 자동 생성하는 임시 파일 및 캐시
+.godot/
+.mono/
+
+# 번역 파일 (자동 생성)
+*.translation
+
+# C# / Visual Studio
+# ---
+# 빌드 결과물
+obj/
+
+# Visual Studio 임시 및 사용자 설정 파일
+.vs/
+*.user
+*.suo
+
+
+# Export
+# ---
+# 익스포트 프리셋 설정 및 결과물
+export_presets.cfg
+*.exe
+*.pck
+*.dmg
+*.html
+
+
+# 기타
+# ---
+# OS별 임시 파일 (선택 사항)
+.DS_Store
+Thumbs.db
