@@ -23,9 +23,15 @@ public partial class LedgeGrab : SubState
 
     public override void HandleTransState(double delta)
     {
+
         if (!Player.IsOnWall())
         {
             StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
+            return;
+        }
+        else if (Input.IsActionJustPressed(GamepadInput.Joypad_Down))
+        {
+            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Wall_Jump);
             return;
         }
         else if (Input.IsActionPressed(GamepadInput.Up))

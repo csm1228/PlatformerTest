@@ -22,7 +22,7 @@ public partial class WallSlipper : SubState
 
         if (velocity.Y < Player.WallSlipperSpeed)
         {
-            velocity.Y += (float)(4000 * delta);
+            velocity.Y += (float)(Player.WallSlipperDelta * delta);
         }
         else
         {

@@ -10,13 +10,15 @@ public partial class DashGrounded : SubState
     {
         DashDirection = Player.LastInputDirection;
         startPositon = Player.GlobalPosition.X;
+
+        StateMachine.CooldownManager.StartCooling_Dash();
     }
 
     public override void HandleTransState(double delta)
     {
         float distanceMoved = Mathf.Abs(Player.GlobalPosition.X - startPositon);
 
-        if (distanceMoved >= 300.0f)
+        if (distanceMoved >= 400.0f)
         {
             GD.Print("지상 대쉬 이동거리만큼 이동했음");
             DashFinished();
@@ -61,7 +63,6 @@ public partial class DashGrounded : SubState
         }
 
         velocity.Y = 0;
-
 
         Player.Velocity = velocity;
     }

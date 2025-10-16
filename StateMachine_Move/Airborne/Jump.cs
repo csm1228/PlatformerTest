@@ -7,6 +7,12 @@ public partial class Jump : SubState
 
     public override void Enter()
     {
+        Vector2 velocity = Player.Velocity;
+
+        velocity.Y = Player.JumpSpeed;
+
+        Player.Velocity = velocity;
+
         MaxJumpTime.Start();
     }
 
@@ -49,7 +55,7 @@ public partial class Jump : SubState
             velocity.X = 0;
         }
 
-            velocity.Y = Player.JumpSpeed;
+        velocity.Y -= (float)(Player.JumpDelta * delta);
 
         Player.Velocity = velocity;
     }

@@ -331,8 +331,9 @@ StateMachine = NodePath("../..")
 Player = NodePath("../../..")
 Sprite = NodePath("../../../AnimatedSprite2D")
 
-[node name="CoolDownManager" type="Node" parent="."]
+[node name="CoolDownManager" type="Node" parent="." node_paths=PackedStringArray("DashCooldownTimer")]
 script = ExtResource("4_ncbi3")
+DashCooldownTimer = NodePath("DashCooldownTimer")
 
 [node name="AttackCooldownTimer" type="Timer" parent="CoolDownManager"]
 wait_time = 0.5

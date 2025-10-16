@@ -26,6 +26,11 @@ public partial class LedgeClimb : SubState
                 }
             }
         }
+        else if (Input.IsActionJustPressed(GamepadInput.Joypad_Down))
+        {
+            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Wall_Jump);
+            return;
+        }
     }
 
     public override void HandlePhysics(double delta)
@@ -34,20 +39,20 @@ public partial class LedgeClimb : SubState
 
         if (Player.IsOnWall())
         {
-            velocity.Y = Player.ClimbSpeed;
+            velocity.Y = Player.ClimbSpeed * 2;
         }
         else
         {
-            velocity.Y = -Player.ClimbSpeed;
+            velocity.Y = -Player.ClimbSpeed * 2;
         }
 
         if (Player.LastHoldingWallDirection == Char.LREnum.Left)
         {
-            velocity.X = -Player.WalkSpeed;
+            velocity.X = -Player.WalkSpeed * 2;
         }
         else if (Player.LastHoldingWallDirection == Char.LREnum.Right)
         {
-            velocity.X = Player.WalkSpeed;
+            velocity.X = Player.WalkSpeed * 2;
         }
 
         Player.Velocity = velocity;

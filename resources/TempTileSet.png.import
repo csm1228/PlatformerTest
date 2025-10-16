@@ -2,22 +2,24 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dawee6sfdwj6n"
-path="res://.godot/imported/terrain_sand_horizontal_left.png-8cd301491724fbef3a9d007fbad27313.ctex"
+uid="uid://bvd2p4abyh4kr"
+path="res://.godot/imported/TempTileSet.png-aa83d6ffb34634d86a65bde8ca819640.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/terrain_sand_horizontal_left.png"
-dest_files=["res://.godot/imported/terrain_sand_horizontal_left.png-8cd301491724fbef3a9d007fbad27313.ctex"]
+source_file="res://resources/TempTileSet.png"
+dest_files=["res://.godot/imported/TempTileSet.png-aa83d6ffb34634d86a65bde8ca819640.ctex"]
 
 [params]
 
 compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
+compress/uastc_level=0
+compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
@@ -25,6 +27,10 @@ mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
+process/channel_remap/red=0
+process/channel_remap/green=1
+process/channel_remap/blue=2
+process/channel_remap/alpha=3
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false

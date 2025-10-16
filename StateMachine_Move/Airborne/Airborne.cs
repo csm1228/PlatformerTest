@@ -33,47 +33,20 @@ public partial class Airborne : SuperState
         {
             StateMachine.CheckWall();
 
-            if (Player.LastHoldingWallDirection == Char.LREnum.Left)
+            if (StateMachine.IsOnWall())
             {
-                if (Player.RayCast_Lower_Left.IsColliding())
-                {
-                    if (Player.RayCast_Upper_Left.IsColliding())
-                    {
-                        StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
-                        return;
-                    }
-                    else
-                    {
-                        StateMachine.TransState(SuperState_Move.Ledge, State_Move.Ledge_Grab);
-                        return;
-                    }
-                }
-                else
-                {
-                    StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
-                    return;
-                }
+                StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
+                return;
             }
-            else if (Player.LastHoldingWallDirection == Char.LREnum.Right)
+            else if (StateMachine.IsOnLedge())
             {
-                if (Player.RayCast_Lower_Right.IsColliding())
-                {
-                    if (Player.RayCast_Upper_Right.IsColliding())
-                    {
-                        StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
-                        return;
-                    }
-                    else
-                    {
-                        StateMachine.TransState(SuperState_Move.Ledge, State_Move.Ledge_Grab);
-                        return;
-                    }
-                }
-                else
-                {
-                    StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
-                    return;
-                }
+                StateMachine.TransState(SuperState_Move.Ledge, State_Move.Ledge_Grab);
+                return;
+            }
+            else
+            {
+                StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
+                return;
             }
         }
 

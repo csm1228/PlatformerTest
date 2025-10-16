@@ -28,47 +28,23 @@ public partial class Dash : SuperState
         {
             StateMachine.CheckWall();
 
-            if (Player.LastHoldingWallDirection == Char.LREnum.Left)
+            if (Player.IsOnWall())
             {
-                if (Player.RayCast_Lower_Left.IsColliding())
-                {
-                    if (Player.RayCast_Upper_Left.IsColliding())
-                    {
-                        StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
-                        return;
-                    }
-                    else
-                    {
-                        StateMachine.TransState(SuperState_Move.Ledge, State_Move.Ledge_Grab);
-                        return;
-                    }
-                }
-                else
-                {
-                    StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
-                    return;
-                }
+                GD.Print("Dash to Wall_Hold");
+                StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
+                return;
+            }
+            else if (StateMachine.IsOnLedge())
+            {
+                GD.Print("Dash to Ledge_Grab");
+                StateMachine.TransState(SuperState_Move.Ledge, State_Move.Ledge_Grab);
+                return;
             }
             else
             {
-                if (Player.RayCast_Lower_Right.IsColliding())
-                {
-                    if (Player.RayCast_Upper_Right.IsColliding())
-                    {
-                        StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
-                        return;
-                    }
-                    else
-                    {
-                        StateMachine.TransState(SuperState_Move.Ledge, State_Move.Ledge_Grab);
-                        return;
-                    }
-                }
-                else
-                {
-                    StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
-                    return;
-                }
+                GD.Print("Dash to Fall");
+                StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
+                return;
             }
         }
 

@@ -5,10 +5,16 @@ public partial class Char : CharacterBody2D
 {
     private float _walkSpeed = 800.0f;
     private float _jumpSpeed = -1800.0f;
+    private float _jumpDelta = -2000.0f;
+
     private float _dashSpeed = 4800.0f;
-    private float _climbSpeed = -400.0f;
+
+    private float _climbSpeed = -600.0f;
+
     private float _gravity = 1900.0f;
-    private float _wallSlipperSpeed = 600.0f;
+
+    private float _wallSlipperSpeed = 800.0f;
+    private float _wallSlipperDelta = 2000.0f;
 
     public float WalkSpeed => _walkSpeed;
     public float JumpSpeed => _jumpSpeed;
@@ -16,6 +22,9 @@ public partial class Char : CharacterBody2D
     public float ClimbSpeed => _climbSpeed;
     public float Gravity => _gravity;
     public float WallSlipperSpeed => _wallSlipperSpeed;
+    public float JumpDelta => _jumpDelta;
+    public float WallSlipperDelta => _wallSlipperDelta;
+
 
     public enum LREnum
     {

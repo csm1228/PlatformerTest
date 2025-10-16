@@ -7,6 +7,12 @@ public partial class WallJump : SubState
 
     public override void Enter()
     {
+        Vector2 velocity = Player.Velocity;
+
+        velocity.Y = Player.JumpSpeed;
+
+        Player.Velocity = velocity;
+
         MaxWallJumpTime.Start();
     }
 
@@ -45,7 +51,7 @@ public partial class WallJump : SubState
             velocity.X = -Player.WalkSpeed;
         }
 
-        velocity.Y = Player.JumpSpeed;
+        velocity.Y -= (float)(Player.JumpDelta * delta);
 
         Player.Velocity = velocity;
     }
