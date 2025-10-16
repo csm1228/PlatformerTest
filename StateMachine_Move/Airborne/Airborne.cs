@@ -29,10 +29,10 @@ public partial class Airborne : SuperState
             StateMachine.TransState(SuperState_Move.Dash, State_Move.Dash_InAir);
             return;
         }
-        else if (Player.IsOnWallOnly())
+        else if (Player.IsOnWall())
         {
             StateMachine.CheckWall();
-            
+
             if (Player.LastHoldingWallDirection == Char.LREnum.Left)
             {
                 if (Player.RayCast_Lower_Left.IsColliding())

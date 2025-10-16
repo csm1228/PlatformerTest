@@ -30,7 +30,7 @@
 size = Vector2(80, 140)
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_njpxk"]
-size = Vector2(80, 140)
+size = Vector2(84, 140)
 
 [node name="Node2D" type="CharacterBody2D" node_paths=PackedStringArray("StateMachine_Move", "RayCast_Upper_Left", "RayCast_Upper_Right", "RayCast_Lower_Left", "RayCast_Lower_Right")]
 safe_margin = 0.01
@@ -350,19 +350,19 @@ script = ExtResource("7_1nd8o")
 
 [node name="RayCast_Upper_Right" type="RayCast2D" parent="."]
 position = Vector2(0, -50)
-target_position = Vector2(60, 0)
+target_position = Vector2(42, 0)
 
 [node name="RayCast_Upper_Left" type="RayCast2D" parent="."]
 position = Vector2(0, -50)
-target_position = Vector2(-60, 0)
+target_position = Vector2(-42, 0)
 
 [node name="RayCast_Lower_Right" type="RayCast2D" parent="."]
 position = Vector2(0, -20)
-target_position = Vector2(60, 0)
+target_position = Vector2(42, 0)
 
 [node name="RayCast_Lower_Left" type="RayCast2D" parent="."]
 position = Vector2(0, -20)
-target_position = Vector2(-60, 0)
+target_position = Vector2(-42, 0)
 
 [connection signal="timeout" from="StateMachine_Move/Airborne/Jump/MaxJumpTime" to="StateMachine_Move/Airborne/Jump" method="_on_max_jump_time_timeout"]
 [connection signal="timeout" from="StateMachine_Move/Airborne/Wall_Jump/MaxWallJumpTime" to="StateMachine_Move/Airborne/Wall_Jump" method="_on_max_wall_jump_time_timeout"]

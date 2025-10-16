@@ -153,4 +153,24 @@ public partial class StateMachine_Move : Node
             return;
         }
     }
+
+    public bool IsOnWall()
+    {
+        bool isCollidingLeftWall = Player.RayCast_Upper_Left.IsColliding() && Player.RayCast_Lower_Left.IsColliding();
+        bool isCollidingRightWall = Player.RayCast_Upper_Right.IsColliding() && Player.RayCast_Lower_Right.IsColliding();
+
+        bool isOnWall = isCollidingLeftWall || isCollidingRightWall;
+
+        return isOnWall;
+    }
+
+    public bool IsOnLedge()
+    {
+        bool isCollidingLeftLedge = !Player.RayCast_Upper_Left.IsColliding() && Player.RayCast_Lower_Left.IsColliding();
+        bool isCollidingRightLedge = !Player.RayCast_Upper_Right.IsColliding() && Player.RayCast_Lower_Right.IsColliding();
+
+        bool isOnLedge = isCollidingLeftLedge || isCollidingRightLedge;
+
+        return isOnLedge;
+    }
 }

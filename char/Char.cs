@@ -56,10 +56,10 @@ public partial class Char : CharacterBody2D
         }
 
         StateMachine_Move.HandlePhysics(delta);
+
         MoveAndSlide();
+
         StateMachine_Move.HandleTransState(delta);
 
     }
-
-    
 }

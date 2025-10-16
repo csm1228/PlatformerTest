@@ -23,12 +23,6 @@ public partial class Wall : SuperState
                 return;
             }
         }
-        else if (!Player.IsOnWall())
-        {
-            GD.Print("1");
-            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
-            return;
-        }
         else if (Input.IsActionJustPressed(GamepadInput.Joypad_Down))
         {
             StateMachine.TransState(SuperState_Move.Airborne, State_Move.Wall_Jump);
@@ -38,28 +32,43 @@ public partial class Wall : SuperState
         {
             if (Input.IsActionPressed(GamepadInput.Right))
             {
-                GD.Print("2");
                 StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
                 return;
             }
-            else if (!Player.RayCast_Upper_Left.IsColliding() && Player.RayCast_Lower_Left.IsColliding())
+            else if (!Player.RayCast_Upper_Left.IsColliding())
             {
-                StateMachine.TransState(SuperState_Move.Ledge, State_Move.Ledge_Grab);
-                return;
+                if (Player.RayCast_Lower_Left.IsColliding())
+                {
+                    StateMachine.TransState(SuperState_Move.Ledge, State_Move.Ledge_Grab);
+                    return;
+                }
+                else
+                {
+                    StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
+                    return;
+                }
+
             }
         }
         else if (Player.LastHoldingWallDirection == Char.LREnum.Right)
         {
             if (Input.IsActionPressed(GamepadInput.Left))
             {
-                GD.Print("2");
                 StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
                 return;
             }
-            else if (!Player.RayCast_Upper_Right.IsColliding() && Player.RayCast_Lower_Right.IsColliding())
+            else if (!Player.RayCast_Upper_Right.IsColliding())
             {
-                StateMachine.TransState(SuperState_Move.Ledge, State_Move.Ledge_Grab);
-                return;
+                if (Player.RayCast_Lower_Right.IsColliding())
+                {
+                    StateMachine.TransState(SuperState_Move.Ledge, State_Move.Ledge_Grab);
+                    return;
+                }
+                else
+                {
+                    StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
+                    return;
+                }
             }
         }
 
