@@ -29,9 +29,10 @@ public partial class Airborne : SuperState
                 return;
             }
         }
-        else if (Input.IsActionJustPressed(GamepadInput.RT) && StateMachine.CooldownManager.IsDashReady)
+        else if (StateMachine.inputManager.IsDashOnBuffer() && StateMachine.CooldownManager.IsDashReady)
         {
             StateMachine.FixActionDirection();
+            StateMachine.CooldownManager.StartCooling_Dash();
             StateMachine.TransState(SuperState_Move.Dash, State_Move.Dash_InAir);
             return;
         }

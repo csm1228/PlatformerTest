@@ -26,7 +26,7 @@ public partial class LedgeClimb : SubState
                 }
             }
         }
-        else if (Input.IsActionJustPressed(GamepadInput.Joypad_Down))
+        else if (StateMachine.inputManager.IsJumpOnBuffer())
         {
             StateMachine.TransState(SuperState_Move.Airborne, State_Move.Wall_Jump);
             return;

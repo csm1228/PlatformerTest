@@ -5,7 +5,7 @@ public partial class SprintFall : SubState
 {
     public override void HandleTransState(double delta)
     {
-        if (Input.IsActionJustPressed(GamepadInput.RT))
+        if (StateMachine.inputManager.IsDashOnBuffer() && StateMachine.CooldownManager.IsDashReady)
         {
             StateMachine.TransState(SuperState_Move.Dash, State_Move.Dash_InAir);
             return;

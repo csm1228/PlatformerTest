@@ -100,7 +100,7 @@ public partial class StateMachine_Move : Node
     [Export] public CoolDownManager CooldownManager { get; set; }
 
 
-
+    [Export] public InputManager inputManager { get; set; }
 
 
     [Export] SuperState Grounded { get; set; }

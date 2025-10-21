@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://dsy5f3f26k2og"]
+[gd_scene load_steps=13 format=4 uid="uid://dsy5f3f26k2og"]
 
 [ext_resource type="PackedScene" uid="uid://b5eprdmojefkx" path="res://char/char.tscn" id="1_c7s6e"]
 [ext_resource type="Texture2D" uid="uid://bcfkgvqsd8ga4" path="res://resources/cloud2.png" id="2_71pa8"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://bno5881felij6" path="res://resources/background_solid_sky.png" id="4_p5pve"]
 [ext_resource type="Texture2D" uid="uid://hbg7i0ogvy3y" path="res://resources/tree11.png" id="5_05x41"]
 [ext_resource type="Texture2D" uid="uid://dml0lcble8up5" path="res://resources/fence.png" id="6_gqbix"]
+[ext_resource type="Script" uid="uid://cwgasjs6ohkgm" path="res://Camera2d.cs" id="10_0t07s"]
 [ext_resource type="Script" uid="uid://h2jjonc8b6nv" path="res://FullScreenToggleButton.cs" id="10_oysan"]
 [ext_resource type="Script" uid="uid://dn3s1j8jm2ixx" path="res://FpsLabel.cs" id="11_sb2pt"]
 
@@ -188,11 +189,13 @@ label_settings = ExtResource("3_e0an3")
 [node name="Node2D" parent="." instance=ExtResource("1_c7s6e")]
 position = Vector2(2354, 1079)
 
-[node name="Camera2D" type="Camera2D" parent="Node2D"]
-position = Vector2(-952, -621)
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("Player")]
+position = Vector2(1402, 458)
 offset = Vector2(960, 540)
+script = ExtResource("10_0t07s")
+Player = NodePath("../Node2D")
 
-[node name="FullScreenToggleButton" type="Button" parent="Node2D/Camera2D"]
+[node name="FullScreenToggleButton" type="Button" parent="Camera2D"]
 offset_left = 128.0
 offset_top = 12.0
 offset_right = 277.0
@@ -200,11 +203,16 @@ offset_bottom = 43.0
 text = "전체 화면 토글 버튼"
 script = ExtResource("10_oysan")
 
-[node name="Label" type="Label" parent="Node2D/Camera2D"]
+[node name="Label" type="Label" parent="Camera2D"]
 offset_left = 27.0
 offset_top = 17.0
 offset_right = 67.0
 offset_bottom = 40.0
 script = ExtResource("11_sb2pt")
 
-[connection signal="pressed" from="Node2D/Camera2D/FullScreenToggleButton" to="Node2D/Camera2D/FullScreenToggleButton" method="_on_pressed"]
+[node name="Timer" type="Timer" parent="Camera2D"]
+wait_time = 0.6
+one_shot = true
+
+[connection signal="pressed" from="Camera2D/FullScreenToggleButton" to="Camera2D/FullScreenToggleButton" method="_on_pressed"]
+[connection signal="timeout" from="Camera2D/Timer" to="Camera2D" method="_on_timer_timeout"]

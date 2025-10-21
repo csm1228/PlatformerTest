@@ -38,7 +38,7 @@ public partial class Wall : SuperState
         }
 
         // 다른 SuperState로 전환할 필요가 있는지 먼저 검사
-        else if (Input.IsActionJustPressed(GamepadInput.Joypad_Down))
+        else if (StateMachine.inputManager.IsJumpOnBuffer())
         {
             StateMachine.TransState(SuperState_Move.Airborne, State_Move.Wall_Jump);
             return;

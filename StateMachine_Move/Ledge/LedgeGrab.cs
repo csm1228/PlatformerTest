@@ -29,7 +29,7 @@ public partial class LedgeGrab : SubState
             StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
             return;
         }
-        else if (Input.IsActionJustPressed(GamepadInput.Joypad_Down))
+        else if (StateMachine.inputManager.IsJumpOnBuffer())
         {
             StateMachine.TransState(SuperState_Move.Airborne, State_Move.Wall_Jump);
             return;

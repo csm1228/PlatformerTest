@@ -14,14 +14,15 @@ public partial class Ground : SuperState
             StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
             return;
         }
-        else if (Input.IsActionJustPressed(GamepadInput.Joypad_Down))
+        else if (StateMachine.inputManager.IsJumpOnBuffer())
         {
             StateMachine.TransState(SuperState_Move.Airborne, State_Move.Jump);
             return;
         }
-        else if (Input.IsActionJustPressed(GamepadInput.RT) && StateMachine.CooldownManager.IsDashReady)
+        else if (StateMachine.inputManager.IsDashOnBuffer() && StateMachine.CooldownManager.IsDashReady)
         {
             StateMachine.FixActionDirection();
+            StateMachine.CooldownManager.StartCooling_Dash();
             StateMachine.TransState(SuperState_Move.Dash, State_Move.Dash_Grounded);
             return;
         }

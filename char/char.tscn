@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://b5eprdmojefkx"]
+[gd_scene load_steps=37 format=3 uid="uid://b5eprdmojefkx"]
 
 [ext_resource type="Script" uid="uid://24pro1g2na86" path="res://char/Char.cs" id="1_3bvsw"]
 [ext_resource type="Script" uid="uid://0ut6ebjogx8c" path="res://char/DebugLabels.cs" id="2_l1hin"]
@@ -32,6 +32,7 @@
 [ext_resource type="Script" uid="uid://cyt2ad683mvmo" path="res://char/SprintDecel.cs" id="27_kqn8y"]
 [ext_resource type="Script" uid="uid://b0tny6xgo518x" path="res://char/SprintFall.cs" id="28_28voa"]
 [ext_resource type="Script" uid="uid://cy5qecjsd7fib" path="res://char/SprintBump.cs" id="29_7pr67"]
+[ext_resource type="Script" uid="uid://dljtgalcjdjmt" path="res://char/InputManager.cs" id="33_cauik"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5k12k"]
 size = Vector2(80, 140)
@@ -187,10 +188,11 @@ shape = SubResource("RectangleShape2D_5k12k")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 
-[node name="StateMachine_Move" type="Node" parent="." node_paths=PackedStringArray("Player", "CooldownManager", "Grounded", "Airborne", "Dash", "Wall", "Ledge", "Sprint")]
+[node name="StateMachine_Move" type="Node" parent="." node_paths=PackedStringArray("Player", "CooldownManager", "inputManager", "Grounded", "Airborne", "Dash", "Wall", "Ledge", "Sprint")]
 script = ExtResource("2_ncbi3")
 Player = NodePath("..")
 CooldownManager = NodePath("../CoolDownManager")
+inputManager = NodePath("../InputManager")
 Grounded = NodePath("Grounded")
 Airborne = NodePath("Airborne")
 Dash = NodePath("Dash")
@@ -451,6 +453,9 @@ offset_top = -70.0
 offset_right = 40.0
 offset_bottom = 70.0
 texture = SubResource("GradientTexture1D_cauik")
+
+[node name="InputManager" type="Node" parent="."]
+script = ExtResource("33_cauik")
 
 [connection signal="timeout" from="StateMachine_Move/Airborne/Jump/MaxJumpTime" to="StateMachine_Move/Airborne/Jump" method="_on_max_jump_time_timeout"]
 [connection signal="timeout" from="StateMachine_Move/Airborne/Wall_Jump/MaxWallJumpTime" to="StateMachine_Move/Airborne/Wall_Jump" method="_on_max_wall_jump_time_timeout"]

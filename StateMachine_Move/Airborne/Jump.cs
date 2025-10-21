@@ -26,10 +26,12 @@ public partial class Jump : SubState
         if (!Input.IsActionPressed(GamepadInput.Joypad_Down))
         {
             StateMachine.TransState(SuperState_Move.Airborne, State_Move.Apex);
+            return;
         }
         else if (Player.IsOnCeiling())
         {
             StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
+            return;
         }
     }
 
