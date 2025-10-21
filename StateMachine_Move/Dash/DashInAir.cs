@@ -3,12 +3,10 @@ using System;
 
 public partial class DashInAir : SubState
 {
-    Char.LREnum DashDirection;
     private float startPositon;
 
     public override void Enter()
     {
-        DashDirection = Player.LastInputDirection;
         startPositon = Player.GlobalPosition.X;
         StateMachine.CooldownManager.StartCooling_Dash();
     }
@@ -52,11 +50,11 @@ public partial class DashInAir : SubState
     {
         Vector2 velocity = Player.Velocity;
 
-        if (DashDirection == Char.LREnum.Left)
+        if (Player.ActionDirection == Char.LREnum.Left)
         {
             velocity.X = -Player.DashSpeed;
         }
-        else if (DashDirection == Char.LREnum.Right)
+        else if (Player.ActionDirection == Char.LREnum.Right)
         {
             velocity.X = Player.DashSpeed;
         }

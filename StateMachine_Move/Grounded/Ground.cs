@@ -21,6 +21,7 @@ public partial class Ground : SuperState
         }
         else if (Input.IsActionJustPressed(GamepadInput.RT) && StateMachine.CooldownManager.IsDashReady)
         {
+            StateMachine.FixActionDirection();
             StateMachine.TransState(SuperState_Move.Dash, State_Move.Dash_Grounded);
             return;
         }

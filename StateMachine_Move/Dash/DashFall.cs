@@ -9,18 +9,23 @@ public partial class DashFall : SubState
 
         if (Player.IsOnFloor())
         {
-            if (Input.IsActionPressed(GamepadInput.Left) || Input.IsActionPressed(GamepadInput.Right))
+            if (Input.IsActionPressed(GamepadInput.RT))
             {
-                StateMachine.TransState(SuperState_Move.Grounded, State_Move.Walk);
+                StateMachine.FixActionDirection();
+                StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Grounded);
             }
+
             else
             {
-                StateMachine.TransState(SuperState_Move.Grounded, State_Move.Idle);
+                StateMachine.TransToWalkOrIdle();
+                return;
             }
+
         }
         else if (velocity.X <= Player.WalkSpeed && velocity.X >= -Player.WalkSpeed)
         {
             StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
+            return;
         }
     }
 

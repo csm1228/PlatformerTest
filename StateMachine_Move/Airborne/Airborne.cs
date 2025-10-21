@@ -13,41 +13,32 @@ public partial class Airborne : SuperState
         // 다른 SuperState로 전환할 필요가 있는지 먼저 검사
         if (Player.IsOnFloor() && Player.Velocity.Y <= 0)
         {
-            if (Input.IsActionPressed(GamepadInput.Left) || Input.IsActionPressed(GamepadInput.Right))
+            if (Input.IsActionPressed(GamepadInput.RT))
             {
-                StateMachine.TransState(SuperState_Move.Grounded, State_Move.Walk);
+                if (StateMachine.IsInputLorR())
+                {
+                    Player.ActionDirection = Player.LastInputDirection;
+                }
+
+                StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Grounded);
                 return;
             }
             else
             {
-                StateMachine.TransState(SuperState_Move.Grounded, State_Move.Idle);
+                StateMachine.TransToWalkOrIdle();
                 return;
             }
         }
         else if (Input.IsActionJustPressed(GamepadInput.RT) && StateMachine.CooldownManager.IsDashReady)
         {
+            StateMachine.FixActionDirection();
             StateMachine.TransState(SuperState_Move.Dash, State_Move.Dash_InAir);
             return;
         }
         else if (Player.IsOnWall())
         {
-            StateMachine.CheckWall();
-
-            if (StateMachine.IsOnWall())
-            {
-                StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
-                return;
-            }
-            else if (StateMachine.IsOnLedge())
-            {
-                StateMachine.TransState(SuperState_Move.Ledge, State_Move.Ledge_Grab);
-                return;
-            }
-            else
-            {
-                StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
-                return;
-            }
+            StateMachine.TransWall();
+            return;
         }
 
         CurrentSubState.HandleTransState(delta);

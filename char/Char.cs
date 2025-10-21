@@ -16,6 +16,8 @@ public partial class Char : CharacterBody2D
     private float _wallSlipperSpeed = 800.0f;
     private float _wallSlipperDelta = 2000.0f;
 
+    private float _sprintSpeed = 1600.0f;
+
     public float WalkSpeed => _walkSpeed;
     public float JumpSpeed => _jumpSpeed;
     public float DashSpeed => _dashSpeed;
@@ -24,6 +26,7 @@ public partial class Char : CharacterBody2D
     public float WallSlipperSpeed => _wallSlipperSpeed;
     public float JumpDelta => _jumpDelta;
     public float WallSlipperDelta => _wallSlipperDelta;
+    public float SprintSpeed => _sprintSpeed;
 
 
     public enum LREnum
@@ -35,6 +38,8 @@ public partial class Char : CharacterBody2D
     public LREnum LastInputDirection;
 
     public LREnum LastHoldingWallDirection;
+
+    public LREnum ActionDirection;
 
 
 

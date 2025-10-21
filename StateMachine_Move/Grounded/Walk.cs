@@ -5,7 +5,7 @@ public partial class Walk : SubState
 {
     public override void HandleTransState(double delta)
     {
-        if (!Input.IsActionPressed(GamepadInput.Left) && !Input.IsActionPressed(GamepadInput.Right))
+        if (!StateMachine.IsInputLorR())
         {
             StateMachine.TransState(SuperState_Move.Grounded, State_Move.Idle);
         }

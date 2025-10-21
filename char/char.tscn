@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://b5eprdmojefkx"]
+[gd_scene load_steps=36 format=3 uid="uid://b5eprdmojefkx"]
 
 [ext_resource type="Script" uid="uid://24pro1g2na86" path="res://char/Char.cs" id="1_3bvsw"]
 [ext_resource type="Script" uid="uid://0ut6ebjogx8c" path="res://char/DebugLabels.cs" id="2_l1hin"]
@@ -25,12 +25,24 @@
 [ext_resource type="Script" uid="uid://p8dfyms3jmyo" path="res://StateMachine_Move/Ledge/Ledge.cs" id="19_fq0rs"]
 [ext_resource type="Script" uid="uid://bcdocjsx32ukk" path="res://StateMachine_Move/Ledge/LedgeGrab.cs" id="20_83n1u"]
 [ext_resource type="Script" uid="uid://bo08boj2pwquc" path="res://StateMachine_Move/Ledge/LedgeClimb.cs" id="21_op7g2"]
+[ext_resource type="Script" uid="uid://b6jb02sj7ls32" path="res://char/Sprint.cs" id="23_a1kin"]
+[ext_resource type="Script" uid="uid://b5va8envionb5" path="res://char/SprintGrounded.cs" id="24_lxw0t"]
+[ext_resource type="Script" uid="uid://b3a36ru67pbbi" path="res://char/SprintJump.cs" id="25_bxbmk"]
+[ext_resource type="Script" uid="uid://bj3cesglwnrii" path="res://char/SprintApex.cs" id="26_hk2pb"]
+[ext_resource type="Script" uid="uid://cyt2ad683mvmo" path="res://char/SprintDecel.cs" id="27_kqn8y"]
+[ext_resource type="Script" uid="uid://b0tny6xgo518x" path="res://char/SprintFall.cs" id="28_28voa"]
+[ext_resource type="Script" uid="uid://cy5qecjsd7fib" path="res://char/SprintBump.cs" id="29_7pr67"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5k12k"]
 size = Vector2(80, 140)
 
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_njpxk"]
-size = Vector2(84, 140)
+[sub_resource type="Gradient" id="Gradient_7pr67"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(1, 0.83137256, 0.76862746, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_cauik"]
+gradient = SubResource("Gradient_7pr67")
+width = 80
 
 [node name="Node2D" type="CharacterBody2D" node_paths=PackedStringArray("StateMachine_Move", "RayCast_Upper_Left", "RayCast_Upper_Right", "RayCast_Lower_Left", "RayCast_Lower_Right")]
 safe_margin = 0.01
@@ -66,13 +78,14 @@ DebugLabel_Velocity_Y = NodePath("DebugLabel_Velocity_Y")
 
 [node name="DebugLabel_State" type="Label" parent="DebugLabels"]
 layout_mode = 0
-offset_left = -39.0
-offset_top = -217.0
-offset_right = 1.0
-offset_bottom = -194.0
+offset_left = -48.0
+offset_top = -129.0
+offset_right = -8.0
+offset_bottom = -106.0
 text = "State"
 
 [node name="DebugLabel_IsOnFloor" type="Label" parent="DebugLabels"]
+visible = false
 layout_mode = 0
 offset_left = 50.0
 offset_top = -66.0
@@ -82,6 +95,7 @@ text = "IsOnFloor"
 metadata/_edit_use_anchors_ = true
 
 [node name="DebugLabel_IsOnWall" type="Label" parent="DebugLabels"]
+visible = false
 layout_mode = 0
 offset_left = 50.0
 offset_top = -43.0
@@ -91,6 +105,7 @@ text = "IsOnWall"
 metadata/_edit_use_anchors_ = true
 
 [node name="DebugLabel_LastInputDir" type="Label" parent="DebugLabels"]
+visible = false
 layout_mode = 0
 offset_left = 53.0
 offset_top = -2.0
@@ -100,6 +115,7 @@ text = "InputDir"
 metadata/_edit_use_anchors_ = true
 
 [node name="DebugLabel_LastWallDir" type="Label" parent="DebugLabels"]
+visible = false
 layout_mode = 0
 offset_left = 52.0
 offset_top = 22.0
@@ -108,6 +124,7 @@ offset_bottom = 45.0
 text = "WallDir"
 
 [node name="DebugLabel_RayCast_Upper_Right" type="Label" parent="DebugLabels"]
+visible = false
 z_index = 2
 layout_mode = 0
 offset_left = 53.0
@@ -117,6 +134,7 @@ offset_bottom = -113.0
 text = "Left"
 
 [node name="DebugLabel_RayCast_Upper_Left" type="Label" parent="DebugLabels"]
+visible = false
 z_index = 2
 layout_mode = 0
 offset_left = -154.0
@@ -126,6 +144,7 @@ offset_bottom = -71.0
 text = "Right"
 
 [node name="DebugLabel_RayCast_Lower_Right" type="Label" parent="DebugLabels"]
+visible = false
 z_index = 2
 layout_mode = 0
 offset_left = 48.0
@@ -135,6 +154,7 @@ offset_bottom = -77.0
 text = "Left"
 
 [node name="DebugLabel_RayCast_Lower_Left" type="Label" parent="DebugLabels"]
+visible = false
 z_index = 2
 layout_mode = 0
 offset_left = -154.0
@@ -144,6 +164,7 @@ offset_bottom = -101.0
 text = "Right"
 
 [node name="DebugLabel_Velocity_X" type="Label" parent="DebugLabels"]
+visible = false
 layout_mode = 0
 offset_left = -46.0
 offset_top = -161.0
@@ -152,6 +173,7 @@ offset_bottom = -138.0
 text = "X"
 
 [node name="DebugLabel_Velocity_Y" type="Label" parent="DebugLabels"]
+visible = false
 layout_mode = 0
 offset_left = -46.0
 offset_top = -135.0
@@ -160,14 +182,12 @@ offset_bottom = -112.0
 text = "Y"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource("RectangleShape2D_5k12k")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = SubResource("PlaceholderTexture2D_njpxk")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 
-[node name="StateMachine_Move" type="Node" parent="." node_paths=PackedStringArray("Player", "CooldownManager", "Grounded", "Airborne", "Dash", "Wall", "Ledge")]
+[node name="StateMachine_Move" type="Node" parent="." node_paths=PackedStringArray("Player", "CooldownManager", "Grounded", "Airborne", "Dash", "Wall", "Ledge", "Sprint")]
 script = ExtResource("2_ncbi3")
 Player = NodePath("..")
 CooldownManager = NodePath("../CoolDownManager")
@@ -176,6 +196,7 @@ Airborne = NodePath("Airborne")
 Dash = NodePath("Dash")
 Wall = NodePath("Wall")
 Ledge = NodePath("Ledge")
+Sprint = NodePath("Sprint")
 
 [node name="Grounded" type="Node" parent="StateMachine_Move" node_paths=PackedStringArray("Idle", "Walk", "StateMachine", "Player", "Sprite")]
 script = ExtResource("3_g6e37")
@@ -331,6 +352,65 @@ StateMachine = NodePath("../..")
 Player = NodePath("../../..")
 Sprite = NodePath("../../../AnimatedSprite2D")
 
+[node name="Sprint" type="Node" parent="StateMachine_Move" node_paths=PackedStringArray("Sprint_Grounded", "Sprint_Jump", "Sprint_Fall", "Sprint_Decel", "Sprint_Bump", "Sprint_Apex", "StateMachine", "Player", "Sprite")]
+script = ExtResource("23_a1kin")
+Sprint_Grounded = NodePath("Sprint_Grounded")
+Sprint_Jump = NodePath("Sprint_Jump")
+Sprint_Fall = NodePath("Sprint_Fall")
+Sprint_Decel = NodePath("Sprint_Decel")
+Sprint_Bump = NodePath("Sprint_Bump")
+Sprint_Apex = NodePath("Sprint_Apex")
+StateMachine = NodePath("..")
+Player = NodePath("../..")
+Sprite = NodePath("../../AnimatedSprite2D")
+
+[node name="Sprint_Grounded" type="Node" parent="StateMachine_Move/Sprint" node_paths=PackedStringArray("SuperState", "StateMachine", "Player", "Sprite")]
+script = ExtResource("24_lxw0t")
+SuperState = NodePath("..")
+StateMachine = NodePath("../..")
+Player = NodePath("../../..")
+Sprite = NodePath("../../../AnimatedSprite2D")
+
+[node name="Sprint_Jump" type="Node" parent="StateMachine_Move/Sprint" node_paths=PackedStringArray("MaxJumpTime", "SuperState", "StateMachine", "Player", "Sprite")]
+script = ExtResource("25_bxbmk")
+MaxJumpTime = NodePath("MaxJumpTime")
+SuperState = NodePath("..")
+StateMachine = NodePath("../..")
+Player = NodePath("../../..")
+Sprite = NodePath("../../../AnimatedSprite2D")
+
+[node name="MaxJumpTime" type="Timer" parent="StateMachine_Move/Sprint/Sprint_Jump"]
+wait_time = 0.2
+one_shot = true
+
+[node name="Sprint_Apex" type="Node" parent="StateMachine_Move/Sprint" node_paths=PackedStringArray("SuperState", "StateMachine", "Player", "Sprite")]
+script = ExtResource("26_hk2pb")
+SuperState = NodePath("..")
+StateMachine = NodePath("../..")
+Player = NodePath("../../..")
+Sprite = NodePath("../../../AnimatedSprite2D")
+
+[node name="Sprint_Decel" type="Node" parent="StateMachine_Move/Sprint" node_paths=PackedStringArray("SuperState", "StateMachine", "Player", "Sprite")]
+script = ExtResource("27_kqn8y")
+SuperState = NodePath("..")
+StateMachine = NodePath("../..")
+Player = NodePath("../../..")
+Sprite = NodePath("../../../AnimatedSprite2D")
+
+[node name="Sprint_Fall" type="Node" parent="StateMachine_Move/Sprint" node_paths=PackedStringArray("SuperState", "StateMachine", "Player", "Sprite")]
+script = ExtResource("28_28voa")
+SuperState = NodePath("..")
+StateMachine = NodePath("../..")
+Player = NodePath("../../..")
+Sprite = NodePath("../../../AnimatedSprite2D")
+
+[node name="Sprint_Bump" type="Node" parent="StateMachine_Move/Sprint" node_paths=PackedStringArray("SuperState", "StateMachine", "Player", "Sprite")]
+script = ExtResource("29_7pr67")
+SuperState = NodePath("..")
+StateMachine = NodePath("../..")
+Player = NodePath("../../..")
+Sprite = NodePath("../../../AnimatedSprite2D")
+
 [node name="CoolDownManager" type="Node" parent="." node_paths=PackedStringArray("DashCooldownTimer")]
 script = ExtResource("4_ncbi3")
 DashCooldownTimer = NodePath("DashCooldownTimer")
@@ -341,7 +421,7 @@ one_shot = true
 script = ExtResource("5_qxri4")
 
 [node name="DashCooldownTimer" type="Timer" parent="CoolDownManager"]
-wait_time = 0.5
+wait_time = 0.3
 one_shot = true
 
 [node name="SkillCooldownTimer" type="Timer" parent="CoolDownManager"]
@@ -365,7 +445,15 @@ target_position = Vector2(42, 0)
 position = Vector2(0, -20)
 target_position = Vector2(-42, 0)
 
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_left = -40.0
+offset_top = -70.0
+offset_right = 40.0
+offset_bottom = 70.0
+texture = SubResource("GradientTexture1D_cauik")
+
 [connection signal="timeout" from="StateMachine_Move/Airborne/Jump/MaxJumpTime" to="StateMachine_Move/Airborne/Jump" method="_on_max_jump_time_timeout"]
 [connection signal="timeout" from="StateMachine_Move/Airborne/Wall_Jump/MaxWallJumpTime" to="StateMachine_Move/Airborne/Wall_Jump" method="_on_max_wall_jump_time_timeout"]
 [connection signal="timeout" from="StateMachine_Move/Wall/Wall_Hold/WallHoldTimer" to="StateMachine_Move/Wall/Wall_Hold" method="_on_wall_hold_timer_timeout"]
+[connection signal="timeout" from="StateMachine_Move/Sprint/Sprint_Jump/MaxJumpTime" to="StateMachine_Move/Sprint/Sprint_Jump" method="_on_max_jump_time_timeout"]
 [connection signal="timeout" from="CoolDownManager/DashCooldownTimer" to="CoolDownManager" method="_on_dash_cooldown_timer_timeout"]

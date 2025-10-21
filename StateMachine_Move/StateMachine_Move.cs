@@ -11,6 +11,8 @@ public class SuperState_Move
         Wall = "Wall",
         Ledge = "Ledge",
 
+        Sprint = "Sprint",
+
         Mounting = "Mounting",
         Mounted_Grounded = "Mounted_Grounded",
         Mounted_Airborne = "Mounted_Airborne";
@@ -45,6 +47,16 @@ public class State_Move
 
         Ledge_Grab = "Ledge_Grab",
         Ledge_Climb = "Ledge_Climb",
+
+
+
+        Sprint_Grounded = "Sprint_Grounded",
+        Sprint_Jump = "Sprint_Jump",
+        Sprint_Apex = "Sprint_Apex",
+        Sprint_Fall = "Sprint_Fall",
+        Sprint_Decel = "Sprint_Decel",
+        Sprint_Bump = "Sprint_Bump",
+
 
 
         Ride_Call = "Ride_Call",
@@ -98,6 +110,8 @@ public partial class StateMachine_Move : Node
 
     [Export] SuperState Wall { get; set; }
     [Export] SuperState Ledge { get; set; }
+
+    [Export] SuperState Sprint { get; set; }
 
 
     [Export] SuperState Mounting { get; set; }
@@ -172,5 +186,64 @@ public partial class StateMachine_Move : Node
         bool isOnLedge = isCollidingLeftLedge || isCollidingRightLedge;
 
         return isOnLedge;
+    }
+
+
+    public void FixActionDirection()
+    {
+        Player.ActionDirection = Player.LastInputDirection;
+    }
+
+
+    public bool IsInputLorR()
+    {
+        if (Input.IsActionPressed(GamepadInput.Left) || Input.IsActionPressed(GamepadInput.Right))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void TransToWalkOrIdle()
+    {
+        if (IsInputLorR())
+        {
+            TransState(SuperState_Move.Grounded, State_Move.Walk);
+        }
+        else
+        {
+            TransState(SuperState_Move.Grounded, State_Move.Idle);
+        }
+    }
+
+    public void TransWall()
+    {
+        CheckWall();
+
+        if (IsOnWall())
+        {
+            TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
+            return;
+        }
+        else if (IsOnLedge())
+        {
+            TransState(SuperState_Move.Ledge, State_Move.Ledge_Grab);
+            return;
+        }
+        else
+        {
+            TransState(SuperState_Move.Airborne, State_Move.Fall);
+            return;
+        }
+    }
+
+    public bool IsOppositeInput()
+    {
+        bool isOpposite = Player.ActionDirection == Char.LREnum.Left && Input.IsActionPressed(GamepadInput.Right) || Player.ActionDirection == Char.LREnum.Right && Input.IsActionPressed(GamepadInput.Left);
+
+        return isOpposite;
     }
 }

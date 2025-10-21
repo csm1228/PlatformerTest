@@ -3,12 +3,10 @@ using System;
 
 public partial class DashGrounded : SubState
 {
-    Char.LREnum DashDirection;
     private float startPositon;
 
     public override void Enter()
     {
-        DashDirection = Player.LastInputDirection;
         startPositon = Player.GlobalPosition.X;
 
         StateMachine.CooldownManager.StartCooling_Dash();
@@ -30,7 +28,12 @@ public partial class DashGrounded : SubState
     {
         if (Player.IsOnFloor())
         {
-            if (Input.IsActionPressed(GamepadInput.Left) || Input.IsActionPressed(GamepadInput.Right))
+            if (Input.IsActionPressed(GamepadInput.RT))
+            {
+                StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Grounded);
+            }
+
+            else if (Input.IsActionPressed(GamepadInput.Left) || Input.IsActionPressed(GamepadInput.Right))
             {
                 StateMachine.TransState(SuperState_Move.Grounded, State_Move.Walk);
             }
@@ -53,11 +56,11 @@ public partial class DashGrounded : SubState
     {
         Vector2 velocity = Player.Velocity;
 
-        if (DashDirection == Char.LREnum.Left)
+        if (Player.ActionDirection == Char.LREnum.Left)
         {
             velocity.X = -Player.DashSpeed;
         }
-        else if (DashDirection == Char.LREnum.Right)
+        else if (Player.ActionDirection == Char.LREnum.Right)
         {
             velocity.X = Player.DashSpeed;
         }

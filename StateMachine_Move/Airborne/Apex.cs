@@ -15,11 +15,6 @@ public partial class Apex : SubState
         }
     }
 
-    private void _on_max_jump_time_timeout()
-    {
-        StateMachine.TransState(SuperState_Move.Airborne, State_Move.Apex);
-    }
-
     public override void HandlePhysics(double delta)
     {
         Vector2 velocity = Player.Velocity;
