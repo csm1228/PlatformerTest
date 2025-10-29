@@ -13,8 +13,8 @@ public partial class DashFall : SubState
             {
                 StateMachine.FixActionDirection();
                 StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Grounded);
+                return;
             }
-
             else
             {
                 StateMachine.TransToWalkOrIdle();

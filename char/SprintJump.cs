@@ -7,6 +7,8 @@ public partial class SprintJump : SubState
 
     public override void Enter()
     {
+        Player.ConsumeJumpBuffer();
+
         MaxJumpTime.Start();
 
         Vector2 velocity = Player.Velocity;
@@ -36,28 +38,28 @@ public partial class SprintJump : SubState
 
     public override void HandleTransState(double delta)
     {
-        if (!Input.IsActionPressed(GamepadInput.Joypad_Down))
-        {
-            StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Apex);
-        }
-        else if (Player.IsOnCeiling())
+        if (Player.IsOnCeiling())
         {
             if (!Input.IsActionPressed(GamepadInput.RT) || Player.ActionDirection != Player.LastInputDirection)
             {
                 StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
+                return;
             }
             else
             {
                 StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Fall);
+                return;
             }
         }
         else if (Player.IsOnWall())
         {
             StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Bump);
+            return;
         }
         else if (Player.IsOnFloor())
         {
             StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Grounded);
+            return;
         }
     }
 
@@ -70,9 +72,30 @@ public partial class SprintJump : SubState
     {
         Vector2 velocity = Player.Velocity;
 
-        velocity.Y -= (float)(Player.JumpDelta * delta);
+        velocity.Y += (float)(Player.Gravity * delta * Player.GravityCoefficient_Jump);
 
         Player.Velocity = velocity;
     }
 
+    public override void HandlePressedEvent(StringName action)
+    {
+        if (action == GamepadInput.RT)
+        {
+            if (StateMachine.CanDash && StateMachine.CooldownManager.IsDashReady)
+            {
+                StateMachine.FixActionDirection();
+                StateMachine.TransState(SuperState_Move.Dash, State_Move.Dash_InAir);
+                return;
+            }
+        }
+    }
+
+    public override void HandleReleasedEvent(StringName action)
+    {
+        if (action == GamepadInput.Down)
+        {
+            StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Apex);
+            return;
+        }
+    }
 }

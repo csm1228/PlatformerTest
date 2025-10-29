@@ -5,7 +5,7 @@ public partial class Walk : SubState
 {
     public override void HandleTransState(double delta)
     {
-        if (!StateMachine.IsInputLorR())
+        if (InputManager.Instance.Horizon == 0)
         {
             StateMachine.TransState(SuperState_Move.Grounded, State_Move.Idle);
         }
@@ -13,14 +13,14 @@ public partial class Walk : SubState
 
     public override void HandlePhysics(double delta)
     {
-
         Vector2 velocity = Player.Velocity;
 
-        if (Input.IsActionPressed(GamepadInput.Left))
+        // 입력 방향에 따라 수평 이동
+        if (InputManager.Instance.Horizon < 0)
         {
             velocity.X = -Player.WalkSpeed;
         }
-        else if (Input.IsActionPressed(GamepadInput.Right))
+        else if (InputManager.Instance.Horizon > 0)
         {
             velocity.X = Player.WalkSpeed;
         }

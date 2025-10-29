@@ -6,24 +6,27 @@ public partial class Ground : SuperState
     [Export] private SubState Idle { get; set; }
     [Export] private SubState Walk { get; set; }
 
+    public override void Enter()
+    {
+        InputManager.Instance.ActionPressed += HandlePressedEvent;
+    }
+
+    public override void Exit()
+    {
+        InputManager.Instance.ActionPressed -= HandlePressedEvent;
+    }
+
     public override void HandleTransState(double delta)
     {
-        // 다른 SuperState로 전환할 필요가 있는지 먼저 검사
-        if (!Player.IsOnFloor())
-        {
-            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
-            return;
-        }
-        else if (StateMachine.inputManager.IsJumpOnBuffer())
+        // 점프 버퍼 검사
+        if (Player.JumpBuffer > 0)
         {
             StateMachine.TransState(SuperState_Move.Airborne, State_Move.Jump);
             return;
         }
-        else if (StateMachine.inputManager.IsDashOnBuffer() && StateMachine.CooldownManager.IsDashReady)
+        else if (!Player.IsOnFloor())
         {
-            StateMachine.FixActionDirection();
-            StateMachine.CooldownManager.StartCooling_Dash();
-            StateMachine.TransState(SuperState_Move.Dash, State_Move.Dash_Grounded);
+            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
             return;
         }
 
@@ -33,5 +36,27 @@ public partial class Ground : SuperState
     public override void HandlePhysics(double delta)
     {
         CurrentSubState.HandlePhysics(delta);
+    }
+
+    public override void HandlePressedEvent(StringName action)
+    {
+        if (action == GamepadInput.RT)
+        {
+            // 지상 대쉬는 쿨타임만 검사
+            if (StateMachine.CooldownManager.IsDashReady)
+            {
+                StateMachine.FixActionDirection();
+                StateMachine.TransState(SuperState_Move.Dash, State_Move.Dash_Grounded);
+                return;
+            }
+        }
+        // 점프 입력 감지
+        else if (action == GamepadInput.Face_Down)
+        {
+            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Jump);
+            return;
+        }
+
+        CurrentSubState.HandlePressedEvent(action);
     }
 }

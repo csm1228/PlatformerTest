@@ -20,13 +20,13 @@ public partial class Fall : SubState
             velocity.X = 0;
         }
 
-        if (velocity.Y < Player.Gravity)
+        if (velocity.Y < Player.MaxFallSpeed)
         {
-            velocity.Y += (float)(7000 * delta);
+            velocity.Y += (float)(Player.Gravity * delta * Player.GravityCoefficient_Fall);
         }
         else
         {
-            velocity.Y = Player.Gravity;
+            velocity.Y = Player.MaxFallSpeed;
         }
 
         Player.Velocity = velocity;

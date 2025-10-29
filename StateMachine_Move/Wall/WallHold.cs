@@ -1,17 +1,12 @@
 using Godot;
 using System;
 using System.Runtime.CompilerServices;
+using static System.Collections.Specialized.BitVector32;
 
 public partial class WallHold : SubState
 {
-    private bool HoldingWall = true;
-
-    [Export] Timer WallHoldTimer { get; set; }
-
     public override void Enter()
     {
-        HoldingWall = true;
-
         Vector2 velocity = Player.Velocity;
 
         velocity.Y = 0;
@@ -26,31 +21,25 @@ public partial class WallHold : SubState
         }
 
         Player.Velocity = velocity;
-
-        WallHoldTimer.Start();
     }
 
     public override void Exit()
     {
-        WallHoldTimer.Stop();
+
     }
 
     public override void HandleTransState(double delta)
     {
-        if (Input.IsActionPressed(GamepadInput.Up))
+        if (InputManager.Instance.Vertical < 0)
         {
             StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Climb);
             return;
         }
-        else if (!HoldingWall)
-        {
-            bool isHoldingInput = (Player.LastHoldingWallDirection == Char.LREnum.Left && Input.IsActionPressed(GamepadInput.Left) || Player.LastHoldingWallDirection == Char.LREnum.Right && Input.IsActionPressed(GamepadInput.Right));
 
-            if(!isHoldingInput)
-            {
-                StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Slipper);
-                return;
-            }
+        else if (InputManager.Instance.Horizon == 0)
+        {
+            StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Slipper);
+            return;
         }
     }
 
@@ -69,11 +58,18 @@ public partial class WallHold : SubState
             velocity.X = 1;
         }
 
+
         Player.Velocity = velocity;
     }
 
-    private void _on_wall_hold_timer_timeout()
+    public override void HandlePressedEvent(StringName action)
     {
-        HoldingWall = false;
+
+    }
+
+    public override void HandleReleasedEvent(StringName action)
+    {
+
+        
     }
 }

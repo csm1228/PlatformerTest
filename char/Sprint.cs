@@ -13,6 +13,18 @@ public partial class Sprint : SuperState
 
     [Export] private SubState Sprint_Apex { get; set; }
 
+    public override void Enter()
+    {
+        InputManager.Instance.ActionPressed += HandlePressedEvent;
+        InputManager.Instance.ActionReleased += HandleReleasedEvent;
+    }
+
+    public override void Exit()
+    {
+        InputManager.Instance.ActionPressed -= HandlePressedEvent;
+        InputManager.Instance.ActionReleased -= HandleReleasedEvent;
+    }
+
     public override void HandleTransState(double delta)
     {
         CurrentSubState.HandleTransState(delta);
@@ -23,5 +35,13 @@ public partial class Sprint : SuperState
         CurrentSubState.HandlePhysics(delta);
     }
 
+    public override void HandlePressedEvent(StringName action)
+    {
+        CurrentSubState.HandlePressedEvent(action);
+    }
 
+    public override void HandleReleasedEvent(StringName action)
+    {
+        CurrentSubState.HandleReleasedEvent(action);
+    }
 }

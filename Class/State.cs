@@ -10,4 +10,6 @@ public partial class State : Node
     public virtual void Exit() { }
     public virtual void HandleTransState(double delta) { }
     public virtual void HandlePhysics(double delta) { }
+    public virtual void HandlePressedEvent(StringName action) { }
+    public virtual void HandleReleasedEvent(StringName action) { }
 }

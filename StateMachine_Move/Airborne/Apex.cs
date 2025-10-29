@@ -8,10 +8,12 @@ public partial class Apex : SubState
         if (Player.IsOnCeiling())
         {
             StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
+            return;
         }
-        if (Player.Velocity.Y >= 0)
+        else if (Player.Velocity.Y >= 0)
         {
             StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
+            return;
         }
     }
 
@@ -32,7 +34,8 @@ public partial class Apex : SubState
             velocity.X = 0;
         }
 
-        velocity.Y += 200;
+        // 수직 속도가 점차 감소. 점프보다 더 빠르게 감소함.
+        velocity.Y += (float)(Player.Gravity * delta * Player.GravityCoefficient_Apex);
 
         Player.Velocity = velocity;
     }

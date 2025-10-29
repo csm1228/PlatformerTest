@@ -5,12 +5,7 @@ public partial class SprintFall : SubState
 {
     public override void HandleTransState(double delta)
     {
-        if (StateMachine.inputManager.IsDashOnBuffer() && StateMachine.CooldownManager.IsDashReady)
-        {
-            StateMachine.TransState(SuperState_Move.Dash, State_Move.Dash_InAir);
-            return;
-        }
-        else if (Player.IsOnFloor())
+        if (Player.IsOnFloor())
         {
             if (Input.IsActionPressed(GamepadInput.RT))
             {
@@ -33,7 +28,6 @@ public partial class SprintFall : SubState
             StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
             return;
         }
-        
     }
 
     public override void HandlePhysics(double delta)
@@ -49,17 +43,16 @@ public partial class SprintFall : SubState
             velocity.Y = Player.Gravity;
         }
 
-        if (StateMachine.IsOppositeInput())
+        if (InputManager.Instance.Horizon < 0 && Player.ActionDirection == Char.LREnum.Left)
         {
-            if (Player.ActionDirection == Char.LREnum.Left)
-            {
-                velocity.X += (float)(2000 * delta);
-            }
-            else if (Player.ActionDirection == Char.LREnum.Right)
-            {
-                velocity.X -= (float)(2000 * delta);
-            }
+            velocity.X += (float)(2000 * delta);
+
         }
+        if (InputManager.Instance.Horizon > 0 && Player.ActionDirection == Char.LREnum.Right)
+        {
+            velocity.X -= (float)(2000 * delta);
+        }
+        
         else
         {
             if (Player.ActionDirection == Char.LREnum.Left)
@@ -72,6 +65,24 @@ public partial class SprintFall : SubState
             }
         }
 
-            Player.Velocity = velocity;
+        Player.Velocity = velocity;
+    }
+
+    public override void HandlePressedEvent(StringName action)
+    {
+        if (action == GamepadInput.RT)
+        {
+            if (StateMachine.CanDash && StateMachine.CooldownManager.IsDashReady)
+            {
+                StateMachine.FixActionDirection();
+                StateMachine.TransState(SuperState_Move.Dash, State_Move.Dash_InAir);
+                return;
+            }
+        }
+    }
+
+    public override void HandleReleasedEvent(StringName action)
+    {
+        
     }
 }

@@ -3,30 +3,27 @@ using System;
 
 public partial class Char : CharacterBody2D
 {
-    private float _walkSpeed = 800.0f;
-    private float _jumpSpeed = -1800.0f;
-    private float _jumpDelta = -2000.0f;
+    [Export] public float WalkSpeed { get; private set; }
+    [Export] public float DashSpeed { get; private set; }
+    [Export] public float SprintSpeed { get; private set; }
 
-    private float _dashSpeed = 4800.0f;
 
-    private float _climbSpeed = -600.0f;
+    [Export] public float Gravity { get; private set; }
+    [Export] public float JumpSpeed { get; private set; }
+    [Export] public float MaxFallSpeed { get; private set; }
+    [Export] public float ClimbSpeed { get; private set; }
 
-    private float _gravity = 1900.0f;
 
-    private float _wallSlipperSpeed = 800.0f;
-    private float _wallSlipperDelta = 2000.0f;
 
-    private float _sprintSpeed = 1600.0f;
+    [Export] public float GravityCoefficient_Jump { get; set; }
+    [Export] public float GravityCoefficient_Apex { get; set; }
+    [Export] public float GravityCoefficient_Fall { get; set; }
 
-    public float WalkSpeed => _walkSpeed;
-    public float JumpSpeed => _jumpSpeed;
-    public float DashSpeed => _dashSpeed;
-    public float ClimbSpeed => _climbSpeed;
-    public float Gravity => _gravity;
-    public float WallSlipperSpeed => _wallSlipperSpeed;
-    public float JumpDelta => _jumpDelta;
-    public float WallSlipperDelta => _wallSlipperDelta;
-    public float SprintSpeed => _sprintSpeed;
+    [Export] public float WallSlipperSpeed { get; private set; }
+
+
+    [Export] public double InputBuffer { get; private set; }
+    public double JumpBuffer { get; private set; } = 0.0;
 
 
     public enum LREnum
@@ -56,6 +53,8 @@ public partial class Char : CharacterBody2D
     {
         LastInputDirection = LREnum.Left;
         LastHoldingWallDirection = LREnum.Left;
+
+        InputManager.Instance.ActionPressed += ApplyJumpBuffer;
     }
 
     public override void _PhysicsProcess(double delta)
@@ -74,6 +73,27 @@ public partial class Char : CharacterBody2D
         MoveAndSlide();
 
         StateMachine_Move.HandleTransState(delta);
-
     }
+
+    public override void _Process(double delta)
+    {
+        if (JumpBuffer > 0)
+        {
+            JumpBuffer -= delta;
+        }
+    }
+
+    private void ApplyJumpBuffer(StringName action)
+    {
+        if (action == GamepadInput.Face_Down)
+        {
+            JumpBuffer = InputBuffer;
+        }
+    }
+
+    public void ConsumeJumpBuffer()
+    {
+        JumpBuffer = 0;
+    }
+    
 }

@@ -7,6 +7,8 @@ public partial class WallJump : SubState
 
     public override void Enter()
     {
+        Player.ConsumeJumpBuffer();
+
         Vector2 velocity = Player.Velocity;
 
         velocity.Y = Player.JumpSpeed;
@@ -23,13 +25,10 @@ public partial class WallJump : SubState
 
     public override void HandleTransState(double delta)
     {
-        if (!Input.IsActionPressed(GamepadInput.Joypad_Down))
-        {
-            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Apex);
-        }
-        else if (Player.IsOnCeiling())
+        if (Player.IsOnCeiling())
         {
             StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
+            return;
         }
     }
 
@@ -51,8 +50,17 @@ public partial class WallJump : SubState
             velocity.X = -Player.WalkSpeed;
         }
 
-        velocity.Y -= (float)(Player.JumpDelta * delta);
+        velocity.Y += (float)(Player.Gravity * delta * Player.GravityCoefficient_Jump);
 
         Player.Velocity = velocity;
+    }
+
+    public override void HandleReleasedEvent(StringName action)
+    {
+        if (action == GamepadInput.Face_Down)
+        {
+            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Apex);
+            return;
+        }
     }
 }

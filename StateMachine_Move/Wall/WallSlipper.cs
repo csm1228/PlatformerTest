@@ -4,16 +4,33 @@ using System.Runtime.CompilerServices;
 
 public partial class WallSlipper : SubState
 {
+    public override void Enter()
+    {
+        Vector2 velocity = Player.Velocity;
+
+        velocity.Y = 0;
+
+        Player.Velocity = velocity;
+    }
+
     public override void HandleTransState(double delta)
     {
-        if (Input.IsActionPressed(GamepadInput.Up))
+        if (InputManager.Instance.Vertical < 0)
         {
             StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Climb);
+            return;
         }
-        else if ((Player.LastHoldingWallDirection == Char.LREnum.Left && Input.IsActionPressed(GamepadInput.Left) || Player.LastHoldingWallDirection == Char.LREnum.Right && Input.IsActionPressed(GamepadInput.Right)))
+        else if (InputManager.Instance.Horizon < 0 && Player.LastHoldingWallDirection == Char.LREnum.Left)
         {
             StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
+            return;
         }
+        else if (InputManager.Instance.Horizon > 0 && Player.LastHoldingWallDirection == Char.LREnum.Right)
+        {
+            StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
+            return;
+        }
+
     }
 
     public override void HandlePhysics(double delta)
@@ -22,7 +39,7 @@ public partial class WallSlipper : SubState
 
         if (velocity.Y < Player.WallSlipperSpeed)
         {
-            velocity.Y += (float)(Player.WallSlipperDelta * delta);
+            velocity.Y += (float)(Player.Gravity * delta);
         }
         else
         {
@@ -39,5 +56,10 @@ public partial class WallSlipper : SubState
         }
 
         Player.Velocity = velocity;
+    }
+
+    public override void HandlePressedEvent(StringName action)
+    {
+
     }
 }

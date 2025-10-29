@@ -5,7 +5,7 @@ public partial class Idle : SubState
 {
     public override void HandleTransState(double delta)
     {
-        if (StateMachine.IsInputLorR())
+        if (InputManager.Instance.Horizon != 0)
         {
             StateMachine.TransState(SuperState_Move.Grounded, State_Move.Walk);
             return;

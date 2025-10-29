@@ -5,12 +5,7 @@ public partial class SprintApex : SubState
 {
     public override void HandleTransState(double delta)
     {
-        if (Input.IsActionJustPressed(GamepadInput.RT))
-        {
-            StateMachine.TransState(SuperState_Move.Dash, State_Move.Dash_InAir);
-            return;
-        }
-        else if (Player.IsOnCeiling())
+        if (Player.IsOnCeiling())
         {
             StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Fall);
             return;
@@ -39,5 +34,18 @@ public partial class SprintApex : SubState
         velocity.Y += 200;
 
         Player.Velocity = velocity;
+    }
+
+    public override void HandlePressedEvent(StringName action)
+    {
+        if (action == GamepadInput.RT)
+        {
+            if (StateMachine.CanDash && StateMachine.CooldownManager.IsDashReady)
+            {
+                StateMachine.FixActionDirection();
+                StateMachine.TransState(SuperState_Move.Dash, State_Move.Dash_InAir);
+                return;
+            }
+        }
     }
 }

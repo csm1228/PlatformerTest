@@ -3,52 +3,53 @@ using System;
 
 public partial class SprintBump : SubState
 {
+    [Export] private Vector2I StartVector { get; set; }
+    [Export] private Vector2I TargetVector { get; set; }
+    [Export] private float LerfCoefficient { get; set; }
+
+    [Export] private Timer BumpTimer { get; set; }
+
     public override void Enter()
     {
-        Vector2 velocity = Player.Velocity;
+        Vector2 velocity = StartVector;
 
-        if (Player.ActionDirection == Char.LREnum.Left)
+        if (Player.ActionDirection == Char.LREnum.Right)
         {
-            velocity.X = Player.WalkSpeed;
+            velocity.X = - velocity.X;
         }
-        else if (Player.ActionDirection == Char.LREnum.Right)
-        {
-            velocity.X = -Player.WalkSpeed;
-        }
-
-            velocity.Y = -400;
 
         Player.Velocity = velocity;
+
+        BumpTimer.Start();
     }
 
     public override void HandleTransState(double delta)
     {
-        if (Player.IsOnFloor())
-        {
-            if (Input.IsActionPressed(GamepadInput.Left) || Input.IsActionPressed(GamepadInput.Right))
-            {
-                StateMachine.TransState(SuperState_Move.Grounded, State_Move.Walk);
-            }
-            else
-            {
-                StateMachine.TransState(SuperState_Move.Grounded, State_Move.Idle);
-            }
-        }
-        else if (Player.Velocity.X < (Player.WalkSpeed / 2) && Player.Velocity.X > (-Player.WalkSpeed / 2))
-        {
-            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
-        }
+
     }
 
     public override void HandlePhysics(double delta)
     {
         Vector2 velocity = Player.Velocity;
 
-        Vector2 Fall = new Vector2(0, Player.Gravity);
-
-        GD.Print("!");
-        velocity = velocity.Lerp(Fall, 0.05f);
+        velocity = velocity.Lerp(TargetVector, LerfCoefficient);
 
         Player.Velocity = velocity;
+    }
+
+    private void _on_bump_timer_timeout()
+    {
+        if (Player.IsOnFloor())
+        {
+            StateMachine.TransToWalkOrIdle();
+            return;
+        }
+        else
+        {
+            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
+            return;
+        }
+
+
     }
 }

@@ -3,53 +3,44 @@ using System;
 
 public partial class DashGrounded : SubState
 {
-    private float startPositon;
+    [Export] private Timer DashTimer { get; set; }
 
     public override void Enter()
     {
-        startPositon = Player.GlobalPosition.X;
-
+        DashTimer.Start();
         StateMachine.CooldownManager.StartCooling_Dash();
     }
 
-    public override void HandleTransState(double delta)
+    public override void Exit()
     {
-        float distanceMoved = Mathf.Abs(Player.GlobalPosition.X - startPositon);
-
-        if (distanceMoved >= 400.0f)
-        {
-            GD.Print("지상 대쉬 이동거리만큼 이동했음");
-            DashFinished();
-        }
+        DashTimer.Stop();
     }
 
-
-    private void DashFinished()
+    private void DashFinished() // 대쉬가 끝난 시점의 상태 전환
     {
         if (Player.IsOnFloor())
         {
             if (Input.IsActionPressed(GamepadInput.RT))
             {
                 StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Grounded);
-            }
-
-            else if (Input.IsActionPressed(GamepadInput.Left) || Input.IsActionPressed(GamepadInput.Right))
-            {
-                StateMachine.TransState(SuperState_Move.Grounded, State_Move.Walk);
+                return;
             }
             else
             {
-                StateMachine.TransState(SuperState_Move.Grounded, State_Move.Idle);
+                StateMachine.TransToWalkOrIdle();
+                return;
             }
-        }
-        else if (Player.IsOnWallOnly())
-        {
-            StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
         }
         else if (!Player.IsOnFloor() && !Player.IsOnWall())
         {
             StateMachine.TransState(SuperState_Move.Dash, State_Move.Dash_Fall);
+            return;
         }
+    }
+
+    private void _on_dash_grounded_timer_timeout()
+    {
+        DashFinished();
     }
 
     public override void HandlePhysics(double delta)
@@ -68,5 +59,14 @@ public partial class DashGrounded : SubState
         velocity.Y = 0;
 
         Player.Velocity = velocity;
+    }
+
+    public override void HandlePressedEvent(StringName action)
+    {
+        if (action == GamepadInput.Face_Down)
+        {
+            StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Jump);
+            return;
+        }
     }
 }

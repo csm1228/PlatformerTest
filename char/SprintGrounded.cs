@@ -24,24 +24,35 @@ public partial class SprintGrounded : SubState
         if (Player.IsOnWall())
         {
             StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Bump);
+            return;
         }
         else if (!Player.IsOnFloor())
         {
             StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Fall);
+            return;
         }
-        else if (!Input.IsActionPressed(GamepadInput.RT) || Player.ActionDirection != Player.LastInputDirection)
+        else if (Player.ActionDirection != Player.LastInputDirection)
         {
             StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Decel);
-        }
-        else if (Input.IsActionJustPressed(GamepadInput.Joypad_Down))
-        {
-            StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Jump);
+            return;
         }
     }
 
-
-    public override void HandlePhysics(double delta)
+    public override void HandlePressedEvent(StringName action)
     {
+        if (action == GamepadInput.Face_Down && Player.IsOnFloor())
+        {
+            StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Jump);
+            return;
+        }
+    }
 
+    public override void HandleReleasedEvent(StringName action)
+    {
+        if (action == GamepadInput.RT && Player.IsOnFloor())
+        {
+            StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Decel);
+            return;
+        }
     }
 }

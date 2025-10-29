@@ -3,47 +3,45 @@ using System;
 
 public partial class DashInAir : SubState
 {
-    private float startPositon;
+    [Export] private Timer DashTimer { get; set; }
 
     public override void Enter()
     {
-        startPositon = Player.GlobalPosition.X;
-        StateMachine.CooldownManager.StartCooling_Dash();
+        // 공중 대쉬는 대쉬 가능 여부만 검토
+        StateMachine.CanDash = false;
+        DashTimer.Start();
     }
 
-    public override void HandleTransState(double delta)
+    public override void Exit()
     {
-        float distanceMoved = Mathf.Abs(Player.GlobalPosition.X - startPositon);
-
-        if (distanceMoved >= 200.0f)
-        {
-            GD.Print("지상 대쉬 이동거리만큼 이동했음");
-            DashInAirFinished();
-            return;
-        }
-
+        DashTimer.Stop();
     }
 
     private void DashInAirFinished()
     {
-        if (Player.IsOnFloor())
-        {
-            if (Input.IsActionPressed(GamepadInput.Left) || Input.IsActionPressed(GamepadInput.Right))
-            {
-                StateMachine.TransState(SuperState_Move.Grounded, State_Move.Walk);
-                return;
-            }
-            else
-            {
-                StateMachine.TransState(SuperState_Move.Grounded, State_Move.Idle);
-                return;
-            }
-        }
-        else if (!Player.IsOnFloor() && !Player.IsOnWall())
+        if (!Player.IsOnFloor() && !Player.IsOnWall())
         {
             SuperState.TransSubState(State_Move.Dash_Fall);
             return;
         }
+        else if (Player.IsOnFloor())
+        {
+            if (Input.IsActionPressed(GamepadInput.RT))
+            {
+                StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Grounded);
+                return;
+            }
+            else
+            {
+                StateMachine.TransToWalkOrIdle();
+                return;
+            }
+        }
+    }
+
+    private void _on_dash_in_air_timer_timeout()
+    {
+        DashInAirFinished();
     }
 
     public override void HandlePhysics(double delta)

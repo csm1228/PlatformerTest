@@ -5,9 +5,18 @@ public partial class WallClimb : SubState
 {
     public override void HandleTransState(double delta)
     {
-        if (!Input.IsActionPressed(GamepadInput.Up))
+        if (InputManager.Instance.Vertical >= 0)
         {
-            StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
+            if (InputManager.Instance.Horizon == 0)
+            {
+                StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Slipper);
+                return;
+            }
+            else
+            {
+                StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
+                return;
+            }
         }
     }
 
@@ -27,5 +36,14 @@ public partial class WallClimb : SubState
         }
 
         Player.Velocity = velocity;
+    }
+
+    public override void HandleReleasedEvent(StringName action)
+    {
+        if (action == GamepadInput.Up)
+        {
+            StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
+            return;
+        }
     }
 }

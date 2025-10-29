@@ -14,19 +14,11 @@ public partial class LedgeClimb : SubState
         {
             if (Player.IsOnFloor())
             {
-                if (Input.IsActionPressed(GamepadInput.Left) || Input.IsActionPressed(GamepadInput.Right))
-                {
-                    StateMachine.TransState(SuperState_Move.Grounded, State_Move.Walk);
-                    return;
-                }
-                else
-                {
-                     StateMachine.TransState(SuperState_Move.Grounded, State_Move.Idle);
-                    return;
-                }
+                StateMachine.TransToWalkOrIdle();
+                return;
             }
         }
-        else if (StateMachine.inputManager.IsJumpOnBuffer())
+        else if (Player.JumpBuffer > 0)
         {
             StateMachine.TransState(SuperState_Move.Airborne, State_Move.Wall_Jump);
             return;

@@ -10,12 +10,7 @@ public class SuperState_Move
         Dash = "Dash",
         Wall = "Wall",
         Ledge = "Ledge",
-
-        Sprint = "Sprint",
-
-        Mounting = "Mounting",
-        Mounted_Grounded = "Mounted_Grounded",
-        Mounted_Airborne = "Mounted_Airborne";
+        Sprint = "Sprint";
 }
 
 public class State_Move
@@ -55,42 +50,12 @@ public class State_Move
         Sprint_Apex = "Sprint_Apex",
         Sprint_Fall = "Sprint_Fall",
         Sprint_Decel = "Sprint_Decel",
-        Sprint_Bump = "Sprint_Bump",
-
-
-
-        Ride_Call = "Ride_Call",
-        Ride_GetOn = "Ride_GetOn",
-        Ride_GetOff = "Ride_GetOff",
-
-
-
-        Ride_Idle = "Ride_Idle",
-        Ride_Walk = "Ride_Walk",
-        Ride_Sprite = "Ride_Sprint",
-        Ride_Decel = "Ride_Decel",
-
-
-
-        Ride_Jump = "Ride_Jump",
-        Ride_Apex = "Ride_Apex",
-        Ride_Fall = "Ride_Fall";
+        Sprint_Bump = "Sprint_Bump";
 }
-
-public class GamepadInput
-{
-    // 사전 정의된 입력들을 visual studio가 찾게 해주고, 오타를 방지하기 위한 클래스.
-    public const string
-        Joypad_Down = "Joypad_Down", Joypad_Up = "Joypad_Up", Joypad_Left = "Joypad_Left", Joypad_Right = "Joypad_Right",
-        LT = "LT", RT = "RT", LB = "LB", RB = "RB",
-        Up = "Up", Down = "Down", Left = "Left", Right = "Right";
-}
-
 
 public partial class StateMachine_Move : Node
 {
     [Export] Char Player { get; set; }
-
 
 
     private SuperState _currentSuperState;
@@ -99,9 +64,9 @@ public partial class StateMachine_Move : Node
 
     [Export] public CoolDownManager CooldownManager { get; set; }
 
-
-    [Export] public InputManager inputManager { get; set; }
-
+    public bool CanDash = true;
+    public bool CanDoubleJump = true;
+    public bool IsDoubleJumpUnlocked = false;
 
     [Export] SuperState Grounded { get; set; }
     [Export] SuperState Airborne { get; set; }
@@ -110,15 +75,7 @@ public partial class StateMachine_Move : Node
 
     [Export] SuperState Wall { get; set; }
     [Export] SuperState Ledge { get; set; }
-
     [Export] SuperState Sprint { get; set; }
-
-
-    [Export] SuperState Mounting { get; set; }
-    [Export] SuperState Mounted_Grounded { get; set; }
-    [Export] SuperState Mounted_Airborne { get; set; }
-
-
 
 
 
@@ -146,6 +103,11 @@ public partial class StateMachine_Move : Node
     {
         CheckWall();
         _currentSuperState?.HandlePhysics(delta);
+        if (Player.IsOnFloor())
+        {
+            CanDash = true;
+            CanDoubleJump = true;
+        }
     }
 
     public void HandleTransState(double delta)
@@ -155,7 +117,7 @@ public partial class StateMachine_Move : Node
 
     public void CheckWall()
     {
-        // 어떤 방향의 벽에 붙어있는지 검사
+        // 어떤 방향의 벽에 붙어있는지 검사. 주로 벽에서 떨어질 때 호출
         if (Player.GetWallNormal().X > 0)
         {
             Player.LastHoldingWallDirection = Char.LREnum.Left;
@@ -170,6 +132,7 @@ public partial class StateMachine_Move : Node
 
     public bool IsOnWall()
     {
+        // 엔진 내 IsOnWall() 함수가 이상해서, 하나 만듦
         bool isCollidingLeftWall = Player.RayCast_Upper_Left.IsColliding() && Player.RayCast_Lower_Left.IsColliding();
         bool isCollidingRightWall = Player.RayCast_Upper_Right.IsColliding() && Player.RayCast_Lower_Right.IsColliding();
 
@@ -194,28 +157,17 @@ public partial class StateMachine_Move : Node
         Player.ActionDirection = Player.LastInputDirection;
     }
 
-
-    public bool IsInputLorR()
-    {
-        if (Input.IsActionPressed(GamepadInput.Left) || Input.IsActionPressed(GamepadInput.Right))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
     public void TransToWalkOrIdle()
     {
-        if (IsInputLorR())
+        if (InputManager.Instance.Horizon != 0)
         {
             TransState(SuperState_Move.Grounded, State_Move.Walk);
+            return;
         }
         else
         {
             TransState(SuperState_Move.Grounded, State_Move.Idle);
+            return;
         }
     }
 
@@ -238,12 +190,5 @@ public partial class StateMachine_Move : Node
             TransState(SuperState_Move.Airborne, State_Move.Fall);
             return;
         }
-    }
-
-    public bool IsOppositeInput()
-    {
-        bool isOpposite = Player.ActionDirection == Char.LREnum.Left && Input.IsActionPressed(GamepadInput.Right) || Player.ActionDirection == Char.LREnum.Right && Input.IsActionPressed(GamepadInput.Left);
-
-        return isOpposite;
     }
 }

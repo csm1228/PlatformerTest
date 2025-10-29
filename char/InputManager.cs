@@ -1,53 +1,59 @@
 using Godot;
 using System;
-using System.Runtime.CompilerServices;
+using System.Collections.Generic;
+
+public class GamepadInput
+{
+    // 사전 정의된 입력들을 visual studio가 찾게 해주고, 오타를 방지하기 위한 클래스.
+    public const string
+        Face_Up = "Face_Up", Face_Down = "Face_Down", Face_Left = "Face_Left", Face_Right = "Face_Right",
+        LT = "LT", RT = "RT", LB = "LB", RB = "RB",
+        Up = "Up", Down = "Down", Left = "Left", Right = "Right",
+        Start = "Start", Select = "Select";
+}
 
 public partial class InputManager : Node
 {
-    private int _inputFrame_Jump = 0;
-    private int _inputFrame_Dash = 0;
+    public static InputManager Instance { get; private set; }
 
-    public int InputFrame_Jump => _inputFrame_Jump;
-    public int InputFrame_Dash => _inputFrame_Dash;
+    public float Horizon { get; private set; }
+    public float Vertical { get; private set; }
 
-    private int Buffer = 10;
+
+    public event Action<StringName> ActionPressed;
+    public event Action<StringName> ActionReleased;
+
+
+    public override void _Ready()
+    {
+        Instance = this;
+    }
+
+    public List<StringName> _inputNames = new List<StringName>
+    {
+        GamepadInput.LT, GamepadInput.RT, GamepadInput.LB, GamepadInput.RB,
+        GamepadInput.Face_Up, GamepadInput.Face_Down, GamepadInput.Face_Left, GamepadInput.Face_Right,
+    };
+
 
     public override void _Input(InputEvent @event)
     {
-        if (@event.IsActionPressed(GamepadInput.Joypad_Down))
+        foreach (StringName action in _inputNames)
         {
-            _inputFrame_Jump = Buffer;
-        }
-        else if (@event.IsActionPressed(GamepadInput.RT))
-        {
-            _inputFrame_Dash = Buffer;
-        }
-    }
-
-    public override void _PhysicsProcess(double delta)
-    {
-        if (_inputFrame_Jump > 0)
-        {
-            _inputFrame_Jump--;
-        }
-
-        if (_inputFrame_Dash > 0)
-        {
-            _inputFrame_Dash--;
+            if (@event.IsActionPressed(action))
+            {
+                ActionPressed?.Invoke(action);
+            }
+            else if (@event.IsActionReleased(action))
+            {
+                ActionReleased?.Invoke(action);
+            }
         }
     }
 
-    public bool IsJumpOnBuffer()
+    public override void _Process(double delta)
     {
-        bool isJumpOnBuffer = (_inputFrame_Jump > 0);
-
-        return isJumpOnBuffer;
-    }
-
-    public bool IsDashOnBuffer()
-    {
-        bool isDashOnBuffer = (_inputFrame_Dash > 0);
-
-        return isDashOnBuffer;
+        Horizon = Input.GetAxis(GamepadInput.Left, GamepadInput.Right);
+        Vertical = Input.GetAxis(GamepadInput.Up, GamepadInput.Down);
     }
 }
