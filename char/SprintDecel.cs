@@ -3,6 +3,8 @@ using System;
 
 public partial class SprintDecel : SubState
 {
+    [Export] private float LerfCoefficient { get; set; }
+
     public override void HandleTransState(double delta)
     {
         if (!Player.IsOnFloor())
@@ -42,7 +44,7 @@ public partial class SprintDecel : SubState
     {
         Vector2 velocity = Player.Velocity;
 
-        velocity = velocity.Lerp(Vector2.Zero, 0.04f);
+        velocity = velocity.Lerp(Vector2.Zero, LerfCoefficient);
 
         Player.Velocity = velocity;
     }

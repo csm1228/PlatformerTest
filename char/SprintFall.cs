@@ -3,6 +3,9 @@ using System;
 
 public partial class SprintFall : SubState
 {
+    [Export] private float Decel { get; set; }
+    [Export] private float Decel_OppositeInput { get; set; }
+
     public override void HandleTransState(double delta)
     {
         if (Player.IsOnFloor())
@@ -34,34 +37,32 @@ public partial class SprintFall : SubState
     {
         Vector2 velocity = Player.Velocity;
 
-        if (velocity.Y < Player.Gravity)
+        if (velocity.Y < Player.MaxFallSpeed)
         {
-            velocity.Y += (float)(7000 * delta);
+            velocity.Y += (float)(Player.MaxFallSpeed * delta * Player.GravityCoefficient_Fall);
         }
         else
         {
-            velocity.Y = Player.Gravity;
+            velocity.Y = Player.MaxFallSpeed;
         }
-
-        if (InputManager.Instance.Horizon < 0 && Player.ActionDirection == Char.LREnum.Left)
+        if (InputManager.Instance.Horizon > 0 && Player.ActionDirection == Char.LREnum.Left)
         {
-            velocity.X += (float)(2000 * delta);
+            velocity.X += (float)(Decel_OppositeInput * delta);
 
         }
-        if (InputManager.Instance.Horizon > 0 && Player.ActionDirection == Char.LREnum.Right)
+        if (InputManager.Instance.Horizon < 0 && Player.ActionDirection == Char.LREnum.Right)
         {
-            velocity.X -= (float)(2000 * delta);
+            velocity.X -= (float)(Decel_OppositeInput * delta);
         }
-        
         else
         {
             if (Player.ActionDirection == Char.LREnum.Left)
             {
-                velocity.X += (float)(1000 * delta);
+                velocity.X += (float)(Decel * delta);
             }
             else if (Player.ActionDirection == Char.LREnum.Right)
             {
-                velocity.X -= (float)(1000 * delta);
+                velocity.X -= (float)(Decel * delta);
             }
         }
 

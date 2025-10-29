@@ -31,7 +31,7 @@ public partial class SprintApex : SubState
     {
         Vector2 velocity = Player.Velocity;
 
-        velocity.Y += 200;
+        velocity.Y += (float)(Player.Gravity * delta * Player.GravityCoefficient_Apex);
 
         Player.Velocity = velocity;
     }

@@ -409,6 +409,8 @@ Sprite = NodePath("../../../AnimatedSprite2D")
 
 [node name="Sprint_Fall" type="Node" parent="StateMachine_Move/Sprint" node_paths=PackedStringArray("SuperState", "StateMachine", "Player", "Sprite")]
 script = ExtResource("28_28voa")
+Decel = 1000.0
+Decel_OppositeInput = 4000.0
 SuperState = NodePath("..")
 StateMachine = NodePath("../..")
 Player = NodePath("../../..")
@@ -416,6 +418,7 @@ Sprite = NodePath("../../../AnimatedSprite2D")
 
 [node name="Sprint_Decel" type="Node" parent="StateMachine_Move/Sprint" node_paths=PackedStringArray("SuperState", "StateMachine", "Player", "Sprite")]
 script = ExtResource("27_kqn8y")
+LerfCoefficient = 0.04
 SuperState = NodePath("..")
 StateMachine = NodePath("../..")
 Player = NodePath("../../..")
