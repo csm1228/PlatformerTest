@@ -11,24 +11,26 @@ public partial class SprintJump : SubState
 
         MaxJumpTime.Start();
 
+        Player.Animation.Play("Sprint_Jump");
+
         Vector2 velocity = Player.Velocity;
-
-
 
         if (Player.ActionDirection == Char.LREnum.Left)
         {
             velocity.X = -Player.SprintSpeed;
+            Player.Animation.FlipH = true;
         }
         else if (Player.ActionDirection == Char.LREnum.Right)
         {
             velocity.X = Player.SprintSpeed;
+            Player.Animation.FlipH = false;
         }
-
-
 
         velocity.Y = Player.JumpSpeed;
 
         Player.Velocity = velocity;
+
+        
     }
 
     public override void Exit()

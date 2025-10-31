@@ -11,6 +11,8 @@ public partial class SprintBump : SubState
 
     public override void Enter()
     {
+        Player.Animation.Play("Sprint_Bump");
+
         Vector2 velocity = StartVector;
 
         if (Player.ActionDirection == Char.LREnum.Right)

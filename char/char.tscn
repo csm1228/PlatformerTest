@@ -35,7 +35,7 @@
 [ext_resource type="Script" uid="uid://cy5qecjsd7fib" path="res://StateMachine_Move/Sprint/SprintBump.cs" id="29_7pr67"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5k12k"]
-size = Vector2(60, 140)
+size = Vector2(60, 152)
 
 [node name="Node2D" type="CharacterBody2D" node_paths=PackedStringArray("StateMachine_Move", "RayCast_Upper_Left", "RayCast_Upper_Right", "RayCast_Lower_Left", "RayCast_Lower_Right", "Animation")]
 safe_margin = 0.01
@@ -188,13 +188,14 @@ offset_bottom = -112.0
 text = "Y"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -5)
 shape = SubResource("RectangleShape2D_5k12k")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -18)
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("3_cauik")
-animation = &"Idle"
+animation = &"Dash_Fall"
 
 [node name="StateMachine_Move" type="Node" parent="." node_paths=PackedStringArray("Player", "CooldownManager", "Grounded", "Airborne", "Dash", "Wall", "Ledge", "Sprint")]
 script = ExtResource("2_ncbi3")

@@ -3,6 +3,21 @@ using System;
 
 public partial class DashFall : SubState
 {
+    public override void Enter()
+    {
+        Player.Animation.Play("Dash_Fall");
+
+        if (Player.ActionDirection == Char.LREnum.Left)
+        {
+            Player.Animation.FlipH = true;
+        }
+        else if (Player.ActionDirection == Char.LREnum.Right)
+        {
+            Player.Animation.FlipH = false;
+        }
+    }
+
+
     public override void HandleTransState(double delta)
     {
         Vector2 velocity = Player.Velocity;

@@ -10,6 +10,18 @@ public partial class DashInAir : SubState
         // 공중 대쉬는 대쉬 가능 여부만 검토
         StateMachine.CanDash = false;
         DashTimer.Start();
+
+
+        Player.Animation.Play("Dash_InAir");
+
+        if (Player.ActionDirection == Char.LREnum.Left)
+        {
+            Player.Animation.FlipH = true;
+        }
+        else if (Player.ActionDirection == Char.LREnum.Right)
+        {
+            Player.Animation.FlipH = false;
+        }
     }
 
     public override void Exit()

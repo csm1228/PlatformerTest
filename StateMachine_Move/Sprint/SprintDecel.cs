@@ -5,6 +5,20 @@ public partial class SprintDecel : SubState
 {
     [Export] private float LerfCoefficient { get; set; }
 
+
+    public override void Enter()
+    {
+        Player.Animation.Play("Sprint_Decel");
+
+        if (Player.ActionDirection == Char.LREnum.Left)
+        {
+            Player.Animation.FlipH = true;
+        }
+        else if (Player.ActionDirection == Char.LREnum.Right)
+        {
+            Player.Animation.FlipH = false;
+        }
+    }
     public override void HandleTransState(double delta)
     {
         if (!Player.IsOnFloor())

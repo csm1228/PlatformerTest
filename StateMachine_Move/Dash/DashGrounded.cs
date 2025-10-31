@@ -9,6 +9,17 @@ public partial class DashGrounded : SubState
     {
         DashTimer.Start();
         StateMachine.CooldownManager.StartCooling_Dash();
+
+        Player.Animation.Play("Dash_Grounded");
+
+        if (Player.ActionDirection == Char.LREnum.Left)
+        {
+            Player.Animation.FlipH = true;
+        }
+        else if (Player.ActionDirection == Char.LREnum.Right)
+        {
+            Player.Animation.FlipH = false;
+        }
     }
 
     public override void Exit()

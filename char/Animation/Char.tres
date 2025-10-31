@@ -1,12 +1,15 @@
-[gd_resource type="SpriteFrames" load_steps=23 format=3 uid="uid://ccdshgww5uodx"]
+[gd_resource type="SpriteFrames" load_steps=26 format=3 uid="uid://ccdshgww5uodx"]
 
 [ext_resource type="Texture2D" uid="uid://ck8vgfy702i0q" path="res://char/Animation/Idle/Idle_0000.png" id="1_2w8uj"]
 [ext_resource type="Texture2D" uid="uid://dlltytc5bmydm" path="res://char/Animation/Jump/Apex_0000.png" id="1_eyqmn"]
 [ext_resource type="Texture2D" uid="uid://enbrwqu5fuar" path="res://char/Animation/Jump/Jump_0000.png" id="2_3n00m"]
 [ext_resource type="Texture2D" uid="uid://bebf5jstcl5vj" path="res://char/Animation/Walk/Walk_0000.png" id="2_43kf7"]
 [ext_resource type="Texture2D" uid="uid://bfkfb0iudu2n4" path="res://char/Animation/Jump/Fall_0000.png" id="2_ige8i"]
+[ext_resource type="Texture2D" uid="uid://cxdfjqfdxvoso" path="res://char/Animation/Walk/Dash_0000.png" id="2_n5bwi"]
 [ext_resource type="Texture2D" uid="uid://bfwuplro68a6q" path="res://char/Animation/Walk/Walk_0001.png" id="3_3n00m"]
 [ext_resource type="Texture2D" uid="uid://c3f57neigb78i" path="res://char/Animation/Walk/Walk_0002.png" id="4_xr4kx"]
+[ext_resource type="Texture2D" uid="uid://c1ppaymw0x7p2" path="res://char/Animation/Wall/Sprint_Decel_0000.png" id="5_guq51"]
+[ext_resource type="Texture2D" uid="uid://dtq2hivf1bdfj" path="res://char/Animation/Wall/Sprint_Bump_0000.png" id="5_oif0x"]
 [ext_resource type="Texture2D" uid="uid://c56kwddeq7xwp" path="res://char/Animation/Walk/Walk_0003.png" id="5_tjlab"]
 [ext_resource type="Texture2D" uid="uid://bm2vjnqd71h2h" path="res://char/Animation/Walk/Walk_0004.png" id="6_ny4so"]
 [ext_resource type="Texture2D" uid="uid://67r5l4ry5hut" path="res://char/Animation/Walk/Walk_0005.png" id="7_addag"]
@@ -38,6 +41,30 @@ animations = [{
 "texture": ExtResource("2_ige8i")
 }],
 "loop": false,
+"name": &"Dash_Fall",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_n5bwi")
+}],
+"loop": false,
+"name": &"Dash_Grounded",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_n5bwi")
+}],
+"loop": false,
+"name": &"Dash_InAir",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_ige8i")
+}],
+"loop": false,
 "name": &"Fall",
 "speed": 5.0
 }, {
@@ -55,6 +82,67 @@ animations = [{
 }],
 "loop": false,
 "name": &"Jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_oif0x")
+}],
+"loop": false,
+"name": &"Sprint_Bump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_guq51")
+}],
+"loop": false,
+"name": &"Sprint_Decel",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_ige8i")
+}],
+"loop": false,
+"name": &"Sprint_Fall",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_43kf7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_3n00m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_xr4kx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_tjlab")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_ny4so")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_addag")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_6na0f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_gg5r1")
+}],
+"loop": true,
+"name": &"Sprint_Grounded",
+"speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_3n00m")
+}],
+"loop": false,
+"name": &"Sprint_Jump",
 "speed": 5.0
 }, {
 "frames": [{
@@ -84,7 +172,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Walk",
-"speed": 8.0
+"speed": 7.0
 }, {
 "frames": [{
 "duration": 1.0,

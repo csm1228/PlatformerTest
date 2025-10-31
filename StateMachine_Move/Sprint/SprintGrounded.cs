@@ -5,15 +5,19 @@ public partial class SprintGrounded : SubState
 {
     public override void Enter()
     {
+        Player.Animation.Play("Sprint_Grounded");
+
         Vector2 velocity = Player.Velocity;
 
         if (Player.ActionDirection == Char.LREnum.Left)
         {
             velocity.X = -Player.SprintSpeed;
+            Player.Animation.FlipH = true;
         }
         else if (Player.ActionDirection == Char.LREnum.Right)
         {
             velocity.X = Player.SprintSpeed;
+            Player.Animation.FlipH = false;
         }
 
         Player.Velocity = velocity;

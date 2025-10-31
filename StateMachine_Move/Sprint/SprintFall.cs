@@ -6,6 +6,24 @@ public partial class SprintFall : SubState
     [Export] private float Decel { get; set; }
     [Export] private float Decel_OppositeInput { get; set; }
 
+    public override void Enter()
+    {
+        Player.ConsumeJumpBuffer();
+
+        Player.Animation.Play("Sprint_Fall");
+
+        Vector2 velocity = Player.Velocity;
+
+        if (Player.ActionDirection == Char.LREnum.Left)
+        {
+            Player.Animation.FlipH = true;
+        }
+        else if (Player.ActionDirection == Char.LREnum.Right)
+        {
+            Player.Animation.FlipH = false;
+        }
+    }
+
     public override void HandleTransState(double delta)
     {
         if (Player.IsOnFloor())
