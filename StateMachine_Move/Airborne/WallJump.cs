@@ -16,6 +16,17 @@ public partial class WallJump : SubState
         Player.Velocity = velocity;
 
         MaxWallJumpTime.Start();
+
+        Player.Animation.Play("Jump");
+
+        if (Player.LastHoldingWallDirection == Char.LREnum.Left)
+        {
+            Player.Animation.FlipH = false;
+        }
+        else if (Player.LastHoldingWallDirection == Char.LREnum.Right)
+        {
+            Player.Animation.FlipH = true;
+        }
     }
 
     public override void Exit()

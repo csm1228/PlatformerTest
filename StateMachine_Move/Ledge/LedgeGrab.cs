@@ -5,6 +5,8 @@ public partial class LedgeGrab : SubState
 {
     public override void Enter()
     {
+        Player.Animation.Play("Wall_Hold");
+
         Vector2 velocity = Player.Velocity;
 
         velocity.Y = 0;
@@ -12,10 +14,12 @@ public partial class LedgeGrab : SubState
         if (Player.LastHoldingWallDirection == Char.LREnum.Left)
         {
             velocity.X = -1;
+            Player.Animation.FlipH = true;
         }
         else if (Player.LastHoldingWallDirection == Char.LREnum.Right)
         {
             velocity.X = 1;
+            Player.Animation.FlipH = false;
         }
 
         Player.Velocity = velocity;

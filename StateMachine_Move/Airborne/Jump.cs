@@ -19,6 +19,8 @@ public partial class Jump : SubState
 
         // 점프 타이머 시작
         MaxJumpTime.Start();
+
+        Player.Animation.Play("Jump");
     }
 
     public override void Exit()
@@ -48,10 +50,12 @@ public partial class Jump : SubState
         if (InputManager.Instance.Horizon < 0)
         {
             velocity.X = -Player.WalkSpeed;
+            Player.Animation.FlipH = true;
         }
         else if (InputManager.Instance.Horizon > 0)
         {
             velocity.X = Player.WalkSpeed;
+            Player.Animation.FlipH = false;
         }
         else
         {

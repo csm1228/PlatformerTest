@@ -11,6 +11,20 @@ public partial class WallSlipper : SubState
         velocity.Y = 0;
 
         Player.Velocity = velocity;
+
+        Player.Animation.Play("Wall_Slipper");
+
+
+        if (Player.LastHoldingWallDirection == Char.LREnum.Left)
+        {
+            velocity.X = -1;
+            Player.Animation.FlipH = true;
+        }
+        else if (Player.LastHoldingWallDirection == Char.LREnum.Right)
+        {
+            velocity.X = 1;
+            Player.Animation.FlipH = false;
+        }
     }
 
     public override void HandleTransState(double delta)
@@ -46,13 +60,16 @@ public partial class WallSlipper : SubState
             velocity.Y = Player.WallSlipperSpeed;
         }
 
+
         if (Player.LastHoldingWallDirection == Char.LREnum.Left)
         {
             velocity.X = -1;
+            Player.Animation.FlipH = true;
         }
         else if (Player.LastHoldingWallDirection == Char.LREnum.Right)
         {
             velocity.X = 1;
+            Player.Animation.FlipH = false;
         }
 
         Player.Velocity = velocity;

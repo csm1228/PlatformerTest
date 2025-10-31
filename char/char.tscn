@@ -1,9 +1,10 @@
-[gd_scene load_steps=36 format=3 uid="uid://b5eprdmojefkx"]
+[gd_scene load_steps=35 format=3 uid="uid://b5eprdmojefkx"]
 
 [ext_resource type="Script" uid="uid://24pro1g2na86" path="res://char/Char.cs" id="1_3bvsw"]
 [ext_resource type="Script" uid="uid://0ut6ebjogx8c" path="res://char/DebugLabels.cs" id="2_l1hin"]
 [ext_resource type="Script" uid="uid://wm3c41hxr3ef" path="res://StateMachine_Move/StateMachine_Move.cs" id="2_ncbi3"]
 [ext_resource type="Script" uid="uid://br43rnay157oo" path="res://StateMachine_Move/Grounded/Idle.cs" id="3_4phwq"]
+[ext_resource type="SpriteFrames" uid="uid://ccdshgww5uodx" path="res://char/Animation/Char.tres" id="3_cauik"]
 [ext_resource type="Script" uid="uid://bsd2j2bixd60c" path="res://StateMachine_Move/Grounded/Ground.cs" id="3_g6e37"]
 [ext_resource type="Script" uid="uid://da2s1mdqj0dn8" path="res://StateMachine_Move/Grounded/Walk.cs" id="4_i3kce"]
 [ext_resource type="Script" uid="uid://djx663qremvrp" path="res://CooldownManager/CoolDownManager.cs" id="4_ncbi3"]
@@ -34,17 +35,9 @@
 [ext_resource type="Script" uid="uid://cy5qecjsd7fib" path="res://StateMachine_Move/Sprint/SprintBump.cs" id="29_7pr67"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5k12k"]
-size = Vector2(80, 140)
+size = Vector2(60, 140)
 
-[sub_resource type="Gradient" id="Gradient_7pr67"]
-offsets = PackedFloat32Array(1)
-colors = PackedColorArray(1, 0.83137256, 0.76862746, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_cauik"]
-gradient = SubResource("Gradient_7pr67")
-width = 80
-
-[node name="Node2D" type="CharacterBody2D" node_paths=PackedStringArray("StateMachine_Move", "RayCast_Upper_Left", "RayCast_Upper_Right", "RayCast_Lower_Left", "RayCast_Lower_Right")]
+[node name="Node2D" type="CharacterBody2D" node_paths=PackedStringArray("StateMachine_Move", "RayCast_Upper_Left", "RayCast_Upper_Right", "RayCast_Lower_Left", "RayCast_Lower_Right", "Animation")]
 safe_margin = 0.01
 script = ExtResource("1_3bvsw")
 WalkSpeed = 800.0
@@ -64,6 +57,7 @@ RayCast_Upper_Left = NodePath("RayCast_Upper_Left")
 RayCast_Upper_Right = NodePath("RayCast_Upper_Right")
 RayCast_Lower_Left = NodePath("RayCast_Lower_Left")
 RayCast_Lower_Right = NodePath("RayCast_Lower_Right")
+Animation = NodePath("AnimatedSprite2D")
 
 [node name="DebugLabels" type="Control" parent="." node_paths=PackedStringArray("Player", "StateMachine_Move", "DebugLabel_LastInputDir", "DebugLabel_LastWallDir", "DebugLabel_State", "DebugLabel_IsOnFloor", "DebugLabel_IsOnWall", "DebugLabel_UpperRayCast_Right", "DebugLabel_UpperRayCast_Left", "DebugLabel_LowerRayCast_Right", "DebugLabel_LowerRayCast_Left", "DebugLabel_Velocity_X", "DebugLabel_Velocity_Y")]
 z_index = 2
@@ -197,6 +191,10 @@ text = "Y"
 shape = SubResource("RectangleShape2D_5k12k")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -18)
+scale = Vector2(0.5, 0.5)
+sprite_frames = ExtResource("3_cauik")
+animation = &"Idle"
 
 [node name="StateMachine_Move" type="Node" parent="." node_paths=PackedStringArray("Player", "CooldownManager", "Grounded", "Airborne", "Dash", "Wall", "Ledge", "Sprint")]
 script = ExtResource("2_ncbi3")
@@ -459,26 +457,19 @@ script = ExtResource("7_1nd8o")
 
 [node name="RayCast_Upper_Right" type="RayCast2D" parent="."]
 position = Vector2(0, -50)
-target_position = Vector2(42, 0)
+target_position = Vector2(31, 0)
 
 [node name="RayCast_Upper_Left" type="RayCast2D" parent="."]
 position = Vector2(0, -50)
-target_position = Vector2(-42, 0)
+target_position = Vector2(-31, 0)
 
 [node name="RayCast_Lower_Right" type="RayCast2D" parent="."]
 position = Vector2(0, -20)
-target_position = Vector2(42, 0)
+target_position = Vector2(31, 0)
 
 [node name="RayCast_Lower_Left" type="RayCast2D" parent="."]
 position = Vector2(0, -20)
-target_position = Vector2(-42, 0)
-
-[node name="TextureRect" type="TextureRect" parent="."]
-offset_left = -40.0
-offset_top = -70.0
-offset_right = 40.0
-offset_bottom = 70.0
-texture = SubResource("GradientTexture1D_cauik")
+target_position = Vector2(-31, 0)
 
 [connection signal="timeout" from="StateMachine_Move/Airborne/Jump/MaxJumpTime" to="StateMachine_Move/Airborne/Jump" method="_on_max_jump_time_timeout"]
 [connection signal="timeout" from="StateMachine_Move/Airborne/Wall_Jump/MaxWallJumpTime" to="StateMachine_Move/Airborne/Wall_Jump" method="_on_max_wall_jump_time_timeout"]

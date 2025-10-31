@@ -6,6 +6,17 @@ public partial class LedgeClimb : SubState
     public override void Enter()
     {
         StateMachine.CheckWall();
+
+        Player.Animation.Play("Wall_Climb");
+
+        if (Player.LastHoldingWallDirection == Char.LREnum.Left)
+        {
+            Player.Animation.FlipH = true;
+        }
+        else if (Player.LastHoldingWallDirection == Char.LREnum.Right)
+        {
+            Player.Animation.FlipH = false;
+        }
     }
 
     public override void HandleTransState(double delta)

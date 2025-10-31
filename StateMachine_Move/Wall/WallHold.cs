@@ -14,13 +14,17 @@ public partial class WallHold : SubState
         if (Player.LastHoldingWallDirection == Char.LREnum.Left)
         {
             velocity.X = -1;
+            Player.Animation.FlipH = true;
         }
         else if (Player.LastHoldingWallDirection == Char.LREnum.Right)
         {
             velocity.X = 1;
+            Player.Animation.FlipH = false;
         }
 
         Player.Velocity = velocity;
+
+        Player.Animation.Play("Wall_Hold");
     }
 
     public override void Exit()
@@ -52,10 +56,12 @@ public partial class WallHold : SubState
         if (Player.LastHoldingWallDirection == Char.LREnum.Left)
         {
             velocity.X = -1;
+            Player.Animation.FlipH = true;
         }
         else if (Player.LastHoldingWallDirection == Char.LREnum.Right)
         {
             velocity.X = 1;
+            Player.Animation.FlipH = false;
         }
 
 

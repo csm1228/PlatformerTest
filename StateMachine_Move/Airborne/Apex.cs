@@ -3,6 +3,23 @@ using System;
 
 public partial class Apex : SubState
 {
+    public override void Enter()
+    {
+        Player.Animation.Play("Apex");
+
+        Vector2 velocity = Player.Velocity;
+
+        // 조작 방향대로 수평 이동
+        if (InputManager.Instance.Horizon < 0)
+        {
+            Player.Animation.FlipH = true;
+        }
+        else if (InputManager.Instance.Horizon > 0)
+        {
+            Player.Animation.FlipH = false;
+        }
+    }
+
     public override void HandleTransState(double delta)
     {
         if (Player.IsOnCeiling())
@@ -21,13 +38,16 @@ public partial class Apex : SubState
     {
         Vector2 velocity = Player.Velocity;
 
-        if (Input.IsActionPressed(GamepadInput.Left))
+        // 조작 방향대로 수평 이동
+        if (InputManager.Instance.Horizon < 0)
         {
             velocity.X = -Player.WalkSpeed;
+            Player.Animation.FlipH = true;
         }
-        else if (Input.IsActionPressed(GamepadInput.Right))
+        else if (InputManager.Instance.Horizon > 0)
         {
             velocity.X = Player.WalkSpeed;
+            Player.Animation.FlipH = false;
         }
         else
         {

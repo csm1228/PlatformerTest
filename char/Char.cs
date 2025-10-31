@@ -49,6 +49,9 @@ public partial class Char : CharacterBody2D
     [Export] public RayCast2D RayCast_Lower_Left { get; set; }
     [Export] public RayCast2D RayCast_Lower_Right { get; set; }
 
+    [Export] public AnimatedSprite2D Animation { get; set; }
+
+
     public override void _Ready()
     {
         LastInputDirection = LREnum.Left;

@@ -3,6 +3,28 @@ using System;
 
 public partial class WallClimb : SubState
 {
+    public override void Enter()
+    {
+        Player.Animation.Play("Wall_Climb");
+
+        Vector2 velocity = Player.Velocity;
+
+        velocity.Y = Player.ClimbSpeed;
+
+        if (Player.LastHoldingWallDirection == Char.LREnum.Left)
+        {
+            velocity.X = -1;
+            Player.Animation.FlipH = true;
+        }
+        else if (Player.LastHoldingWallDirection == Char.LREnum.Right)
+        {
+            velocity.X = 1;
+            Player.Animation.FlipH = false;
+        }
+
+        Player.Velocity = velocity;
+    }
+
     public override void HandleTransState(double delta)
     {
         if (InputManager.Instance.Vertical >= 0)
@@ -29,10 +51,12 @@ public partial class WallClimb : SubState
         if (Player.LastHoldingWallDirection == Char.LREnum.Left)
         {
             velocity.X = -1;
+            Player.Animation.FlipH = true;
         }
         else if (Player.LastHoldingWallDirection == Char.LREnum.Right)
         {
             velocity.X = 1;
+            Player.Animation.FlipH = false;
         }
 
         Player.Velocity = velocity;

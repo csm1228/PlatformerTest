@@ -3,6 +3,11 @@ using System;
 
 public partial class Idle : SubState
 {
+    public override void Enter()
+    {
+        Player.Animation.Play("Idle");
+    }
+
     public override void HandleTransState(double delta)
     {
         if (InputManager.Instance.Horizon != 0)
@@ -19,5 +24,7 @@ public partial class Idle : SubState
         velocity.X = 0;
 
         Player.Velocity = velocity;
+
+        Player.Animation.FlipH = (Player.LastInputDirection == Char.LREnum.Left);
     }
 }
