@@ -7,19 +7,32 @@ public partial class DashGrounded : SubState
 
     public override void Enter()
     {
+        StateMachine.AttachedToPlatform();
+
         DashTimer.Start();
         StateMachine.CooldownManager.StartCooling_Dash();
 
         Player.Animation.Play("Dash_Grounded");
 
-        if (Player.ActionDirection == Char.LREnum.Left)
+        if (InputManager.Instance.Horizon == 0)
         {
-            Player.Animation.FlipH = true;
+            // 좌우 입력이 없다면, 바라보고 있는 방향으로 시전됨
+            StateMachine.ActionDirection = StateMachine.PlayerFacingDirection;
         }
-        else if (Player.ActionDirection == Char.LREnum.Right)
+        else
         {
-            Player.Animation.FlipH = false;
+            if (InputManager.Instance.Horizon > 0)
+            {
+                StateMachine.PlayerFacingDirection = Char.LREnum.Right;
+                StateMachine.ActionDirection = Char.LREnum.Right;
+            }
+            else if (InputManager.Instance.Horizon < 0)
+            {
+                StateMachine.PlayerFacingDirection = Char.LREnum.Left;
+                StateMachine.ActionDirection = Char.LREnum.Left;
+            }
         }
+
     }
 
     public override void Exit()
@@ -33,8 +46,17 @@ public partial class DashGrounded : SubState
         {
             if (Input.IsActionPressed(GamepadInput.RT))
             {
-                StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Grounded);
-                return;
+                if (InputManager.Instance.Horizon > 0 && StateMachine.ActionDirection == Char.LREnum.Left || InputManager.Instance.Horizon < 0 && StateMachine.ActionDirection == Char.LREnum.Right)
+                {
+                    StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Decel);
+                    return;
+                }
+                else
+                {
+                    StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Grounded);
+                    return;
+                }
+
             }
             else
             {
@@ -42,7 +64,27 @@ public partial class DashGrounded : SubState
                 return;
             }
         }
-        else if (!Player.IsOnFloor() && !Player.IsOnWall())
+        else if (StateMachine.IsOnLedge())
+        {
+            StateMachine.CheckLedgeDirection();
+
+            if (StateMachine.HoldingLedgeDirection == StateMachine.ActionDirection)
+            {
+                StateMachine.TransState(SuperState_Move.Ledge, State_Move.Ledge_Grab);
+                return;
+            }
+        }
+        else if (StateMachine.IsOnWall())
+        {
+            StateMachine.CheckWallDirection();
+
+            if (StateMachine.HoldingWallDirection == StateMachine.ActionDirection)
+            {
+                StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
+                return;
+            }
+        }
+        else
         {
             StateMachine.TransState(SuperState_Move.Dash, State_Move.Dash_Fall);
             return;
@@ -56,13 +98,14 @@ public partial class DashGrounded : SubState
 
     public override void HandlePhysics(double delta)
     {
+        // ActionDirection을 근거로 이동 방향 결정
         Vector2 velocity = Player.Velocity;
 
-        if (Player.ActionDirection == Char.LREnum.Left)
+        if (StateMachine.ActionDirection == Char.LREnum.Left)
         {
             velocity.X = -Player.DashSpeed;
         }
-        else if (Player.ActionDirection == Char.LREnum.Right)
+        else if (StateMachine.ActionDirection == Char.LREnum.Right)
         {
             velocity.X = Player.DashSpeed;
         }
@@ -74,6 +117,7 @@ public partial class DashGrounded : SubState
 
     public override void HandlePressedEvent(StringName action)
     {
+        // 지상 대쉬 중 점프 시, 달리기 점프로 전환 -> 짧은 플랫폼에서 발생하는 문제 해결
         if (action == GamepadInput.Face_Down)
         {
             StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Jump);

@@ -9,6 +9,7 @@ public partial class Ground : SuperState
     public override void Enter()
     {
         InputManager.Instance.ActionPressed += HandlePressedEvent;
+        StateMachine.AttachedToPlatform();
     }
 
     public override void Exit()
@@ -45,8 +46,13 @@ public partial class Ground : SuperState
             // 지상 대쉬는 쿨타임만 검사
             if (StateMachine.CooldownManager.IsDashReady)
             {
-                StateMachine.FixActionDirection();
                 StateMachine.TransState(SuperState_Move.Dash, State_Move.Dash_Grounded);
+                return;
+            }
+            // 아직 대쉬가 쿨타임이라면, 스프린트로 전환
+            else
+            {
+                StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Grounded);
                 return;
             }
         }

@@ -5,15 +5,17 @@ public partial class LedgeClimb : SubState
 {
     public override void Enter()
     {
-        StateMachine.CheckWall();
+        StateMachine.CheckWallDirection();
 
         Player.Animation.Play("Wall_Climb");
 
-        if (Player.LastHoldingWallDirection == Char.LREnum.Left)
+        StateMachine.CheckLedgeDirection();
+
+        if (StateMachine.HoldingLedgeDirection == Char.LREnum.Left)
         {
             Player.Animation.FlipH = true;
         }
-        else if (Player.LastHoldingWallDirection == Char.LREnum.Right)
+        else if (StateMachine.HoldingLedgeDirection == Char.LREnum.Right)
         {
             Player.Animation.FlipH = false;
         }
@@ -31,7 +33,7 @@ public partial class LedgeClimb : SubState
         }
         else if (Player.JumpBuffer > 0)
         {
-            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Wall_Jump);
+            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Jump);
             return;
         }
     }
@@ -49,11 +51,11 @@ public partial class LedgeClimb : SubState
             velocity.Y = -Player.ClimbSpeed * 2;
         }
 
-        if (Player.LastHoldingWallDirection == Char.LREnum.Left)
+        if (StateMachine.HoldingLedgeDirection == Char.LREnum.Left)
         {
             velocity.X = -Player.WalkSpeed * 2;
         }
-        else if (Player.LastHoldingWallDirection == Char.LREnum.Right)
+        else if (StateMachine.HoldingLedgeDirection == Char.LREnum.Right)
         {
             velocity.X = Player.WalkSpeed * 2;
         }

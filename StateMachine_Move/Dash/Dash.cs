@@ -19,19 +19,6 @@ public partial class Dash : SuperState
 
     public override void HandleTransState(double delta)
     {
-        // 공중에서 벽에 박으면 벽에 붙음
-        if (Player.IsOnWallOnly())
-        {
-            StateMachine.TransWall();
-            return;
-        }
-        // 구석에 박히면 Walk 아니면 Idle. 지상 대쉬가 벽에 박으면 멈추는 효과도 있음
-        else if (Player.IsOnWall() && Player.IsOnFloor())
-        {
-            StateMachine.TransToWalkOrIdle();
-            return;
-        }
-
         CurrentSubState.HandleTransState(delta);
     }
 

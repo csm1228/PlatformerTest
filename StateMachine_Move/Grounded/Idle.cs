@@ -24,7 +24,5 @@ public partial class Idle : SubState
         velocity.X = 0;
 
         Player.Velocity = velocity;
-
-        Player.Animation.FlipH = (Player.LastInputDirection == Char.LREnum.Left);
     }
 }

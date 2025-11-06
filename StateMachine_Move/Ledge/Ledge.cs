@@ -6,6 +6,7 @@ public partial class Ledge : SuperState
     public override void Enter()
     {
         InputManager.Instance.ActionPressed += HandlePressedEvent;
+        StateMachine.AttachedToPlatform();
     }
 
     public override void Exit()

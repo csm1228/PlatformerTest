@@ -21,56 +21,49 @@ public partial class Char : CharacterBody2D
 
     [Export] public float WallSlipperSpeed { get; private set; }
 
+    [Export] public float WallJumpSpeed { get; private set; }
+    [Export] public float WallJumpDelta { get; private set; }
+
+    [Export] public float WallApexDelta { get; private set; }
+
+    [Export] public float SprintJumpDelta { get; private set; }
+    [Export] public float SprintApexDelta { get; private set; }
+
+    [Export] public float SprintDecelDelta { get; private set; }
 
     [Export] public double InputBuffer { get; private set; }
+
+    [Export] public float HorizonInertia { get; private set; }
     public double JumpBuffer { get; private set; } = 0.0;
 
+    [Export] public float DashInAirDelta { get; private set; }
+    [Export] public float DashInAirRise { get; private set; }
 
     public enum LREnum
     {
         Left, Right
     }
 
-    // 마지막 입력 방향
-    public LREnum LastInputDirection;
-
-    public LREnum LastHoldingWallDirection;
-
-    public LREnum ActionDirection;
-
-
 
     [Export] public StateMachine_Move StateMachine_Move { get; set; }
 
 
-    [Export] public RayCast2D RayCast_Upper_Left { get; set; }
-    [Export] public RayCast2D RayCast_Upper_Right { get; set; }
+    [Export] public RayCast2D RayCast_Ledge_Left { get; set; }
+    [Export] public RayCast2D RayCast_Ledge_Right { get; set; }
 
-    [Export] public RayCast2D RayCast_Lower_Left { get; set; }
-    [Export] public RayCast2D RayCast_Lower_Right { get; set; }
+    [Export] public RayCast2D RayCast_Wall_Left { get; set; }
+    [Export] public RayCast2D RayCast_Wall_Right { get; set; }
 
     [Export] public AnimatedSprite2D Animation { get; set; }
 
 
     public override void _Ready()
     {
-        LastInputDirection = LREnum.Left;
-        LastHoldingWallDirection = LREnum.Left;
-
         InputManager.Instance.ActionPressed += ApplyJumpBuffer;
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        if (Input.IsActionPressed(GamepadInput.Left))
-        {
-            LastInputDirection = LREnum.Left;
-        }
-        else if (Input.IsActionPressed(GamepadInput.Right))
-        {
-            LastInputDirection = LREnum.Right;
-        }
-
         StateMachine_Move.HandlePhysics(delta);
 
         MoveAndSlide();
@@ -98,5 +91,4 @@ public partial class Char : CharacterBody2D
     {
         JumpBuffer = 0;
     }
-    
 }

@@ -10,21 +10,20 @@ public partial class WallSlipper : SubState
 
         velocity.Y = 0;
 
+        if (StateMachine.HoldingWallDirection == Char.LREnum.Left)
+        {
+            velocity.X = -1;
+            StateMachine.PlayerFacingDirection = Char.LREnum.Left;
+        }
+        else if (StateMachine.HoldingWallDirection == Char.LREnum.Right)
+        {
+            velocity.X = 1;
+            StateMachine.PlayerFacingDirection = Char.LREnum.Right;
+        }
+
         Player.Velocity = velocity;
 
         Player.Animation.Play("Wall_Slipper");
-
-
-        if (Player.LastHoldingWallDirection == Char.LREnum.Left)
-        {
-            velocity.X = -1;
-            Player.Animation.FlipH = true;
-        }
-        else if (Player.LastHoldingWallDirection == Char.LREnum.Right)
-        {
-            velocity.X = 1;
-            Player.Animation.FlipH = false;
-        }
     }
 
     public override void HandleTransState(double delta)
@@ -34,12 +33,12 @@ public partial class WallSlipper : SubState
             StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Climb);
             return;
         }
-        else if (InputManager.Instance.Horizon < 0 && Player.LastHoldingWallDirection == Char.LREnum.Left)
+        else if (InputManager.Instance.Horizon < 0 && StateMachine.HoldingWallDirection == Char.LREnum.Left)
         {
             StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
             return;
         }
-        else if (InputManager.Instance.Horizon > 0 && Player.LastHoldingWallDirection == Char.LREnum.Right)
+        else if (InputManager.Instance.Horizon > 0 && StateMachine.HoldingWallDirection == Char.LREnum.Right)
         {
             StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
             return;
@@ -53,23 +52,20 @@ public partial class WallSlipper : SubState
 
         if (velocity.Y < Player.WallSlipperSpeed)
         {
-            velocity.Y += (float)(Player.Gravity * delta);
+            velocity.Y += (float)(Player.Gravity * delta * 0.15);
         }
         else
         {
             velocity.Y = Player.WallSlipperSpeed;
         }
 
-
-        if (Player.LastHoldingWallDirection == Char.LREnum.Left)
+        if (StateMachine.HoldingWallDirection == Char.LREnum.Left)
         {
             velocity.X = -1;
-            Player.Animation.FlipH = true;
         }
-        else if (Player.LastHoldingWallDirection == Char.LREnum.Right)
+        else if (StateMachine.HoldingWallDirection == Char.LREnum.Right)
         {
             velocity.X = 1;
-            Player.Animation.FlipH = false;
         }
 
         Player.Velocity = velocity;

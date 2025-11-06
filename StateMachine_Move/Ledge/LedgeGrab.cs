@@ -8,33 +8,32 @@ public partial class LedgeGrab : SubState
         Player.Animation.Play("Wall_Hold");
 
         Vector2 velocity = Player.Velocity;
+        velocity = Vector2.Zero;
+        Player.Velocity = velocity;
 
-        velocity.Y = 0;
+        StateMachine.CheckLedgeDirection();
 
-        if (Player.LastHoldingWallDirection == Char.LREnum.Left)
+        if (StateMachine.HoldingLedgeDirection == Char.LREnum.Left)
         {
-            velocity.X = -1;
             Player.Animation.FlipH = true;
         }
-        else if (Player.LastHoldingWallDirection == Char.LREnum.Right)
+        else if (StateMachine.HoldingLedgeDirection == Char.LREnum.Right)
         {
-            velocity.X = 1;
             Player.Animation.FlipH = false;
         }
 
-        Player.Velocity = velocity;
     }
 
     public override void HandleTransState(double delta)
     {
-        if (!Player.IsOnWall())
+        if (!StateMachine.IsOnLedge())
         {
             StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
             return;
         }
         else if (Player.JumpBuffer > 0)
         {
-            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Wall_Jump);
+            StateMachine.TransState(SuperState_Move.Wall_Airborne, State_Move.Wall_Jump);
             return;
         }
         else if (InputManager.Instance.Vertical < 0)
@@ -42,12 +41,12 @@ public partial class LedgeGrab : SubState
             StateMachine.TransState(SuperState_Move.Ledge, State_Move.Ledge_Climb);
             return;
         }
-        else if (InputManager.Instance.Horizon < 0 && Player.LastHoldingWallDirection == Char.LREnum.Right)
+        else if (InputManager.Instance.Horizon < 0 && StateMachine.HoldingLedgeDirection == Char.LREnum.Right)
         {
             StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
             return;
         }
-        else if (InputManager.Instance.Horizon > 0 && Player.LastHoldingWallDirection == Char.LREnum.Left)
+        else if (InputManager.Instance.Horizon > 0 && StateMachine.HoldingLedgeDirection == Char.LREnum.Left)
         {
             StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
             return;
@@ -58,7 +57,7 @@ public partial class LedgeGrab : SubState
     {
         if (action == GamepadInput.Face_Down)
         {
-            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Wall_Jump);
+            StateMachine.TransState(SuperState_Move.Wall_Airborne, State_Move.Wall_Jump);
             return;
         }
     }

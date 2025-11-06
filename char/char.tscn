@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://b5eprdmojefkx"]
+[gd_scene load_steps=37 format=3 uid="uid://b5eprdmojefkx"]
 
 [ext_resource type="Script" uid="uid://24pro1g2na86" path="res://char/Char.cs" id="1_3bvsw"]
 [ext_resource type="Script" uid="uid://0ut6ebjogx8c" path="res://char/DebugLabels.cs" id="2_l1hin"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://br43rnay157oo" path="res://StateMachine_Move/Grounded/Idle.cs" id="3_4phwq"]
 [ext_resource type="SpriteFrames" uid="uid://ccdshgww5uodx" path="res://char/Animation/Char.tres" id="3_cauik"]
 [ext_resource type="Script" uid="uid://bsd2j2bixd60c" path="res://StateMachine_Move/Grounded/Ground.cs" id="3_g6e37"]
+[ext_resource type="LabelSettings" uid="uid://b01oye3mqeqsv" path="res://resources/Descriptions.tres" id="3_tkjkc"]
 [ext_resource type="Script" uid="uid://da2s1mdqj0dn8" path="res://StateMachine_Move/Grounded/Walk.cs" id="4_i3kce"]
 [ext_resource type="Script" uid="uid://djx663qremvrp" path="res://CooldownManager/CoolDownManager.cs" id="4_ncbi3"]
 [ext_resource type="Script" uid="uid://bf5ktnntxse7a" path="res://StateMachine_Move/Airborne/Jump.cs" id="5_1ue4l"]
@@ -17,7 +18,9 @@
 [ext_resource type="Script" uid="uid://cybim3b8bc620" path="res://StateMachine_Move/Airborne/WallJump.cs" id="10_3rynr"]
 [ext_resource type="Script" uid="uid://c0cshypdeonh7" path="res://StateMachine_Move/Dash/Dash.cs" id="10_8u6wk"]
 [ext_resource type="Script" uid="uid://d2jcneyajhyxu" path="res://StateMachine_Move/Dash/DashGrounded.cs" id="11_63q8p"]
+[ext_resource type="Script" uid="uid://otrrc7per6c1" path="res://StateMachine_Move/Wall_Airborne/WallAirborne.cs" id="12_n2rpd"]
 [ext_resource type="Script" uid="uid://q8gjf0ar77c" path="res://StateMachine_Move/Dash/DashFall.cs" id="12_pb8rr"]
+[ext_resource type="Script" uid="uid://ta4kee10tmks" path="res://StateMachine_Move/Wall_Airborne/WallApex.cs" id="13_uv7oh"]
 [ext_resource type="Script" uid="uid://bkmmqvxixyugx" path="res://StateMachine_Move/Dash/DashInAir.cs" id="13_vyrsc"]
 [ext_resource type="Script" uid="uid://d01fadg3vgl5e" path="res://StateMachine_Move/Wall/Wall.cs" id="14_c410v"]
 [ext_resource type="Script" uid="uid://cd0pve7ec76cu" path="res://StateMachine_Move/Wall/WallHold.cs" id="15_qm6in"]
@@ -31,32 +34,41 @@
 [ext_resource type="Script" uid="uid://b3a36ru67pbbi" path="res://StateMachine_Move/Sprint/SprintJump.cs" id="25_bxbmk"]
 [ext_resource type="Script" uid="uid://bj3cesglwnrii" path="res://StateMachine_Move/Sprint/SprintApex.cs" id="26_hk2pb"]
 [ext_resource type="Script" uid="uid://cyt2ad683mvmo" path="res://StateMachine_Move/Sprint/SprintDecel.cs" id="27_kqn8y"]
-[ext_resource type="Script" uid="uid://b0tny6xgo518x" path="res://StateMachine_Move/Sprint/SprintFall.cs" id="28_28voa"]
 [ext_resource type="Script" uid="uid://cy5qecjsd7fib" path="res://StateMachine_Move/Sprint/SprintBump.cs" id="29_7pr67"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5k12k"]
-size = Vector2(60, 152)
+size = Vector2(120, 340)
 
-[node name="Node2D" type="CharacterBody2D" node_paths=PackedStringArray("StateMachine_Move", "RayCast_Upper_Left", "RayCast_Upper_Right", "RayCast_Lower_Left", "RayCast_Lower_Right", "Animation")]
+[node name="Node2D" type="CharacterBody2D" node_paths=PackedStringArray("StateMachine_Move", "RayCast_Ledge_Left", "RayCast_Ledge_Right", "RayCast_Wall_Left", "RayCast_Wall_Right", "Animation")]
+collision_mask = 240
 safe_margin = 0.01
 script = ExtResource("1_3bvsw")
-WalkSpeed = 800.0
-DashSpeed = 3600.0
-SprintSpeed = 1600.0
-Gravity = 2000.0
-JumpSpeed = -1500.0
-MaxFallSpeed = 2000.0
-ClimbSpeed = -600.0
-GravityCoefficient_Jump = 1.0
-GravityCoefficient_Apex = 3.0
-GravityCoefficient_Fall = 3.0
-WallSlipperSpeed = 800.0
+WalkSpeed = 1100.0
+DashSpeed = 3300.0
+SprintSpeed = 2400.0
+Gravity = 10000.0
+JumpSpeed = -2600.0
+MaxFallSpeed = 5000.0
+ClimbSpeed = -1000.0
+GravityCoefficient_Jump = 0.5
+GravityCoefficient_Apex = 1.0
+GravityCoefficient_Fall = 1.0
+WallSlipperSpeed = 1500.0
+WallJumpSpeed = 3000.0
+WallJumpDelta = 3000.0
+WallApexDelta = 3000.0
+SprintJumpDelta = 1500.0
+SprintApexDelta = 2000.0
+SprintDecelDelta = 12000.0
 InputBuffer = 0.13
+HorizonInertia = 8000.0
+DashInAirDelta = 1200.0
+DashInAirRise = -1200.0
 StateMachine_Move = NodePath("StateMachine_Move")
-RayCast_Upper_Left = NodePath("RayCast_Upper_Left")
-RayCast_Upper_Right = NodePath("RayCast_Upper_Right")
-RayCast_Lower_Left = NodePath("RayCast_Lower_Left")
-RayCast_Lower_Right = NodePath("RayCast_Lower_Right")
+RayCast_Ledge_Left = NodePath("RayCast_Ledge/RayCast_Ledge_Left")
+RayCast_Ledge_Right = NodePath("RayCast_Ledge/RayCast_Ledge_Right")
+RayCast_Wall_Left = NodePath("RayCast_Wall/RayCast_Wall_Left")
+RayCast_Wall_Right = NodePath("RayCast_Wall/RayCast_Wall_Right")
 Animation = NodePath("AnimatedSprite2D")
 
 [node name="DebugLabels" type="Control" parent="." node_paths=PackedStringArray("Player", "StateMachine_Move", "DebugLabel_LastInputDir", "DebugLabel_LastWallDir", "DebugLabel_State", "DebugLabel_IsOnFloor", "DebugLabel_IsOnWall", "DebugLabel_UpperRayCast_Right", "DebugLabel_UpperRayCast_Left", "DebugLabel_LowerRayCast_Right", "DebugLabel_LowerRayCast_Left", "DebugLabel_Velocity_X", "DebugLabel_Velocity_Y")]
@@ -89,6 +101,7 @@ offset_top = -129.0
 offset_right = -8.0
 offset_bottom = -106.0
 text = "State"
+label_settings = ExtResource("3_tkjkc")
 
 [node name="DebugLabel_IsOnFloor" type="Label" parent="DebugLabels"]
 visible = false
@@ -192,12 +205,12 @@ position = Vector2(0, -5)
 shape = SubResource("RectangleShape2D_5k12k")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -18)
-scale = Vector2(0.5, 0.5)
+position = Vector2(0, -32)
+scale = Vector2(1.2, 1.2)
 sprite_frames = ExtResource("3_cauik")
-animation = &"Dash_Fall"
+animation = &"Sprint_Jump"
 
-[node name="StateMachine_Move" type="Node" parent="." node_paths=PackedStringArray("Player", "CooldownManager", "Grounded", "Airborne", "Dash", "Wall", "Ledge", "Sprint")]
+[node name="StateMachine_Move" type="Node" parent="." node_paths=PackedStringArray("Player", "CooldownManager", "Grounded", "Airborne", "Dash", "Wall", "Wall_Airborne", "Ledge", "Sprint")]
 script = ExtResource("2_ncbi3")
 Player = NodePath("..")
 CooldownManager = NodePath("../CoolDownManager")
@@ -205,6 +218,7 @@ Grounded = NodePath("Grounded")
 Airborne = NodePath("Airborne")
 Dash = NodePath("Dash")
 Wall = NodePath("Wall")
+Wall_Airborne = NodePath("Wall_Airborne")
 Ledge = NodePath("Ledge")
 Sprint = NodePath("Sprint")
 
@@ -230,12 +244,11 @@ StateMachine = NodePath("../..")
 Player = NodePath("../../..")
 Sprite = NodePath("../../../AnimatedSprite2D")
 
-[node name="Airborne" type="Node" parent="StateMachine_Move" node_paths=PackedStringArray("Jump", "Apex", "Fall", "Wall_Jump", "StateMachine", "Player", "Sprite")]
+[node name="Airborne" type="Node" parent="StateMachine_Move" node_paths=PackedStringArray("Jump", "Apex", "Fall", "StateMachine", "Player", "Sprite")]
 script = ExtResource("6_8inew")
 Jump = NodePath("Jump")
 Apex = NodePath("Apex")
 Fall = NodePath("Fall")
-Wall_Jump = NodePath("Wall_Jump")
 StateMachine = NodePath("..")
 Player = NodePath("../..")
 Sprite = NodePath("../../AnimatedSprite2D")
@@ -249,15 +262,22 @@ Player = NodePath("../../..")
 Sprite = NodePath("../../../AnimatedSprite2D")
 
 [node name="MaxJumpTime" type="Timer" parent="StateMachine_Move/Airborne/Jump"]
-wait_time = 0.2
+process_callback = 0
+wait_time = 0.38
 one_shot = true
 
-[node name="Apex" type="Node" parent="StateMachine_Move/Airborne" node_paths=PackedStringArray("SuperState", "StateMachine", "Player", "Sprite")]
+[node name="Apex" type="Node" parent="StateMachine_Move/Airborne" node_paths=PackedStringArray("ApexTimer", "SuperState", "StateMachine", "Player", "Sprite")]
 script = ExtResource("6_8re7s")
+ApexTimer = NodePath("ApexTimer")
 SuperState = NodePath("..")
 StateMachine = NodePath("../..")
 Player = NodePath("../../..")
 Sprite = NodePath("../../../AnimatedSprite2D")
+
+[node name="ApexTimer" type="Timer" parent="StateMachine_Move/Airborne/Apex"]
+process_callback = 0
+wait_time = 0.1
+one_shot = true
 
 [node name="Fall" type="Node" parent="StateMachine_Move/Airborne" node_paths=PackedStringArray("SuperState", "StateMachine", "Player", "Sprite")]
 script = ExtResource("9_sw48q")
@@ -266,16 +286,38 @@ StateMachine = NodePath("../..")
 Player = NodePath("../../..")
 Sprite = NodePath("../../../AnimatedSprite2D")
 
-[node name="Wall_Jump" type="Node" parent="StateMachine_Move/Airborne" node_paths=PackedStringArray("MaxWallJumpTime", "SuperState", "StateMachine", "Player", "Sprite")]
+[node name="Wall_Airborne" type="Node" parent="StateMachine_Move" node_paths=PackedStringArray("Wall_Jump", "Wall_Apex", "StateMachine", "Player", "Sprite")]
+script = ExtResource("12_n2rpd")
+Wall_Jump = NodePath("Wall_Jump")
+Wall_Apex = NodePath("Wall_Apex")
+StateMachine = NodePath("..")
+Player = NodePath("../..")
+Sprite = NodePath("../../AnimatedSprite2D")
+
+[node name="Wall_Jump" type="Node" parent="StateMachine_Move/Wall_Airborne" node_paths=PackedStringArray("MaxWallJumpTime", "SuperState", "StateMachine", "Player", "Sprite")]
 script = ExtResource("10_3rynr")
-MaxWallJumpTime = NodePath("../Jump/MaxJumpTime")
+MaxWallJumpTime = NodePath("MaxWallJumpTime")
 SuperState = NodePath("..")
 StateMachine = NodePath("../..")
 Player = NodePath("../../..")
 Sprite = NodePath("../../../AnimatedSprite2D")
 
-[node name="MaxWallJumpTime" type="Timer" parent="StateMachine_Move/Airborne/Wall_Jump"]
-wait_time = 0.2
+[node name="MaxWallJumpTime" type="Timer" parent="StateMachine_Move/Wall_Airborne/Wall_Jump"]
+process_callback = 0
+wait_time = 0.24
+one_shot = true
+
+[node name="Wall_Apex" type="Node" parent="StateMachine_Move/Wall_Airborne" node_paths=PackedStringArray("WallApexTimer", "SuperState", "StateMachine", "Player", "Sprite")]
+script = ExtResource("13_uv7oh")
+WallApexTimer = NodePath("WallApexTimer")
+SuperState = NodePath("..")
+StateMachine = NodePath("../..")
+Player = NodePath("../../..")
+Sprite = NodePath("../../../AnimatedSprite2D")
+
+[node name="WallApexTimer" type="Timer" parent="StateMachine_Move/Wall_Airborne/Wall_Apex"]
+process_callback = 0
+wait_time = 0.24
 one_shot = true
 
 [node name="Dash" type="Node" parent="StateMachine_Move" node_paths=PackedStringArray("Dash_Grounded", "Dash_Fall", "Dash_InAir", "StateMachine", "Player", "Sprite")]
@@ -296,15 +338,22 @@ Player = NodePath("../../..")
 Sprite = NodePath("../../../AnimatedSprite2D")
 
 [node name="DashGroundedTimer" type="Timer" parent="StateMachine_Move/Dash/Dash_Grounded"]
-wait_time = 0.12
+process_callback = 0
+wait_time = 0.16
 one_shot = true
 
-[node name="Dash_Fall" type="Node" parent="StateMachine_Move/Dash" node_paths=PackedStringArray("SuperState", "StateMachine", "Player", "Sprite")]
+[node name="Dash_Fall" type="Node" parent="StateMachine_Move/Dash" node_paths=PackedStringArray("DashFallTimer", "SuperState", "StateMachine", "Player", "Sprite")]
 script = ExtResource("12_pb8rr")
+DashFallTimer = NodePath("DashFallTimer")
 SuperState = NodePath("..")
 StateMachine = NodePath("../..")
 Player = NodePath("../../..")
 Sprite = NodePath("../../../AnimatedSprite2D")
+
+[node name="DashFallTimer" type="Timer" parent="StateMachine_Move/Dash/Dash_Fall"]
+process_callback = 0
+wait_time = 0.08
+one_shot = true
 
 [node name="Dash_InAir" type="Node" parent="StateMachine_Move/Dash" node_paths=PackedStringArray("DashTimer", "SuperState", "StateMachine", "Player", "Sprite")]
 script = ExtResource("13_vyrsc")
@@ -315,7 +364,8 @@ Player = NodePath("../../..")
 Sprite = NodePath("../../../AnimatedSprite2D")
 
 [node name="DashInAirTimer" type="Timer" parent="StateMachine_Move/Dash/Dash_InAir"]
-wait_time = 0.08
+process_callback = 0
+wait_time = 0.14
 one_shot = true
 
 [node name="Wall" type="Node" parent="StateMachine_Move" node_paths=PackedStringArray("Wall_Hold", "Wall_Slipper", "Wall_Climb", "StateMachine", "Player", "Sprite")]
@@ -368,11 +418,10 @@ StateMachine = NodePath("../..")
 Player = NodePath("../../..")
 Sprite = NodePath("../../../AnimatedSprite2D")
 
-[node name="Sprint" type="Node" parent="StateMachine_Move" node_paths=PackedStringArray("Sprint_Grounded", "Sprint_Jump", "Sprint_Fall", "Sprint_Decel", "Sprint_Bump", "Sprint_Apex", "StateMachine", "Player", "Sprite")]
+[node name="Sprint" type="Node" parent="StateMachine_Move" node_paths=PackedStringArray("Sprint_Grounded", "Sprint_Jump", "Sprint_Decel", "Sprint_Bump", "Sprint_Apex", "StateMachine", "Player", "Sprite")]
 script = ExtResource("23_a1kin")
 Sprint_Grounded = NodePath("Sprint_Grounded")
 Sprint_Jump = NodePath("Sprint_Jump")
-Sprint_Fall = NodePath("Sprint_Fall")
 Sprint_Decel = NodePath("Sprint_Decel")
 Sprint_Bump = NodePath("Sprint_Bump")
 Sprint_Apex = NodePath("Sprint_Apex")
@@ -396,32 +445,35 @@ Player = NodePath("../../..")
 Sprite = NodePath("../../../AnimatedSprite2D")
 
 [node name="MaxJumpTime" type="Timer" parent="StateMachine_Move/Sprint/Sprint_Jump"]
-wait_time = 0.2
+process_callback = 0
+wait_time = 0.38
 one_shot = true
 
-[node name="Sprint_Apex" type="Node" parent="StateMachine_Move/Sprint" node_paths=PackedStringArray("SuperState", "StateMachine", "Player", "Sprite")]
+[node name="Sprint_Apex" type="Node" parent="StateMachine_Move/Sprint" node_paths=PackedStringArray("SprintApexTimer", "SuperState", "StateMachine", "Player", "Sprite")]
 script = ExtResource("26_hk2pb")
+SprintApexTimer = NodePath("SprintApexTimer")
 SuperState = NodePath("..")
 StateMachine = NodePath("../..")
 Player = NodePath("../../..")
 Sprite = NodePath("../../../AnimatedSprite2D")
 
-[node name="Sprint_Fall" type="Node" parent="StateMachine_Move/Sprint" node_paths=PackedStringArray("SuperState", "StateMachine", "Player", "Sprite")]
-script = ExtResource("28_28voa")
-Decel = 1000.0
-Decel_OppositeInput = 4000.0
-SuperState = NodePath("..")
-StateMachine = NodePath("../..")
-Player = NodePath("../../..")
-Sprite = NodePath("../../../AnimatedSprite2D")
+[node name="SprintApexTimer" type="Timer" parent="StateMachine_Move/Sprint/Sprint_Apex"]
+process_callback = 0
+wait_time = 0.16
+one_shot = true
 
-[node name="Sprint_Decel" type="Node" parent="StateMachine_Move/Sprint" node_paths=PackedStringArray("SuperState", "StateMachine", "Player", "Sprite")]
+[node name="Sprint_Decel" type="Node" parent="StateMachine_Move/Sprint" node_paths=PackedStringArray("SprintDecelTimer", "SuperState", "StateMachine", "Player", "Sprite")]
 script = ExtResource("27_kqn8y")
-LerfCoefficient = 0.04
+SprintDecelTimer = NodePath("SprintDecelTimer")
 SuperState = NodePath("..")
 StateMachine = NodePath("../..")
 Player = NodePath("../../..")
 Sprite = NodePath("../../../AnimatedSprite2D")
+
+[node name="SprintDecelTimer" type="Timer" parent="StateMachine_Move/Sprint/Sprint_Decel"]
+process_callback = 0
+wait_time = 0.16
+one_shot = true
 
 [node name="Sprint_Bump" type="Node" parent="StateMachine_Move/Sprint" node_paths=PackedStringArray("BumpTimer", "SuperState", "StateMachine", "Player", "Sprite")]
 script = ExtResource("29_7pr67")
@@ -435,6 +487,7 @@ Player = NodePath("../../..")
 Sprite = NodePath("../../../AnimatedSprite2D")
 
 [node name="BumpTimer" type="Timer" parent="StateMachine_Move/Sprint/Sprint_Bump"]
+process_callback = 0
 wait_time = 0.12
 one_shot = true
 
@@ -456,26 +509,39 @@ wait_time = 0.5
 one_shot = true
 script = ExtResource("7_1nd8o")
 
-[node name="RayCast_Upper_Right" type="RayCast2D" parent="."]
-position = Vector2(0, -50)
-target_position = Vector2(31, 0)
+[node name="RayCast_Ledge" type="Node2D" parent="."]
 
-[node name="RayCast_Upper_Left" type="RayCast2D" parent="."]
-position = Vector2(0, -50)
-target_position = Vector2(-31, 0)
+[node name="RayCast_Ledge_Right" type="RayCast2D" parent="RayCast_Ledge"]
+position = Vector2(0, 42)
+target_position = Vector2(61, 0)
+collision_mask = 128
 
-[node name="RayCast_Lower_Right" type="RayCast2D" parent="."]
+[node name="RayCast_Ledge_Left" type="RayCast2D" parent="RayCast_Ledge"]
+position = Vector2(0, 42)
+target_position = Vector2(-61, 0)
+collision_mask = 128
+
+[node name="RayCast_Wall" type="Node2D" parent="."]
+
+[node name="RayCast_Wall_Right" type="RayCast2D" parent="RayCast_Wall"]
 position = Vector2(0, -20)
-target_position = Vector2(31, 0)
+target_position = Vector2(61, 0)
+collision_mask = 64
 
-[node name="RayCast_Lower_Left" type="RayCast2D" parent="."]
+[node name="RayCast_Wall_Left" type="RayCast2D" parent="RayCast_Wall"]
 position = Vector2(0, -20)
-target_position = Vector2(-31, 0)
+target_position = Vector2(-61, 0)
+collision_mask = 64
 
 [connection signal="timeout" from="StateMachine_Move/Airborne/Jump/MaxJumpTime" to="StateMachine_Move/Airborne/Jump" method="_on_max_jump_time_timeout"]
-[connection signal="timeout" from="StateMachine_Move/Airborne/Wall_Jump/MaxWallJumpTime" to="StateMachine_Move/Airborne/Wall_Jump" method="_on_max_wall_jump_time_timeout"]
+[connection signal="timeout" from="StateMachine_Move/Airborne/Apex/ApexTimer" to="StateMachine_Move/Airborne/Apex" method="_on_apex_timer_timeout"]
+[connection signal="timeout" from="StateMachine_Move/Wall_Airborne/Wall_Jump/MaxWallJumpTime" to="StateMachine_Move/Wall_Airborne/Wall_Jump" method="_on_max_wall_jump_time_timeout"]
+[connection signal="timeout" from="StateMachine_Move/Wall_Airborne/Wall_Apex/WallApexTimer" to="StateMachine_Move/Wall_Airborne/Wall_Apex" method="_on_wall_apex_timer_timeout"]
 [connection signal="timeout" from="StateMachine_Move/Dash/Dash_Grounded/DashGroundedTimer" to="StateMachine_Move/Dash/Dash_Grounded" method="_on_dash_grounded_timer_timeout"]
+[connection signal="timeout" from="StateMachine_Move/Dash/Dash_Fall/DashFallTimer" to="StateMachine_Move/Dash/Dash_Fall" method="_on_dash_fall_timer_timeout"]
 [connection signal="timeout" from="StateMachine_Move/Dash/Dash_InAir/DashInAirTimer" to="StateMachine_Move/Dash/Dash_InAir" method="_on_dash_in_air_timer_timeout"]
 [connection signal="timeout" from="StateMachine_Move/Sprint/Sprint_Jump/MaxJumpTime" to="StateMachine_Move/Sprint/Sprint_Jump" method="_on_max_jump_time_timeout"]
+[connection signal="timeout" from="StateMachine_Move/Sprint/Sprint_Apex/SprintApexTimer" to="StateMachine_Move/Sprint/Sprint_Apex" method="_on_sprint_apex_timer_timeout"]
+[connection signal="timeout" from="StateMachine_Move/Sprint/Sprint_Decel/SprintDecelTimer" to="StateMachine_Move/Sprint/Sprint_Decel" method="_on_sprint_decel_timer_timeout"]
 [connection signal="timeout" from="StateMachine_Move/Sprint/Sprint_Bump/BumpTimer" to="StateMachine_Move/Sprint/Sprint_Bump" method="_on_bump_timer_timeout"]
 [connection signal="timeout" from="CoolDownManager/DashCooldownTimer" to="CoolDownManager" method="_on_dash_cooldown_timer_timeout"]

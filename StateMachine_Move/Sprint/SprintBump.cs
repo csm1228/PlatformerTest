@@ -15,7 +15,7 @@ public partial class SprintBump : SubState
 
         Vector2 velocity = StartVector;
 
-        if (Player.ActionDirection == Char.LREnum.Right)
+        if (StateMachine.ActionDirection == Char.LREnum.Right)
         {
             velocity.X = - velocity.X;
         }
@@ -51,7 +51,5 @@ public partial class SprintBump : SubState
             StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
             return;
         }
-
-
     }
 }

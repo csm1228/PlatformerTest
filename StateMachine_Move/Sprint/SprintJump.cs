@@ -7,30 +7,26 @@ public partial class SprintJump : SubState
 
     public override void Enter()
     {
-        Player.ConsumeJumpBuffer();
-
         MaxJumpTime.Start();
 
         Player.Animation.Play("Sprint_Jump");
 
         Vector2 velocity = Player.Velocity;
 
-        if (Player.ActionDirection == Char.LREnum.Left)
+        if (StateMachine.ActionDirection == Char.LREnum.Left)
         {
             velocity.X = -Player.SprintSpeed;
-            Player.Animation.FlipH = true;
+            StateMachine.PlayerFacingDirection = Char.LREnum.Left;
         }
-        else if (Player.ActionDirection == Char.LREnum.Right)
+        else if (StateMachine.ActionDirection == Char.LREnum.Right)
         {
             velocity.X = Player.SprintSpeed;
-            Player.Animation.FlipH = false;
+            StateMachine.PlayerFacingDirection = Char.LREnum.Right;
         }
 
         velocity.Y = Player.JumpSpeed;
 
         Player.Velocity = velocity;
-
-        
     }
 
     public override void Exit()
@@ -42,25 +38,27 @@ public partial class SprintJump : SubState
     {
         if (Player.IsOnCeiling())
         {
-            if (!Input.IsActionPressed(GamepadInput.RT) || Player.ActionDirection != Player.LastInputDirection)
-            {
-                StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
-                return;
-            }
-            else
-            {
-                StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Fall);
-                return;
-            }
-        }
-        else if (Player.IsOnWall())
-        {
-            StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Bump);
+            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
             return;
         }
         else if (Player.IsOnFloor())
         {
             StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Grounded);
+            return;
+        }
+        else if (StateMachine.IsOnLedge())
+        {
+            StateMachine.TransState(SuperState_Move.Ledge, State_Move.Ledge_Climb);
+            return;
+        }
+        else if (StateMachine.IsOnWall())
+        {
+            StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
+            return;
+        }
+        else if (!Input.IsActionPressed(GamepadInput.Face_Down))
+        {
+            StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Apex);
             return;
         }
     }
@@ -74,6 +72,21 @@ public partial class SprintJump : SubState
     {
         Vector2 velocity = Player.Velocity;
 
+        if (StateMachine.ActionDirection == Char.LREnum.Left)
+        {
+            if (velocity.X < 0)
+            {
+                velocity.X += (float)(delta * Player.SprintJumpDelta);
+            }
+        }
+        else if (StateMachine.ActionDirection == Char.LREnum.Right)
+        {
+            if (velocity.X > 0)
+            {
+                velocity.X -= (float)(delta * Player.SprintJumpDelta);
+            }
+        }
+
         velocity.Y += (float)(Player.Gravity * delta * Player.GravityCoefficient_Jump);
 
         Player.Velocity = velocity;
@@ -83,9 +96,8 @@ public partial class SprintJump : SubState
     {
         if (action == GamepadInput.RT)
         {
-            if (StateMachine.CanDash && StateMachine.CooldownManager.IsDashReady)
+            if (StateMachine.CanDash)
             {
-                StateMachine.FixActionDirection();
                 StateMachine.TransState(SuperState_Move.Dash, State_Move.Dash_InAir);
                 return;
             }
@@ -94,7 +106,7 @@ public partial class SprintJump : SubState
 
     public override void HandleReleasedEvent(StringName action)
     {
-        if (action == GamepadInput.Down)
+        if (action == GamepadInput.Face_Down)
         {
             StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Apex);
             return;

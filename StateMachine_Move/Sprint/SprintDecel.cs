@@ -3,22 +3,22 @@ using System;
 
 public partial class SprintDecel : SubState
 {
-    [Export] private float LerfCoefficient { get; set; }
+    [Export] Timer SprintDecelTimer { get; set; }
 
 
     public override void Enter()
     {
         Player.Animation.Play("Sprint_Decel");
 
-        if (Player.ActionDirection == Char.LREnum.Left)
-        {
-            Player.Animation.FlipH = true;
-        }
-        else if (Player.ActionDirection == Char.LREnum.Right)
-        {
-            Player.Animation.FlipH = false;
-        }
+        SprintDecelTimer.Start();
     }
+
+    public override void Exit()
+    {
+        SprintDecelTimer.Stop();
+    }
+
+
     public override void HandleTransState(double delta)
     {
         if (!Player.IsOnFloor())
@@ -26,31 +26,24 @@ public partial class SprintDecel : SubState
             StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
             return;
         }
-        else if (Math.Abs(Player.Velocity.X) <= Player.WalkSpeed)
+        if (StateMachine.IsOnWall())
+        {
+            StateMachine.TransState(SuperState_Move.Grounded, State_Move.Idle);
+            return;
+        }
+    }
+
+    private void _on_sprint_decel_timer_timeout()
+    {
+        if (Input.IsActionPressed(GamepadInput.RT))
+        {
+            StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Grounded);
+            return;
+        }
+        else
         {
             StateMachine.TransToWalkOrIdle();
             return;
-        }
-        else if (Player.LastInputDirection == Player.ActionDirection)
-        {
-            if (Input.IsActionJustPressed(GamepadInput.Face_Down))
-            {
-                StateMachine.TransState(SuperState_Move.Airborne, State_Move.Jump);
-                return;
-            }
-            else if (Input.IsActionPressed(GamepadInput.RT))
-            {
-                if (Input.IsActionJustPressed(GamepadInput.Face_Down))
-                {
-                    StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Jump);
-                    return;
-                }
-                else
-                {
-                    StateMachine.TransState(SuperState_Move.Dash, State_Move.Dash_Grounded);
-                    return;
-                }
-            }
         }
     }
 
@@ -58,9 +51,30 @@ public partial class SprintDecel : SubState
     {
         Vector2 velocity = Player.Velocity;
 
-        velocity = velocity.Lerp(Vector2.Zero, LerfCoefficient);
-
+        if (StateMachine.ActionDirection == Char.LREnum.Left)
+        {
+            if (velocity.X < 0)
+            {
+                velocity.X += (float)(delta * Player.SprintDecelDelta);
+            }
+        }
+        else if (StateMachine.ActionDirection == Char.LREnum.Right)
+        {
+            if (velocity.X > 0)
+            {
+                velocity.X -= (float)(delta * Player.SprintDecelDelta);
+            }
+        }
         Player.Velocity = velocity;
+
+        if (InputManager.Instance.Horizon < 0)
+        {
+            StateMachine.ActionDirection = Char.LREnum.Right;
+        }
+        else if (InputManager.Instance.Horizon > 0)
+        {
+            StateMachine.ActionDirection = Char.LREnum.Left;
+        }
     }
 
     public override void HandlePressedEvent(StringName action)
@@ -72,14 +86,16 @@ public partial class SprintDecel : SubState
         }
         else if (action == GamepadInput.RT)
         {
-            StateMachine.FixActionDirection();
-            StateMachine.TransState(SuperState_Move.Dash, State_Move.Dash_Grounded);
-            return;
+            if (StateMachine.CooldownManager.IsDashReady)
+            {
+                StateMachine.TransState(SuperState_Move.Dash, State_Move.Dash_Grounded);
+                return;
+            }
+            else
+            {
+                StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Grounded);
+                return;
+            }
         }
-    }
-
-    public override void HandleReleasedEvent(StringName action)
-    {
-        
     }
 }

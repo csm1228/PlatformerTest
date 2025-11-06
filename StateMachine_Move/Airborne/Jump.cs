@@ -10,17 +10,16 @@ public partial class Jump : SubState
         // 점프 버퍼 소비
         Player.ConsumeJumpBuffer();
 
-        // 최초 점프 속도
+        // 최초 점프 속도로 설정
         Vector2 velocity = Player.Velocity;
-
         velocity.Y = Player.JumpSpeed;
-
         Player.Velocity = velocity;
+
+        Player.Animation.Play("Jump");
+
 
         // 점프 타이머 시작
         MaxJumpTime.Start();
-
-        Player.Animation.Play("Jump");
     }
 
     public override void Exit()
@@ -33,6 +32,11 @@ public partial class Jump : SubState
         if (Player.IsOnCeiling())
         {
             StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
+            return;
+        }
+        else if (!Input.IsActionPressed(GamepadInput.Face_Down))
+        {
+            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Apex);
             return;
         }
     }
@@ -50,12 +54,10 @@ public partial class Jump : SubState
         if (InputManager.Instance.Horizon < 0)
         {
             velocity.X = -Player.WalkSpeed;
-            Player.Animation.FlipH = true;
         }
         else if (InputManager.Instance.Horizon > 0)
         {
             velocity.X = Player.WalkSpeed;
-            Player.Animation.FlipH = false;
         }
         else
         {
@@ -70,7 +72,7 @@ public partial class Jump : SubState
 
     public override void HandleReleasedEvent(StringName action)
     {
-        if (action == GamepadInput.Face_Down)
+        if (action == GamepadInput.Face_Down) // 점프 키 떼면 점프 중단. 가변 점프
         {
             StateMachine.TransState(SuperState_Move.Airborne, State_Move.Apex);
             return;

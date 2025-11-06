@@ -12,6 +12,8 @@ public partial class Wall : SuperState
     {
         InputManager.Instance.ActionPressed += HandlePressedEvent;
         InputManager.Instance.ActionReleased += HandleReleasedEvent;
+
+        StateMachine.CheckWallDirection();
     }
 
     public override void Exit()
@@ -27,14 +29,14 @@ public partial class Wall : SuperState
     {
         if (Player.IsOnFloor())
         {
-            if (InputManager.Instance.Horizon != 0)
+            if (Input.IsActionPressed(GamepadInput.RT))
             {
-                StateMachine.TransState(SuperState_Move.Grounded, State_Move.Walk);
+                StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Grounded);
                 return;
             }
             else
             {
-                StateMachine.TransState(SuperState_Move.Grounded, State_Move.Idle);
+                StateMachine.TransToWalkOrIdle();
                 return;
             }
         }
@@ -55,17 +57,17 @@ public partial class Wall : SuperState
 
         else if (Player.JumpBuffer > 0)
         {
-            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Wall_Jump);
+            StateMachine.TransState(SuperState_Move.Wall_Airborne, State_Move.Wall_Jump);
             return;
         }
 
-        else if (InputManager.Instance.Horizon > 0 && Player.LastHoldingWallDirection == Char.LREnum.Left)
+        else if (InputManager.Instance.Horizon > 0 && StateMachine.HoldingWallDirection == Char.LREnum.Left)
         {
             StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
             return;
         }
 
-        else if (InputManager.Instance.Horizon < 0 && Player.LastHoldingWallDirection == Char.LREnum.Right)
+        else if (InputManager.Instance.Horizon < 0 && StateMachine.HoldingWallDirection == Char.LREnum.Right)
         {
             StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
             return;
@@ -81,6 +83,12 @@ public partial class Wall : SuperState
 
     public override void HandlePressedEvent(StringName action)
     {
+        if (action == GamepadInput.Face_Down)
+        {
+            StateMachine.TransState(SuperState_Move.Wall_Airborne, State_Move.Wall_Jump);
+            return;
+        }
+
         CurrentSubState.HandlePressedEvent(action);
     }
 

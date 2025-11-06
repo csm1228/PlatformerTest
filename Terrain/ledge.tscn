@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://cfmon1ysj36od"]
+
+[ext_resource type="Texture2D" uid="uid://1adthlobnrxw" path="res://resources/Ledge.png" id="1_3gvxi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mwxwu"]
+size = Vector2(128, 128)
+
+[node name="Node2D" type="StaticBody2D"]
+z_index = 2
+collision_layer = 128
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_3gvxi")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_mwxwu")

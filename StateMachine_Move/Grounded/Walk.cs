@@ -24,15 +24,14 @@ public partial class Walk : SubState
         if (InputManager.Instance.Horizon < 0)
         {
             velocity.X = -Player.WalkSpeed;
-            Player.Animation.FlipH = true;
+            StateMachine.PlayerFacingDirection = Char.LREnum.Left;
         }
         else if (InputManager.Instance.Horizon > 0)
         {
             velocity.X = Player.WalkSpeed;
-            Player.Animation.FlipH = false;
+            StateMachine.PlayerFacingDirection = Char.LREnum.Right;
         }
 
         Player.Velocity = velocity;
-
     }
 }

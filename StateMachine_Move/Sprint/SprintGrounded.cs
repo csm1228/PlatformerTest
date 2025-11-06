@@ -9,15 +9,32 @@ public partial class SprintGrounded : SubState
 
         Vector2 velocity = Player.Velocity;
 
-        if (Player.ActionDirection == Char.LREnum.Left)
+        if (InputManager.Instance.Horizon == 0)
+        {
+            // 좌우 입력이 없다면, 바라보고 있는 방향으로 시전됨
+            StateMachine.ActionDirection = StateMachine.PlayerFacingDirection;
+        }
+        else
+        {
+            if (InputManager.Instance.Horizon > 0)
+            {
+                StateMachine.PlayerFacingDirection = Char.LREnum.Right;
+                StateMachine.ActionDirection = Char.LREnum.Right;
+            }
+            else if (InputManager.Instance.Horizon < 0)
+            {
+                StateMachine.PlayerFacingDirection = Char.LREnum.Left;
+                StateMachine.ActionDirection = Char.LREnum.Left;
+            }
+        }
+
+        if (StateMachine.ActionDirection == Char.LREnum.Left)
         {
             velocity.X = -Player.SprintSpeed;
-            Player.Animation.FlipH = true;
         }
-        else if (Player.ActionDirection == Char.LREnum.Right)
+        else if (StateMachine.ActionDirection == Char.LREnum.Right)
         {
             velocity.X = Player.SprintSpeed;
-            Player.Animation.FlipH = false;
         }
 
         Player.Velocity = velocity;
@@ -25,7 +42,7 @@ public partial class SprintGrounded : SubState
 
     public override void HandleTransState(double delta)
     {
-        if (Player.IsOnWall())
+        if (StateMachine.IsOnWall())
         {
             StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Bump);
             return;
@@ -35,7 +52,13 @@ public partial class SprintGrounded : SubState
             StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Fall);
             return;
         }
-        else if (Player.ActionDirection != Player.LastInputDirection)
+        else if (StateMachine.ActionDirection == Char.LREnum.Left && InputManager.Instance.Horizon > 0)
+        {
+            StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Decel);
+            return;
+
+        }
+        else if (StateMachine.ActionDirection == Char.LREnum.Right && InputManager.Instance.Horizon < 0)
         {
             StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Decel);
             return;
@@ -55,8 +78,18 @@ public partial class SprintGrounded : SubState
     {
         if (action == GamepadInput.RT && Player.IsOnFloor())
         {
-            StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Decel);
-            return;
+            if (InputManager.Instance.Horizon == 0)
+            {
+                StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Decel);
+                return;
+            }
+
+            else if (StateMachine.ActionDirection == Char.LREnum.Left && InputManager.Instance.Horizon < 0 || StateMachine.ActionDirection == Char.LREnum.Right && InputManager.Instance.Horizon > 0)
+            {
+                StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Decel);
+                return;
+
+            }
         }
     }
 }

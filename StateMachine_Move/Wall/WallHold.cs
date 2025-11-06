@@ -7,19 +7,21 @@ public partial class WallHold : SubState
 {
     public override void Enter()
     {
+        StateMachine.AttachedToPlatform();
+
         Vector2 velocity = Player.Velocity;
 
         velocity.Y = 0;
 
-        if (Player.LastHoldingWallDirection == Char.LREnum.Left)
+        if (StateMachine.HoldingWallDirection == Char.LREnum.Left)
         {
             velocity.X = -1;
-            Player.Animation.FlipH = true;
+            StateMachine.PlayerFacingDirection = Char.LREnum.Left;
         }
-        else if (Player.LastHoldingWallDirection == Char.LREnum.Right)
+        else if (StateMachine.HoldingWallDirection == Char.LREnum.Right)
         {
             velocity.X = 1;
-            Player.Animation.FlipH = false;
+            StateMachine.PlayerFacingDirection = Char.LREnum.Right;
         }
 
         Player.Velocity = velocity;
@@ -53,17 +55,14 @@ public partial class WallHold : SubState
 
         velocity.Y = 0;
 
-        if (Player.LastHoldingWallDirection == Char.LREnum.Left)
+        if (StateMachine.HoldingWallDirection == Char.LREnum.Left)
         {
             velocity.X = -1;
-            Player.Animation.FlipH = true;
         }
-        else if (Player.LastHoldingWallDirection == Char.LREnum.Right)
+        else if (StateMachine.HoldingWallDirection == Char.LREnum.Right)
         {
             velocity.X = 1;
-            Player.Animation.FlipH = false;
         }
-
 
         Player.Velocity = velocity;
     }

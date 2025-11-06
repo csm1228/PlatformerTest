@@ -24,17 +24,15 @@ public partial class DebugLabels : Control
 
     public override void _Process(double delta)
     {
-        DebugLabel_LastInputDir.Text = Player.LastInputDirection.ToString();
-        DebugLabel_LastWallDir.Text = Player.LastHoldingWallDirection.ToString();
 
         DebugLabel_State.Text = StateMachine_Move.CurrentMoveSuperState?.CurrentSubState?.Name;
         DebugLabel_IsOnFloor.Text = "IsOnFloor : " + Player.IsOnFloor().ToString();
         DebugLabel_IsOnWall.Text = "IsOnWall : " + Player.IsOnWall().ToString();
 
-        DebugLabel_UpperRayCast_Right.Text = Player.RayCast_Upper_Right.IsColliding().ToString();
-        DebugLabel_UpperRayCast_Left.Text = Player.RayCast_Upper_Left.IsColliding().ToString();
-        DebugLabel_LowerRayCast_Right.Text = Player.RayCast_Lower_Right.IsColliding().ToString();
-        DebugLabel_LowerRayCast_Left.Text = Player.RayCast_Lower_Left.IsColliding().ToString();
+        DebugLabel_UpperRayCast_Right.Text = Player.RayCast_Ledge_Right.IsColliding().ToString();
+        DebugLabel_UpperRayCast_Left.Text = Player.RayCast_Ledge_Left.IsColliding().ToString();
+        DebugLabel_LowerRayCast_Right.Text = Player.RayCast_Wall_Right.IsColliding().ToString();
+        DebugLabel_LowerRayCast_Left.Text = Player.RayCast_Wall_Left.IsColliding().ToString();
 
         DebugLabel_Velocity_X.Text = "X : " + Player.Velocity.X.ToString();
         DebugLabel_Velocity_Y.Text = "X : " + Player.Velocity.Y.ToString();

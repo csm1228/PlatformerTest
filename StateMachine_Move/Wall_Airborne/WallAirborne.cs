@@ -1,12 +1,10 @@
 using Godot;
 using System;
-using System.Runtime.CompilerServices;
 
-public partial class Airborne : SuperState
+public partial class WallAirborne : SuperState
 {
-    [Export] private SubState Jump { get; set; }
-    [Export] private SubState Apex { get; set; }
-    [Export] private SubState Fall { get; set; }
+    [Export] private SubState Wall_Jump { get; set; }
+    [Export] private SubState Wall_Apex { get; set; }
 
     public override void Enter()
     {
@@ -42,15 +40,6 @@ public partial class Airborne : SuperState
 
     public override void HandlePhysics(double delta)
     {
-        if (InputManager.Instance.Horizon < 0)
-        {
-            StateMachine.PlayerFacingDirection = Char.LREnum.Left;
-        }
-        else if(InputManager.Instance.Horizon > 0)
-        {
-            StateMachine.PlayerFacingDirection = Char.LREnum.Right;
-        }
-
         CurrentSubState.HandlePhysics(delta);
     }
 
