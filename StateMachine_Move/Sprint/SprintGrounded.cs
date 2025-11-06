@@ -49,7 +49,7 @@ public partial class SprintGrounded : SubState
         }
         else if (!Player.IsOnFloor())
         {
-            StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Fall);
+            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
             return;
         }
         else if (StateMachine.ActionDirection == Char.LREnum.Left && InputManager.Instance.Horizon > 0)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://b5eprdmojefkx"]
+[gd_scene load_steps=38 format=3 uid="uid://b5eprdmojefkx"]
 
 [ext_resource type="Script" uid="uid://24pro1g2na86" path="res://char/Char.cs" id="1_3bvsw"]
 [ext_resource type="Script" uid="uid://0ut6ebjogx8c" path="res://char/DebugLabels.cs" id="2_l1hin"]
@@ -35,6 +35,7 @@
 [ext_resource type="Script" uid="uid://bj3cesglwnrii" path="res://StateMachine_Move/Sprint/SprintApex.cs" id="26_hk2pb"]
 [ext_resource type="Script" uid="uid://cyt2ad683mvmo" path="res://StateMachine_Move/Sprint/SprintDecel.cs" id="27_kqn8y"]
 [ext_resource type="Script" uid="uid://cy5qecjsd7fib" path="res://StateMachine_Move/Sprint/SprintBump.cs" id="29_7pr67"]
+[ext_resource type="Script" uid="uid://cf361udich22q" path="res://char/StateMachineAction.cs" id="33_tkjkc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5k12k"]
 size = Vector2(120, 340)
@@ -490,6 +491,9 @@ Sprite = NodePath("../../../AnimatedSprite2D")
 process_callback = 0
 wait_time = 0.12
 one_shot = true
+
+[node name="StateMachine_Action" type="Node" parent="."]
+script = ExtResource("33_tkjkc")
 
 [node name="CoolDownManager" type="Node" parent="." node_paths=PackedStringArray("DashCooldownTimer")]
 script = ExtResource("4_ncbi3")
