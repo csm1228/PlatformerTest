@@ -8,11 +8,8 @@ public class SuperState_Move
     public const string
         Grounded = "Grounded",
         Airborne = "Airborne",
-        Wall_Airborne = "Wall_Airborne",
-        Dash = "Dash",
         Wall = "Wall",
-        Ledge = "Ledge",
-        Sprint = "Sprint",
+
         Action = "Action";
 }
 
@@ -37,7 +34,6 @@ public class State_Move
         Wall_Slipper = "Wall_Slipper",
         Wall_Climb = "Wall_Climb",
 
-        Ledge_Grab = "Ledge_Grab",
         Ledge_Climb = "Ledge_Climb",
 
         Sprint_Grounded = "Sprint_Grounded",
@@ -53,9 +49,7 @@ public class State_Move
 public partial class StateMachine_Move : Node
 {
     [Export] Char Player { get; set; }
-
-    public SuperState CurrentMoveSuperState { get; private set; }
-    public SubState CurrentMoveSubState => CurrentMoveSuperState.CurrentSubState;
+    public State CurrentState { get; private set; }
 
     [Export] public CoolDownManager CooldownManager { get; set; }
 
@@ -72,36 +66,23 @@ public partial class StateMachine_Move : Node
     public LREnum ActionDirection;
 
 
-    [Export] SuperState Grounded { get; set; }
-    [Export] SuperState Airborne { get; set; }
-    [Export] SuperState Dash { get; set; }
-    [Export] SuperState Wall { get; set; }
-    [Export] SuperState Wall_Airborne { get; set; }
-    [Export] SuperState Ledge { get; set; }
-    [Export] SuperState Sprint { get; set; }
-    [Export] SuperState Action { get; set; }
-
-
 
     public override void _Ready()
     {
-        TransState(SuperState_Move.Grounded, State_Move.Idle);
+        TransState(State_Move.Idle);
 
         PlayerFacingDirection = LREnum.Right;
     }
 
-    public void TransState(string superStateName, string subStateName)
+    public void TransState(string subStateName)
     {
-        SuperState newState = GetNode<SuperState>(superStateName);
+        CurrentState?.DisconnectEventSignal();
+        CurrentState?.Exit();
 
-        CurrentMoveSuperState?.CurrentSubState?.Exit();
-        CurrentMoveSuperState?.Exit();
+        CurrentState = GetNode<State>(subStateName);
 
-        CurrentMoveSuperState = newState;
-
-        CurrentMoveSuperState.Enter();
-        CurrentMoveSuperState.TransSubState(subStateName);
-        CurrentMoveSuperState.CurrentSubState.Enter();
+        CurrentState.Enter();
+        CurrentState.ConnectEventSignal();
     }
 
     public void HandlePhysics(double delta)
@@ -109,12 +90,12 @@ public partial class StateMachine_Move : Node
         // 왼쪽 바라보고 있으면 애니메이션 반전. 모든 건 오른쪽 바라보는 거 기준으로 만들기.
         Player.Animation.FlipH = (PlayerFacingDirection == LREnum.Left);
 
-        CurrentMoveSuperState?.HandlePhysics(delta);
+        CurrentState?.HandlePhysics(delta);
     }
 
     public void HandleTransState(double delta)
     {
-        CurrentMoveSuperState?.HandleTransState(delta);
+        CurrentState?.HandleTransState(delta);
     }
 
     public void CheckWallDirection()
@@ -187,12 +168,12 @@ public partial class StateMachine_Move : Node
     {
         if (InputManager.Instance.Horizon != 0)
         {
-            TransState(SuperState_Move.Grounded, State_Move.Walk);
+            TransState(State_Move.Walk);
             return;
         }
         else
         {
-            TransState(SuperState_Move.Grounded, State_Move.Idle);
+            TransState(State_Move.Idle);
             return;
         }
     }

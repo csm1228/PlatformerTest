@@ -26,7 +26,7 @@ public partial class Camera2d : Camera2D
 
     public override void _Process(double delta)
     {
-        if (Player.StateMachine_Move.CurrentMoveSubState.Name == "Idle")
+        if (Player.StateMachine_Move.CurrentState.Name == "Idle")
         {
             if (InputManager.Instance.Vertical < 0)
             {

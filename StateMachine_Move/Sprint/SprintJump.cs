@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class SprintJump : SubState
+public partial class SprintJump : State
 {
     [Export] Timer MaxJumpTime { get; set; }
 
@@ -38,34 +38,36 @@ public partial class SprintJump : SubState
     {
         if (Player.IsOnCeiling())
         {
-            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
+            StateMachine.TransState(State_Move.Fall);
             return;
         }
         else if (Player.IsOnFloor())
         {
-            StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Grounded);
+            StateMachine.TransState(State_Move.Sprint_Grounded);
             return;
         }
         else if (StateMachine.IsOnLedge())
         {
-            StateMachine.TransState(SuperState_Move.Ledge, State_Move.Ledge_Climb);
+            StateMachine.TransState(State_Move.Ledge_Climb);
             return;
         }
         else if (StateMachine.IsOnWall())
         {
-            StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
+            StateMachine.TransState(State_Move.Wall_Hold);
             return;
         }
         else if (!Input.IsActionPressed(GamepadInput.Face_Down))
         {
-            StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Apex);
+            StateMachine.TransState(State_Move.Sprint_Apex);
             return;
         }
+
+        SuperState.HandleTransState(delta);
     }
 
     private void _on_max_jump_time_timeout()
     {
-        StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Apex);
+        StateMachine.TransState(State_Move.Sprint_Apex);
     }
 
     public override void HandlePhysics(double delta)
@@ -90,25 +92,20 @@ public partial class SprintJump : SubState
         velocity.Y += (float)(Player.Gravity * delta * Player.GravityCoefficient_Jump);
 
         Player.Velocity = velocity;
+
+        // SuperState(Airborne)의 물리를 반영하지 않음
     }
 
     public override void HandlePressedEvent(StringName action)
     {
-        if (action == GamepadInput.RT)
-        {
-            if (StateMachine.CanDash)
-            {
-                StateMachine.TransState(SuperState_Move.Dash, State_Move.Dash_InAir);
-                return;
-            }
-        }
+        SuperState.HandlePressedEvent(action);
     }
 
     public override void HandleReleasedEvent(StringName action)
     {
         if (action == GamepadInput.Face_Down)
         {
-            StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Apex);
+            StateMachine.TransState(State_Move.Sprint_Apex);
             return;
         }
     }

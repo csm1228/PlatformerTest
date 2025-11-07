@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.ComponentModel.Design;
 
-public partial class WallJump : SubState
+public partial class WallJump : State
 {
     [Export] Timer MaxWallJumpTime { get; set; }
 
@@ -49,7 +49,7 @@ public partial class WallJump : SubState
 
         MaxWallJumpTime.Start();
 
-        Player.Animation.Play("Jump");
+        Player.Animation.Play("Wall_Jump");
     }
 
     public override void Exit()
@@ -61,12 +61,12 @@ public partial class WallJump : SubState
     {
         if (Player.IsOnCeiling())
         {
-            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
+            StateMachine.TransState(State_Move.Fall);
             return;
         }
         else if (!Input.IsActionPressed(GamepadInput.Face_Down))
         {
-            StateMachine.TransState(SuperState_Move.Wall_Airborne, State_Move.Wall_Apex);
+            StateMachine.TransState(State_Move.Wall_Apex);
             return;
         }
         else if (StateMachine.IsOnLedge())
@@ -75,12 +75,12 @@ public partial class WallJump : SubState
 
             if (StateMachine.HoldingLedgeDirection == Char.LREnum.Left && InputManager.Instance.Horizon < 0 && StateMachine.ActionDirection == Char.LREnum.Left)
             {
-                StateMachine.TransState(SuperState_Move.Ledge, State_Move.Ledge_Grab);
+                StateMachine.TransState(State_Move.Ledge_Climb);
                 return;
             }
             else if (StateMachine.HoldingLedgeDirection == Char.LREnum.Right && InputManager.Instance.Horizon > 0 && StateMachine.ActionDirection == Char.LREnum.Right)
             {
-                StateMachine.TransState(SuperState_Move.Ledge, State_Move.Ledge_Grab);
+                StateMachine.TransState(State_Move.Ledge_Climb);
                 return;
             }
         }
@@ -90,20 +90,22 @@ public partial class WallJump : SubState
 
             if (StateMachine.HoldingWallDirection == Char.LREnum.Left && InputManager.Instance.Horizon < 0 && StateMachine.ActionDirection == Char.LREnum.Left)
             {
-                StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
+                StateMachine.TransState(State_Move.Wall_Hold);
                 return;
             }
             else if (StateMachine.HoldingWallDirection == Char.LREnum.Right && InputManager.Instance.Horizon > 0 && StateMachine.ActionDirection == Char.LREnum.Right)
             {
-                StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
+                StateMachine.TransState(State_Move.Wall_Hold);
                 return;
             }
         }
+
+        SuperState.HandleTransState(delta);
     }
 
     private void _on_max_wall_jump_time_timeout()
     {
-        StateMachine.TransState(SuperState_Move.Wall_Airborne, State_Move.Wall_Apex);
+        StateMachine.TransState(State_Move.Wall_Apex);
     }
 
     public override void HandlePhysics(double delta)
@@ -128,13 +130,20 @@ public partial class WallJump : SubState
         velocity.Y += (float)(Player.Gravity * delta * Player.GravityCoefficient_Jump);
 
         Player.Velocity = velocity;
+
+        // SuperState(Airborne)의 물리 처리는 반영하지 않음.
+    }
+
+    public override void HandlePressedEvent(StringName action)
+    {
+        SuperState.HandlePressedEvent(action);
     }
 
     public override void HandleReleasedEvent(StringName action)
     {
         if (action == GamepadInput.Face_Down)
         {
-            StateMachine.TransState(SuperState_Move.Wall_Airborne, State_Move.Wall_Apex);
+            StateMachine.TransState(State_Move.Wall_Apex);
             return;
         }
     }

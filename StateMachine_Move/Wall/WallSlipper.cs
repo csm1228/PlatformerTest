@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Runtime.CompilerServices;
 
-public partial class WallSlipper : SubState
+public partial class WallSlipper : State
 {
     public override void Enter()
     {
@@ -30,20 +30,21 @@ public partial class WallSlipper : SubState
     {
         if (InputManager.Instance.Vertical < 0)
         {
-            StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Climb);
+            StateMachine.TransState(State_Move.Wall_Climb);
             return;
         }
         else if (InputManager.Instance.Horizon < 0 && StateMachine.HoldingWallDirection == Char.LREnum.Left)
         {
-            StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
+            StateMachine.TransState(State_Move.Wall_Hold);
             return;
         }
         else if (InputManager.Instance.Horizon > 0 && StateMachine.HoldingWallDirection == Char.LREnum.Right)
         {
-            StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
+            StateMachine.TransState(State_Move.Wall_Hold);
             return;
         }
 
+        SuperState.HandleTransState(delta);
     }
 
     public override void HandlePhysics(double delta)
@@ -73,6 +74,6 @@ public partial class WallSlipper : SubState
 
     public override void HandlePressedEvent(StringName action)
     {
-
+        SuperState.HandlePressedEvent(action);
     }
 }

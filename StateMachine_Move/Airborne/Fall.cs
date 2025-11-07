@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Fall : SubState
+public partial class Fall : State
 {
     public override void Enter()
     {
@@ -29,7 +29,7 @@ public partial class Fall : SubState
 
             if (StateMachine.HoldingLedgeDirection == Char.LREnum.Left && InputManager.Instance.Horizon < 0 || StateMachine.HoldingLedgeDirection == Char.LREnum.Right && InputManager.Instance.Horizon > 0)
             {
-                StateMachine.TransState(SuperState_Move.Ledge, State_Move.Ledge_Grab);
+                StateMachine.TransState(State_Move.Ledge_Climb);
                 return;
             }
         }
@@ -39,28 +39,17 @@ public partial class Fall : SubState
 
             if (StateMachine.HoldingWallDirection == Char.LREnum.Left && InputManager.Instance.Horizon < 0 || StateMachine.HoldingWallDirection == Char.LREnum.Right && InputManager.Instance.Horizon > 0)
             {
-                StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
+                StateMachine.TransState(State_Move.Wall_Hold);
                 return;
             }
         }
+
+        SuperState.HandleTransState(delta);
     }
 
     public override void HandlePhysics(double delta)
     {
         Vector2 velocity = Player.Velocity;
-
-        if (InputManager.Instance.Horizon < 0)
-        {
-            velocity.X = -Player.WalkSpeed;
-        }
-        else if (InputManager.Instance.Horizon > 0)
-        {
-            velocity.X = Player.WalkSpeed;
-        }
-        else
-        {
-            velocity.X = 0;
-        }
 
         // 최대 추락 속도까지 가속
         if (velocity.Y < Player.MaxFallSpeed)
@@ -73,5 +62,12 @@ public partial class Fall : SubState
         }
 
         Player.Velocity = velocity;
+
+        SuperState.HandlePhysics(delta);
+    }
+
+    public override void HandlePressedEvent(StringName action)
+    {
+        SuperState.HandlePressedEvent(action);
     }
 }

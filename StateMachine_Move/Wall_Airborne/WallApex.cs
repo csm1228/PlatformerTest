@@ -1,13 +1,13 @@
 using Godot;
 using System;
 
-public partial class WallApex : SubState
+public partial class WallApex : State
 {
     [Export] Timer WallApexTimer { get; set; }
 
     public override void Enter()
     {
-        Player.Animation.Play("Apex");
+        Player.Animation.Play("Wall_Apex");
 
         Vector2 velocity = Player.Velocity;
 
@@ -34,7 +34,7 @@ public partial class WallApex : SubState
     {
         if (Player.IsOnCeiling())
         {
-            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
+            StateMachine.TransState(State_Move.Fall);
             return;
         }
         else if (StateMachine.IsOnLedge())
@@ -43,7 +43,7 @@ public partial class WallApex : SubState
 
             if (StateMachine.HoldingLedgeDirection == Char.LREnum.Left && InputManager.Instance.Horizon < 0 || StateMachine.HoldingLedgeDirection == Char.LREnum.Right && InputManager.Instance.Horizon > 0)
             {
-                StateMachine.TransState(SuperState_Move.Ledge, State_Move.Ledge_Grab);
+                StateMachine.TransState(State_Move.Ledge_Climb);
                 return;
             }
         }
@@ -53,15 +53,17 @@ public partial class WallApex : SubState
 
             if (StateMachine.HoldingWallDirection == Char.LREnum.Left && InputManager.Instance.Horizon < 0 || StateMachine.HoldingWallDirection == Char.LREnum.Right && InputManager.Instance.Horizon > 0)
             {
-                StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
+                StateMachine.TransState(State_Move.Wall_Hold);
                 return;
             }
         }
+
+        SuperState.HandleTransState(delta);
     }
 
     private void _on_wall_apex_timer_timeout()
     {
-        StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
+        StateMachine.TransState(State_Move.Fall);
         return;
     }
 
@@ -69,7 +71,7 @@ public partial class WallApex : SubState
     {
         Vector2 velocity = Player.Velocity;
 
-        // 조작 방향대로 수평 이동
+        // 관성 기반 좌우 움직임
         if (InputManager.Instance.Horizon < 0)
         {
             StateMachine.PlayerFacingDirection = Char.LREnum.Left;
@@ -100,5 +102,12 @@ public partial class WallApex : SubState
         velocity.Y += (float)(Player.Gravity * delta * Player.GravityCoefficient_Apex);
 
         Player.Velocity = velocity;
+
+        // SuperState(Airborne)의 물리는 반영하지 않음.
+    }
+
+    public override void HandlePressedEvent(StringName action)
+    {
+        SuperState.HandlePressedEvent(action);
     }
 }

@@ -1,19 +1,23 @@
 using Godot;
 using System;
 
-public partial class Walk : SubState
+public partial class Walk : State
 {
     public override void Enter()
     {
         Player.Animation.Play("Walk");
+        StateMachine.AttachedToPlatform();
     }
 
     public override void HandleTransState(double delta)
     {
         if (InputManager.Instance.Horizon == 0)
         {
-            StateMachine.TransState(SuperState_Move.Grounded, State_Move.Idle);
+            StateMachine.TransState(State_Move.Idle);
+            return;
         }
+
+        SuperState.HandleTransState(delta);
     }
 
     public override void HandlePhysics(double delta)
@@ -33,5 +37,10 @@ public partial class Walk : SubState
         }
 
         Player.Velocity = velocity;
+    }
+
+    public override void HandlePressedEvent(StringName action)
+    {
+        SuperState.HandlePressedEvent(action);
     }
 }

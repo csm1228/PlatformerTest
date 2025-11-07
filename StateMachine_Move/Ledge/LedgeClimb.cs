@@ -1,13 +1,15 @@
 using Godot;
 using System;
 
-public partial class LedgeClimb : SubState
+public partial class LedgeClimb : State
 {
+    // SuperState 없음
+
     public override void Enter()
     {
-        StateMachine.CheckWallDirection();
+        StateMachine.AttachedToPlatform();
 
-        Player.Animation.Play("Wall_Climb");
+        Player.Animation.Play("Ledge_Climb");
 
         StateMachine.CheckLedgeDirection();
 
@@ -33,7 +35,7 @@ public partial class LedgeClimb : SubState
         }
         else if (Player.JumpBuffer > 0)
         {
-            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Jump);
+            StateMachine.TransState(State_Move.Jump);
             return;
         }
     }
@@ -61,5 +63,14 @@ public partial class LedgeClimb : SubState
         }
 
         Player.Velocity = velocity;
+    }
+
+    public override void HandlePressedEvent(StringName action)
+    {
+        if (action == GamepadInput.Face_Down)
+        {
+            StateMachine.TransState(State_Move.Jump);
+            return;
+        }
     }
 }

@@ -1,8 +1,10 @@
 using Godot;
 using System;
 
-public partial class DashGrounded : SubState
+public partial class DashGrounded : State
 {
+    // SuperState 없음.
+
     [Export] private Timer DashTimer { get; set; }
 
     public override void Enter()
@@ -48,12 +50,12 @@ public partial class DashGrounded : SubState
             {
                 if (InputManager.Instance.Horizon > 0 && StateMachine.ActionDirection == Char.LREnum.Left || InputManager.Instance.Horizon < 0 && StateMachine.ActionDirection == Char.LREnum.Right)
                 {
-                    StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Decel);
+                    StateMachine.TransState(State_Move.Sprint_Decel);
                     return;
                 }
                 else
                 {
-                    StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Grounded);
+                    StateMachine.TransState(State_Move.Sprint_Grounded);
                     return;
                 }
 
@@ -70,7 +72,7 @@ public partial class DashGrounded : SubState
 
             if (StateMachine.HoldingLedgeDirection == StateMachine.ActionDirection)
             {
-                StateMachine.TransState(SuperState_Move.Ledge, State_Move.Ledge_Grab);
+                StateMachine.TransState(State_Move.Ledge_Climb);
                 return;
             }
         }
@@ -80,13 +82,13 @@ public partial class DashGrounded : SubState
 
             if (StateMachine.HoldingWallDirection == StateMachine.ActionDirection)
             {
-                StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
+                StateMachine.TransState(State_Move.Wall_Hold);
                 return;
             }
         }
         else
         {
-            StateMachine.TransState(SuperState_Move.Dash, State_Move.Dash_Fall);
+            StateMachine.TransState(State_Move.Dash_Fall);
             return;
         }
     }
@@ -120,7 +122,7 @@ public partial class DashGrounded : SubState
         // 지상 대쉬 중 점프 시, 달리기 점프로 전환 -> 짧은 플랫폼에서 발생하는 문제 해결
         if (action == GamepadInput.Face_Down)
         {
-            StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Jump);
+            StateMachine.TransState(State_Move.Sprint_Jump);
             return;
         }
     }

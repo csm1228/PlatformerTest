@@ -1,10 +1,13 @@
 using Godot;
 using System;
 
-public partial class SprintGrounded : SubState
+public partial class SprintGrounded : State
 {
     public override void Enter()
     {
+
+        StateMachine.AttachedToPlatform();
+
         Player.Animation.Play("Sprint_Grounded");
 
         Vector2 velocity = Player.Velocity;
@@ -44,23 +47,23 @@ public partial class SprintGrounded : SubState
     {
         if (StateMachine.IsOnWall())
         {
-            StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Bump);
+            StateMachine.TransState(State_Move.Sprint_Bump);
             return;
         }
         else if (!Player.IsOnFloor())
         {
-            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
+            StateMachine.TransState(State_Move.Fall);
             return;
         }
         else if (StateMachine.ActionDirection == Char.LREnum.Left && InputManager.Instance.Horizon > 0)
         {
-            StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Decel);
+            StateMachine.TransState(State_Move.Sprint_Decel);
             return;
 
         }
         else if (StateMachine.ActionDirection == Char.LREnum.Right && InputManager.Instance.Horizon < 0)
         {
-            StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Decel);
+            StateMachine.TransState(State_Move.Sprint_Decel);
             return;
         }
     }
@@ -69,7 +72,7 @@ public partial class SprintGrounded : SubState
     {
         if (action == GamepadInput.Face_Down && Player.IsOnFloor())
         {
-            StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Jump);
+            StateMachine.TransState(State_Move.Sprint_Jump);
             return;
         }
     }
@@ -80,13 +83,13 @@ public partial class SprintGrounded : SubState
         {
             if (InputManager.Instance.Horizon == 0)
             {
-                StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Decel);
+                StateMachine.TransState(State_Move.Sprint_Decel);
                 return;
             }
 
             else if (StateMachine.ActionDirection == Char.LREnum.Left && InputManager.Instance.Horizon < 0 || StateMachine.ActionDirection == Char.LREnum.Right && InputManager.Instance.Horizon > 0)
             {
-                StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Decel);
+                StateMachine.TransState(State_Move.Sprint_Decel);
                 return;
 
             }

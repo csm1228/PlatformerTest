@@ -1,8 +1,10 @@
 using Godot;
 using System;
 
-public partial class SprintBump : SubState
+public partial class SprintBump : State
 {
+    // SuperState 없음
+
     [Export] private Vector2I StartVector { get; set; }
     [Export] private Vector2I TargetVector { get; set; }
     [Export] private float LerfCoefficient { get; set; }
@@ -25,11 +27,6 @@ public partial class SprintBump : SubState
         BumpTimer.Start();
     }
 
-    public override void HandleTransState(double delta)
-    {
-
-    }
-
     public override void HandlePhysics(double delta)
     {
         Vector2 velocity = Player.Velocity;
@@ -48,7 +45,7 @@ public partial class SprintBump : SubState
         }
         else
         {
-            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
+            StateMachine.TransState(State_Move.Fall);
             return;
         }
     }

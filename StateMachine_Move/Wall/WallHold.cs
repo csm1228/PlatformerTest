@@ -3,7 +3,7 @@ using System;
 using System.Runtime.CompilerServices;
 using static System.Collections.Specialized.BitVector32;
 
-public partial class WallHold : SubState
+public partial class WallHold : State
 {
     public override void Enter()
     {
@@ -29,24 +29,21 @@ public partial class WallHold : SubState
         Player.Animation.Play("Wall_Hold");
     }
 
-    public override void Exit()
-    {
-
-    }
-
     public override void HandleTransState(double delta)
     {
         if (InputManager.Instance.Vertical < 0)
         {
-            StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Climb);
+            StateMachine.TransState(State_Move.Wall_Climb);
             return;
         }
 
         else if (InputManager.Instance.Horizon == 0)
         {
-            StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Slipper);
+            StateMachine.TransState(State_Move.Wall_Slipper);
             return;
         }
+
+        SuperState.HandleTransState(delta);
     }
 
     public override void HandlePhysics(double delta)
@@ -69,12 +66,6 @@ public partial class WallHold : SubState
 
     public override void HandlePressedEvent(StringName action)
     {
-
-    }
-
-    public override void HandleReleasedEvent(StringName action)
-    {
-
-        
+        SuperState.HandlePressedEvent(action);
     }
 }

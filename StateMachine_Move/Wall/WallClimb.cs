@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class WallClimb : SubState
+public partial class WallClimb : State
 {
     public override void Enter()
     {
@@ -33,15 +33,17 @@ public partial class WallClimb : SubState
         {
             if (InputManager.Instance.Horizon == 0)
             {
-                StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Slipper);
+                StateMachine.TransState(State_Move.Wall_Slipper);
                 return;
             }
             else
             {
-                StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
+                StateMachine.TransState(State_Move.Wall_Hold);
                 return;
             }
         }
+
+        SuperState.HandleTransState(delta);
     }
 
     public override void HandlePhysics(double delta)
@@ -68,11 +70,16 @@ public partial class WallClimb : SubState
         Player.Velocity = velocity;
     }
 
+    public override void HandlePressedEvent(StringName action)
+    {
+        SuperState.HandlePressedEvent(action);
+    }
+
     public override void HandleReleasedEvent(StringName action)
     {
         if (action == GamepadInput.Up)
         {
-            StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
+            StateMachine.TransState(State_Move.Wall_Hold);
             return;
         }
     }

@@ -1,18 +1,13 @@
 using Godot;
 using System;
 
-public partial class SuperState : State
+public partial class SuperState : Node
 {
-    public SubState CurrentSubState;
+    [Export] public StateMachine_Move StateMachine { get; private set; }
+    [Export] public Char Player { get; private set; }
 
-    public void TransSubState(string stateName)
-    {
-        SubState newState = GetNode<SubState>(stateName);
-        if (newState == null || newState == CurrentSubState)
-        {
-            return;
-        }
-
-        CurrentSubState = newState;
-    }
+    public virtual void HandleTransState(double delta) { }
+    public virtual void HandlePhysics(double delta) { }
+    public virtual void HandlePressedEvent(StringName action) { }
+    public virtual void HandleReleasedEvent(StringName action) { }
 }

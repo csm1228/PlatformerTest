@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Apex : SubState
+public partial class Apex : State
 {
     [Export] Timer ApexTimer { get; set; }
 
@@ -21,7 +21,7 @@ public partial class Apex : SubState
     {
         if (Player.IsOnCeiling())
         {
-            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
+            StateMachine.TransState(State_Move.Fall);
             return;
         }
         else if (StateMachine.IsOnLedge())
@@ -30,7 +30,7 @@ public partial class Apex : SubState
 
             if (StateMachine.HoldingLedgeDirection == Char.LREnum.Left && InputManager.Instance.Horizon < 0 || StateMachine.HoldingLedgeDirection == Char.LREnum.Right && InputManager.Instance.Horizon > 0)
             {
-                StateMachine.TransState(SuperState_Move.Ledge, State_Move.Ledge_Grab);
+                StateMachine.TransState(State_Move.Ledge_Climb);
                 return;
             }
         }
@@ -40,39 +40,33 @@ public partial class Apex : SubState
 
             if (StateMachine.HoldingWallDirection == Char.LREnum.Left && InputManager.Instance.Horizon < 0 || StateMachine.HoldingWallDirection == Char.LREnum.Right && InputManager.Instance.Horizon > 0)
             {
-                StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
+                StateMachine.TransState(State_Move.Wall_Hold);
                 return;
             }
         }
+
+        SuperState.HandleTransState(delta);
     }
 
     private void _on_apex_timer_timeout()
     {
-        StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
-        return;
+        StateMachine.TransState(State_Move.Fall);
     }
 
     public override void HandlePhysics(double delta)
     {
         Vector2 velocity = Player.Velocity;
 
-        // 조작 방향대로 수평 이동
-        if (InputManager.Instance.Horizon < 0)
-        {
-            velocity.X = -Player.WalkSpeed;
-        }
-        else if (InputManager.Instance.Horizon > 0)
-        {
-            velocity.X = Player.WalkSpeed;
-        }
-        else
-        {
-            velocity.X = 0;
-        }
-
         // 수직 속도가 점차 감소. 점프보다 더 빠르게 감소함.
         velocity.Y += (float)(Player.Gravity * delta * Player.GravityCoefficient_Apex);
 
         Player.Velocity = velocity;
+
+        SuperState.HandlePhysics(delta);
+    }
+
+    public override void HandlePressedEvent(StringName action)
+    {
+        SuperState.HandlePressedEvent(action);
     }
 }

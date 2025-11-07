@@ -1,14 +1,17 @@
 using Godot;
 using System;
 
-public partial class DashInAir : SubState
+public partial class DashInAir : State
 {
+    // SuperState 없음.
+
     [Export] private Timer DashTimer { get; set; }
 
     public override void Enter()
     {
         // 공중 대쉬는 대쉬 가능 여부만 검토
         StateMachine.CanDash = false;
+        StateMachine.CooldownManager.StartCooling_Dash();
 
         Player.Animation.Play("Dash_InAir");
 
@@ -33,7 +36,6 @@ public partial class DashInAir : SubState
             }
         }
 
-        // Enter에서 ActionDirection을 결정하지 않음.
         if (StateMachine.ActionDirection == Char.LREnum.Left)
         {
             velocity.X = -Player.DashSpeed;
@@ -61,7 +63,7 @@ public partial class DashInAir : SubState
         {
             if (Input.IsActionPressed(GamepadInput.RT))
             {
-                StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Grounded);
+                StateMachine.TransState(State_Move.Sprint_Grounded);
                 return;
             }
             else
@@ -76,7 +78,7 @@ public partial class DashInAir : SubState
 
             if (StateMachine.HoldingLedgeDirection == StateMachine.ActionDirection)
             {
-                StateMachine.TransState(SuperState_Move.Ledge, State_Move.Ledge_Grab);
+                StateMachine.TransState(State_Move.Ledge_Climb);
                 return;
             }
         }
@@ -86,7 +88,7 @@ public partial class DashInAir : SubState
 
             if (StateMachine.HoldingWallDirection == StateMachine.ActionDirection)
             {
-                StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
+                StateMachine.TransState(State_Move.Wall_Hold);
                 return;
             }
         }
@@ -96,14 +98,14 @@ public partial class DashInAir : SubState
     {
         if (!Player.IsOnFloor() && !Player.IsOnWall())
         {
-            StateMachine.TransState(SuperState_Move.Dash, State_Move.Dash_Fall);
+            StateMachine.TransState(State_Move.Dash_Fall);
             return;
         }
         else if (Player.IsOnFloor())
         {
             if (Input.IsActionPressed(GamepadInput.RT))
             {
-                StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Grounded);
+                StateMachine.TransState(State_Move.Sprint_Grounded);
                 return;
             }
             else

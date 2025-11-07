@@ -4,22 +4,6 @@ using System.Runtime.CompilerServices;
 
 public partial class Airborne : SuperState
 {
-    [Export] private SubState Jump { get; set; }
-    [Export] private SubState Apex { get; set; }
-    [Export] private SubState Fall { get; set; }
-
-    public override void Enter()
-    {
-        InputManager.Instance.ActionPressed += HandlePressedEvent;
-        InputManager.Instance.ActionReleased += HandleReleasedEvent;
-    }
-
-    public override void Exit()
-    {
-        InputManager.Instance.ActionPressed -= HandlePressedEvent;
-        InputManager.Instance.ActionReleased -= HandleReleasedEvent;
-    }
-
     public override void HandleTransState(double delta)
     {
         // 착지 시점에 입력에 따라 상태 변경
@@ -27,7 +11,7 @@ public partial class Airborne : SuperState
         {
             if (Input.IsActionPressed(GamepadInput.RT))
             {
-                StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Grounded);
+                StateMachine.TransState(State_Move.Sprint_Grounded);
                 return;
             }
             else
@@ -36,22 +20,28 @@ public partial class Airborne : SuperState
                 return;
             }
         }
-
-        CurrentSubState.HandleTransState(delta);
     }
 
     public override void HandlePhysics(double delta)
     {
+        Vector2 velocity = Player.Velocity;
+
         if (InputManager.Instance.Horizon < 0)
         {
             StateMachine.PlayerFacingDirection = Char.LREnum.Left;
+            velocity.X = -Player.WalkSpeed;
         }
         else if(InputManager.Instance.Horizon > 0)
         {
             StateMachine.PlayerFacingDirection = Char.LREnum.Right;
+            velocity.X = Player.WalkSpeed;
+        }
+        else if (InputManager.Instance.Horizon == 0)
+        {
+            velocity.X = 0;
         }
 
-        CurrentSubState.HandlePhysics(delta);
+        Player.Velocity = velocity;
     }
 
     public override void HandlePressedEvent(StringName action)
@@ -62,16 +52,9 @@ public partial class Airborne : SuperState
             if (StateMachine.CanDash)
             {
                 StateMachine.FixActionDirection();
-                StateMachine.TransState(SuperState_Move.Dash, State_Move.Dash_InAir);
+                StateMachine.TransState(State_Move.Dash_InAir);
                 return;
             }
         }
-
-        CurrentSubState.HandlePressedEvent(action);
-    }
-
-    public override void HandleReleasedEvent(StringName action)
-    {
-        CurrentSubState.HandleReleasedEvent(action);
     }
 }

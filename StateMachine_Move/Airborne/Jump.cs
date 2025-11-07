@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Jump : SubState
+public partial class Jump : State
 {
     [Export] Timer MaxJumpTime { get; set; }
 
@@ -17,7 +17,6 @@ public partial class Jump : SubState
 
         Player.Animation.Play("Jump");
 
-
         // 점프 타이머 시작
         MaxJumpTime.Start();
     }
@@ -31,51 +30,46 @@ public partial class Jump : SubState
     {
         if (Player.IsOnCeiling())
         {
-            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
+            StateMachine.TransState(State_Move.Fall);
             return;
         }
         else if (!Input.IsActionPressed(GamepadInput.Face_Down))
         {
-            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Apex);
+            StateMachine.TransState(State_Move.Apex);
             return;
         }
+
+        SuperState.HandleTransState(delta);
     }
 
     private void _on_max_jump_time_timeout()
     {
-        StateMachine.TransState(SuperState_Move.Airborne, State_Move.Apex);
+        StateMachine.TransState(State_Move.Apex);
     }
 
     public override void HandlePhysics(double delta)
     {
         Vector2 velocity = Player.Velocity;
 
-        // 조작 방향대로 수평 이동
-        if (InputManager.Instance.Horizon < 0)
-        {
-            velocity.X = -Player.WalkSpeed;
-        }
-        else if (InputManager.Instance.Horizon > 0)
-        {
-            velocity.X = Player.WalkSpeed;
-        }
-        else
-        {
-            velocity.X = 0;
-        }
-
         // 수직 상승 속도 점차 감소
         velocity.Y += (float)(Player.Gravity * delta * Player.GravityCoefficient_Jump);
 
         Player.Velocity = velocity;
+
+        SuperState.HandlePhysics(delta);
     }
 
     public override void HandleReleasedEvent(StringName action)
     {
         if (action == GamepadInput.Face_Down) // 점프 키 떼면 점프 중단. 가변 점프
         {
-            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Apex);
+            StateMachine.TransState(State_Move.Apex);
             return;
         }
+    } 
+
+    public override void HandlePressedEvent(StringName action)
+    {
+        SuperState.HandlePressedEvent(action);
     }
 }

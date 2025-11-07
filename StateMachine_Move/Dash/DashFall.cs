@@ -1,8 +1,11 @@
 using Godot;
 using System;
 
-public partial class DashFall : SubState
+public partial class DashFall : State
 {
+    // SuperState 없음.
+    // 삭제 고려중.
+
     [Export] Timer DashFallTimer { get; set; }
 
     public override void Enter()
@@ -21,7 +24,7 @@ public partial class DashFall : SubState
 
     private void _on_dash_fall_timer_timeout()
     {
-        StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
+        StateMachine.TransState(State_Move.Fall);
         return;
     }
 
@@ -31,7 +34,7 @@ public partial class DashFall : SubState
         {
             if (Input.IsActionPressed(GamepadInput.RT))
             {
-                StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Grounded);
+                StateMachine.TransState(State_Move.Sprint_Grounded);
                 return;
             }
             else
@@ -46,7 +49,7 @@ public partial class DashFall : SubState
 
             if (StateMachine.HoldingLedgeDirection == StateMachine.ActionDirection)
             {
-                StateMachine.TransState(SuperState_Move.Ledge, State_Move.Ledge_Grab);
+                StateMachine.TransState(State_Move.Ledge_Climb);
                 return;
             }
         }
@@ -56,7 +59,7 @@ public partial class DashFall : SubState
 
             if (StateMachine.HoldingWallDirection == StateMachine.ActionDirection)
             {
-                StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
+                StateMachine.TransState(State_Move.Wall_Hold);
                 return;
             }
         }

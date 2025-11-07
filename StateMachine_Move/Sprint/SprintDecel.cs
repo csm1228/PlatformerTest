@@ -1,13 +1,16 @@
 using Godot;
 using System;
 
-public partial class SprintDecel : SubState
+public partial class SprintDecel : State
 {
     [Export] Timer SprintDecelTimer { get; set; }
 
 
     public override void Enter()
     {
+
+        StateMachine.AttachedToPlatform();
+
         Player.Animation.Play("Sprint_Decel");
 
         SprintDecelTimer.Start();
@@ -21,23 +24,20 @@ public partial class SprintDecel : SubState
 
     public override void HandleTransState(double delta)
     {
-        if (!Player.IsOnFloor())
-        {
-            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
-            return;
-        }
         if (StateMachine.IsOnWall())
         {
-            StateMachine.TransState(SuperState_Move.Grounded, State_Move.Idle);
+            StateMachine.TransState(State_Move.Idle);
             return;
         }
+
+        SuperState.HandleTransState(delta);
     }
 
     private void _on_sprint_decel_timer_timeout()
     {
         if (Input.IsActionPressed(GamepadInput.RT))
         {
-            StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Grounded);
+            StateMachine.TransState(State_Move.Sprint_Grounded);
             return;
         }
         else
@@ -75,27 +75,12 @@ public partial class SprintDecel : SubState
         {
             StateMachine.ActionDirection = Char.LREnum.Left;
         }
+
+        //SuperState(Grounded)의 물리를 반영하지 않음
     }
 
     public override void HandlePressedEvent(StringName action)
     {
-        if (action == GamepadInput.Face_Down)
-        {
-            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Jump);
-            return;
-        }
-        else if (action == GamepadInput.RT)
-        {
-            if (StateMachine.CooldownManager.IsDashReady)
-            {
-                StateMachine.TransState(SuperState_Move.Dash, State_Move.Dash_Grounded);
-                return;
-            }
-            else
-            {
-                StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Grounded);
-                return;
-            }
-        }
+        SuperState.HandlePressedEvent(action);
     }
 }

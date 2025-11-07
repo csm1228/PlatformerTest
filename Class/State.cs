@@ -1,15 +1,22 @@
 using Godot;
 using System;
 
-public partial class State : Node
+public partial class State : SuperState
 {
-    [Export] public StateMachine_Move StateMachine { get; set; }
-    [Export] public Char Player { get; set; }
+    [Export] public SuperState SuperState { get; private set; } = null;
     [Export] public AnimatedSprite2D Sprite { get; set; }
+
+    public void ConnectEventSignal()
+    {
+        InputManager.Instance.ActionPressed += HandlePressedEvent;
+        InputManager.Instance.ActionReleased += HandleReleasedEvent;
+    }
+
+    public void DisconnectEventSignal()
+    {
+        InputManager.Instance.ActionPressed -= HandlePressedEvent;
+        InputManager.Instance.ActionReleased -= HandleReleasedEvent;
+    }
     public virtual void Enter() { }
     public virtual void Exit() { }
-    public virtual void HandleTransState(double delta) { }
-    public virtual void HandlePhysics(double delta) { }
-    public virtual void HandlePressedEvent(StringName action) { }
-    public virtual void HandleReleasedEvent(StringName action) { }
 }

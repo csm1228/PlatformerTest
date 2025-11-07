@@ -1,13 +1,15 @@
 using Godot;
 using System;
 
-public partial class SprintApex : SubState
+public partial class SprintApex : State
 {
     [Export] Timer SprintApexTimer { get; set; }
 
     public override void Enter()
     {
         SprintApexTimer.Start();
+
+        Player.Animation.Play("Sprint_Apex");
     }
 
     public override void Exit()
@@ -19,29 +21,26 @@ public partial class SprintApex : SubState
     {
         if (Player.IsOnCeiling())
         {
-            StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
-            return;
-        }
-        else if (Player.IsOnFloor())
-        {
-            StateMachine.TransState(SuperState_Move.Sprint, State_Move.Sprint_Grounded);
+            StateMachine.TransState(State_Move.Fall);
             return;
         }
         else if (StateMachine.IsOnLedge())
         {
-            StateMachine.TransState(SuperState_Move.Ledge, State_Move.Ledge_Climb);
+            StateMachine.TransState(State_Move.Ledge_Climb);
             return;
         }
         else if (StateMachine.IsOnWall())
         {
-            StateMachine.TransState(SuperState_Move.Wall, State_Move.Wall_Hold);
+            StateMachine.TransState(State_Move.Wall_Hold);
             return;
         }
+
+        SuperState.HandleTransState(delta);
     }
 
     private void _on_sprint_apex_timer_timeout()
     {
-        StateMachine.TransState(SuperState_Move.Airborne, State_Move.Fall);
+        StateMachine.TransState(State_Move.Fall);
         return;
     }
 
@@ -67,17 +66,12 @@ public partial class SprintApex : SubState
         velocity.Y += (float)(Player.Gravity * delta * Player.GravityCoefficient_Apex);
 
         Player.Velocity = velocity;
+
+        // SuperState(Airborne)의 물리를 반영하지 않음
     }
 
     public override void HandlePressedEvent(StringName action)
     {
-        if (action == GamepadInput.RT)
-        {
-            if (StateMachine.CanDash)
-            {
-                StateMachine.TransState(SuperState_Move.Dash, State_Move.Dash_InAir);
-                return;
-            }
-        }
+        SuperState.HandlePressedEvent(action);
     }
 }
