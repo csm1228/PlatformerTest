@@ -4,6 +4,10 @@ using System.Runtime.CompilerServices;
 
 public partial class WallSlipper : State
 {
+    // SuperState : Wall - 벽에 붙어있는 상태.
+    // HandleTranState, HandlePressEvent 호출
+    // 땅에 닿았을 때 지상 상태로 전환, 벽에 사라지거나 벽 반대 방향으로 입력 시 Fall 상태로 전환, 점프 버퍼가 있거나 점프 입력 시 WallJump로 전환한다.
+
     public override void Enter()
     {
         Vector2 velocity = Player.Velocity;

@@ -3,6 +3,10 @@ using System;
 
 public partial class Idle : State
 {
+    // SuperState : Grounded - 지상에 붙어있는 상태.
+    // SuperState의 HandleTransState, HandlePressedEvent 호출
+    // 점프 버퍼 or 점프 입력 -> Jump로 전환, 땅에 붙어있지 않으면 Fall로 전환
+
     public override void Enter()
     {
         Player.Animation.Play("Idle");

@@ -3,6 +3,11 @@ using System;
 
 public partial class Apex : State
 {
+    // SuperState : Airborne - 공중에 떠 있는 상태.
+    // HandleTranState, HandlePressEvent 호출
+    // 땅에 닿으면 Sprint_Grounded/Walk/Idle로 전환, RT 입력 시 공중 대쉬
+    // HandlePhysics 호출 -> 좌우 입력으로 자유롭게 수평 이동 가능.
+
     [Export] Timer ApexTimer { get; set; }
 
     public override void Enter()

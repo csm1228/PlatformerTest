@@ -3,6 +3,9 @@ using System;
 
 public partial class Ground : SuperState
 {
+    // SuperState : Grounded
+    // 점프 버퍼 or 점프 입력 -> Jump로 전환, 땅에 붙어있지 않으면 Fall로 전환
+
     public override void HandleTransState(double delta)
     {
         // 점프 버퍼 검사

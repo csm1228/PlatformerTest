@@ -3,6 +3,11 @@ using System;
 
 public partial class SprintJump : State
 {
+    // SuperState : Airborne - 공중에 떠 있는 상태.
+    // HandleTranState, HandlePressEvent 호출
+    // 땅에 닿으면 Sprint_Grounded/Walk/Idle로 전환, RT 입력 시 공중 대쉬
+    // HandlePhysics 호출 X. 자체 물리 사용
+
     [Export] Timer MaxJumpTime { get; set; }
 
     public override void Enter()

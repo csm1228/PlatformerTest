@@ -51,7 +51,44 @@ public partial class StateMachine_Move : Node
     [Export] Char Player { get; set; }
     public State CurrentState { get; private set; }
 
-    [Export] public CoolDownManager CooldownManager { get; set; }
+    [Export] public CoolDownManager CooldownManager { get; private set; }
+
+    [Export] public float WalkSpeed { get; private set; }
+    [Export] public float DashSpeed { get; private set; }
+    [Export] public float SprintSpeed { get; private set; }
+
+
+    [Export] public float Gravity { get; private set; }
+    [Export] public float JumpSpeed { get; private set; }
+    [Export] public float MaxFallSpeed { get; private set; }
+    [Export] public float ClimbSpeed { get; private set; }
+
+
+
+    [Export] public float GravityCoefficient_Jump { get; private set; }
+    [Export] public float GravityCoefficient_Apex { get; private set; }
+    [Export] public float GravityCoefficient_Fall { get; private set; }
+
+    [Export] public float WallSlipperSpeed { get; private set; }
+
+    [Export] public float WallJumpSpeed { get; private set; }
+    [Export] public float WallJumpDelta { get; private set; }
+
+    [Export] public float WallApexDelta { get; private set; }
+
+    [Export] public float SprintJumpDelta { get; private set; }
+    [Export] public float SprintApexDelta { get; private set; }
+
+    [Export] public float SprintDecelDelta { get; private set; }
+
+    [Export] public double InputBuffer { get; private set; }
+
+    [Export] public float HorizonInertia { get; private set; }
+    public double JumpBuffer { get; private set; } = 0.0;
+
+    [Export] public float DashInAirDelta { get; private set; }
+    [Export] public float DashInAirRise { get; private set; }
+
 
     public bool CanDash = true;
     public bool CanDoubleJump = true;

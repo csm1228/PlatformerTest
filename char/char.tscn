@@ -67,6 +67,8 @@ RayCast_Wall_Left = NodePath("RayCast_Wall/RayCast_Wall_Left")
 RayCast_Wall_Right = NodePath("RayCast_Wall/RayCast_Wall_Right")
 Animation = NodePath("AnimatedSprite2D")
 
+[node name="Stats" type="Node" parent="."]
+
 [node name="DebugLabels" type="Control" parent="." node_paths=PackedStringArray("Player", "StateMachine_Move", "DebugLabel_State")]
 z_index = 2
 layout_mode = 3
@@ -319,6 +321,8 @@ Player = NodePath("../../..")
 
 [node name="StateMachine_Action" type="Node" parent="."]
 script = ExtResource("33_tkjkc")
+
+[node name="Attack" type="Node" parent="StateMachine_Action"]
 
 [node name="CoolDownManager" type="Node" parent="." node_paths=PackedStringArray("DashCooldownTimer")]
 script = ExtResource("4_ncbi3")

@@ -4,6 +4,10 @@ using System.Runtime.CompilerServices;
 
 public partial class Airborne : SuperState
 {
+    // SuperState : Airborne - 공중에 떠 있는 상태.
+    // 땅에 닿으면 Sprint_Grounded/Walk/Idle로 전환, RT 입력 시 공중 대쉬
+    // HandlePhysics 호출 시, 좌우로 자유롭게 이동 가능.
+
     public override void HandleTransState(double delta)
     {
         // 착지 시점에 입력에 따라 상태 변경

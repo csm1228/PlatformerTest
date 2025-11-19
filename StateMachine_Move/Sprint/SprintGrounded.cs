@@ -3,9 +3,10 @@ using System;
 
 public partial class SprintGrounded : State
 {
+    //  SuperState 없음
+
     public override void Enter()
     {
-
         StateMachine.AttachedToPlatform();
 
         Player.Animation.Play("Sprint_Grounded");
