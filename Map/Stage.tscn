@@ -1,0 +1,632 @@
+[gd_scene load_steps=36 format=3 uid="uid://dsy5f3f26k2og"]
+
+[ext_resource type="Texture2D" uid="uid://dggx5kr32bu6d" path="res://resources/thumbnail.png" id="1_yd2ji"]
+[ext_resource type="Script" uid="uid://ckrvmdrlvsuwx" path="res://Map/UnlockObject.cs" id="2_7rkdf"]
+[ext_resource type="PackedScene" uid="uid://b5eprdmojefkx" path="res://char/char.tscn" id="5_ab4so"]
+[ext_resource type="Script" uid="uid://cwgasjs6ohkgm" path="res://Camera2d.cs" id="6_qs11g"]
+[ext_resource type="LabelSettings" uid="uid://b01oye3mqeqsv" path="res://resources/Theme/Descriptions.tres" id="7_mbmqb"]
+[ext_resource type="Script" uid="uid://dn3s1j8jm2ixx" path="res://FpsLabel.cs" id="8_1wdv8"]
+[ext_resource type="Script" uid="uid://c56y46567u5p5" path="res://ResolutionButton.cs" id="9_djirn"]
+[ext_resource type="Script" uid="uid://c01760fnx2bvf" path="res://Map/Ui.cs" id="10_6j3f5"]
+[ext_resource type="PackedScene" uid="uid://bclpexj2wtuxe" path="res://Map/map_ui.tscn" id="11_6j3f5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yd2ji"]
+size = Vector2(3488.25, 548.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7rkdf"]
+size = Vector2(2445, 1182)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kdxec"]
+size = Vector2(1078, 1679)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6j3f5"]
+size = Vector2(666.99365, 184.6206)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ugrb4"]
+size = Vector2(6892, 3062)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qs11g"]
+size = Vector2(10873.506, 3718)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mbmqb"]
+size = Vector2(5374.5, 154.99997)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1wdv8"]
+size = Vector2(653.7468, 179.2069)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_djirn"]
+size = Vector2(674.24365, 183.90515)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b2v31"]
+size = Vector2(713.4873, 169.40521)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qp4lk"]
+size = Vector2(4804, 1221.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ab4so"]
+size = Vector2(7184, 4686)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6wn1n"]
+size = Vector2(877.9995, 2237.9053)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_idgwo"]
+size = Vector2(4419.377, 469.28894)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_krx25"]
+size = Vector2(3358.4968, 622.8103)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cyfe8"]
+size = Vector2(2298.4873, 711.8103)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rjtu6"]
+size = Vector2(667.6831, 177.26636)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2ghbe"]
+size = Vector2(2555, 354.4972)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dk636"]
+size = Vector2(3437.1025, 7641.116)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rahdf"]
+size = Vector2(4666, 17071.223)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gt2lt"]
+size = Vector2(425.53033, 356.29596)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_um1gb"]
+size = Vector2(139.20532, 2185)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j276l"]
+size = Vector2(112, 2531)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5go0j"]
+size = Vector2(101, 1143)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uesv1"]
+size = Vector2(111.5, 112)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4e3bk"]
+size = Vector2(199.1897, 253.30518)
+
+[node name="Map" type="Node2D"]
+
+[node name="Map" type="Node2D" parent="."]
+
+[node name="Terrain" type="StaticBody2D" parent="Map"]
+editor_description = "5 : 그냥 지형
+6 : 평평한 벽
+7 : 렛지
+8 : 물"
+position = Vector2(2121.0254, 1644.6206)
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/Terrain"]
+position = Vector2(-2042.1504, -1210.6206)
+shape = SubResource("RectangleShape2D_yd2ji")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Map/Terrain"]
+position = Vector2(828.5071, -1268.6206)
+shape = SubResource("RectangleShape2D_7rkdf")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Map/Terrain"]
+position = Vector2(-4263.0254, -1776.1206)
+shape = SubResource("RectangleShape2D_kdxec")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Map/Terrain"]
+position = Vector2(1147.0071, 3.3793945)
+polygon = PackedVector2Array(-250.025, -1800, 904, -915, 994, -1413, 1199, -1830, 1398.9675, -1971, 1500, -2100, 277.975, -2100)
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Map/Terrain"]
+position = Vector2(3852.9746, -1297.6206)
+shape = SubResource("RectangleShape2D_6j3f5")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="Map/Terrain"]
+position = Vector2(4544.9746, 2777.3794)
+shape = SubResource("RectangleShape2D_ugrb4")
+
+[node name="CollisionShape2D7" type="CollisionShape2D" parent="Map/Terrain"]
+position = Vector2(-8440.272, 1542.3794)
+shape = SubResource("RectangleShape2D_qs11g")
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Map/Terrain"]
+position = Vector2(-286.0254, 1861.3794)
+polygon = PackedVector2Array(391, -1092, 776, -1092, 1922, -1979, 2337, -2539, -108, -2539, 140, -1603)
+
+[node name="CollisionShape2D8" type="CollisionShape2D" parent="Map/Terrain"]
+position = Vector2(7974.9746, -1955.6206)
+shape = SubResource("RectangleShape2D_mbmqb")
+
+[node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="Map/Terrain"]
+position = Vector2(5417.9746, 646.3794)
+polygon = PackedVector2Array(4367, -2005, 5212, -2540, 2341, -2539, -103, -2539, 1214, -2025, 3418, -1996, 3884, -1477, 3714, -1020, 4253, -1023, 4117, -1486)
+
+[node name="CollisionShape2D9" type="CollisionShape2D" parent="Map/Terrain"]
+position = Vector2(5044.9746, -657.6206)
+shape = SubResource("RectangleShape2D_1wdv8")
+
+[node name="CollisionShape2D10" type="CollisionShape2D" parent="Map/Terrain"]
+position = Vector2(4413.9746, 57.379395)
+shape = SubResource("RectangleShape2D_djirn")
+
+[node name="CollisionShape2D11" type="CollisionShape2D" parent="Map/Terrain"]
+position = Vector2(2603.9746, 688.3794)
+shape = SubResource("RectangleShape2D_b2v31")
+
+[node name="CollisionShape2D12" type="CollisionShape2D" parent="Map/Terrain"]
+position = Vector2(-1102.0254, 2818.3794)
+shape = SubResource("RectangleShape2D_qp4lk")
+
+[node name="CollisionPolygon2D4" type="CollisionPolygon2D" parent="Map/Terrain"]
+position = Vector2(324.9746, 3792.3794)
+polygon = PackedVector2Array(-1392, -1238, 1180, -1197, 774, -2546)
+
+[node name="CollisionPolygon2D5" type="CollisionPolygon2D" parent="Map/Terrain"]
+position = Vector2(6630.9746, 3940.3794)
+polygon = PackedVector2Array(1858, -2286, 1369, -4402, 365, -2272)
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="Map/Terrain"]
+position = Vector2(11591.975, 1881.3794)
+shape = SubResource("RectangleShape2D_ab4so")
+
+[node name="CollisionShape2D13" type="CollisionShape2D" parent="Map/Terrain"]
+position = Vector2(8060.9746, -4298.6206)
+shape = SubResource("RectangleShape2D_6wn1n")
+
+[node name="CollisionShape2D14" type="CollisionShape2D" parent="Map/Terrain"]
+position = Vector2(12714.286, -6410.976)
+shape = SubResource("RectangleShape2D_idgwo")
+
+[node name="CollisionPolygon2D6" type="CollisionPolygon2D" parent="Map/Terrain"]
+position = Vector2(10923.975, -306.6206)
+polygon = PackedVector2Array(4016, -6280, 1507, -6280, 2430, -2977, 2892, 224, 4089, 210)
+
+[node name="CollisionShape2D15" type="CollisionShape2D" parent="Map/Terrain"]
+position = Vector2(12347.727, -498.6206)
+shape = SubResource("RectangleShape2D_krx25")
+
+[node name="CollisionShape2D16" type="CollisionShape2D" parent="Map/Terrain"]
+position = Vector2(12722.219, -1100.7153)
+shape = SubResource("RectangleShape2D_cyfe8")
+
+[node name="CollisionPolygon2D7" type="CollisionPolygon2D" parent="Map/Terrain"]
+position = Vector2(-11065.025, 233.3794)
+polygon = PackedVector2Array(161, -241, 366, -1700, 915, -3571, 1731, -5747, 4486, -7379, 296, -7338)
+
+[node name="CollisionShape2D17" type="CollisionShape2D" parent="Map/Terrain"]
+position = Vector2(-8507.025, -1538.6206)
+shape = SubResource("RectangleShape2D_rjtu6")
+
+[node name="CollisionPolygon2D8" type="CollisionPolygon2D" parent="Map/Terrain"]
+position = Vector2(-7002.0254, -310.6206)
+polygon = PackedVector2Array(2049, -626, 2424, -626, 2386, -1973, -290, -1951, 133, -1638, 1179, -1302)
+
+[node name="CollisionShape2D18" type="CollisionShape2D" parent="Map/Terrain"]
+position = Vector2(-6014.5254, -2438.372)
+shape = SubResource("RectangleShape2D_2ghbe")
+
+[node name="CollisionShape2D19" type="CollisionShape2D" parent="Map/Terrain"]
+position = Vector2(-12134.475, -3312.1787)
+shape = SubResource("RectangleShape2D_dk636")
+
+[node name="CollisionPolygon2D9" type="CollisionPolygon2D" parent="Map/Terrain"]
+position = Vector2(11858.975, -6627.6206)
+polygon = PackedVector2Array(4016, -6280, -630, -6296, 2091, -2998, 2601, 164, 4089, 210, 4036.336, -4471.9785)
+
+[node name="CollisionShape2D20" type="CollisionShape2D" parent="Map/Terrain"]
+position = Vector2(17030.975, -4355.232)
+shape = SubResource("RectangleShape2D_rahdf")
+
+[node name="CollisionShape2D21" type="CollisionShape2D" parent="Map/Terrain"]
+position = Vector2(-181.26025, -2035.4727)
+shape = SubResource("RectangleShape2D_gt2lt")
+
+[node name="Polygon2D" type="Polygon2D" parent="Map/Terrain"]
+position = Vector2(-2121.0254, -1644.6206)
+color = Color(0.6105006, 0.45372212, 0.31134853, 1)
+polygon = PackedVector2Array(13352, -11281, 16071, -7977, 16549, -5005, 12624, -5004, 12626, -4532, 14666, -4532, 15740, 193, 21431, 5827, 21487, -11259)
+
+[node name="Polygon2D2" type="Polygon2D" parent="Map/Terrain"]
+position = Vector2(-2121.0254, -1644.6206)
+color = Color(0.6105006, 0.45372212, 0.31134853, 1)
+polygon = PackedVector2Array(16347, 186, 13694, 186, 13694, 835, 12790, 834, 12790, 1183, 10121, 1183, 9316, 2891, 3215, 2892, 1629, 3852, -882, 3852, -2648, 6450, 9348.143, 6066.247, 21391, 5681)
+
+[node name="Polygon2D3" type="Polygon2D" parent="Map/Terrain"]
+position = Vector2(-2121.0254, -1644.6206)
+color = Color(0.6105006, 0.45372212, 0.31134853, 1)
+polygon = PackedVector2Array(-4455, -5502, -7217, -3862, -8293, -788, -8295, 1328, -882, 1328, -877, 3904, -1234, 6218, -12783, 5458, -12015, -5743)
+
+[node name="Polygon2D4" type="Polygon2D" parent="Map/Terrain"]
+position = Vector2(-2121.0254, -1644.6206)
+color = Color(0.6105006, 0.45372212, 0.31134853, 1)
+polygon = PackedVector2Array(7408, -389, 7410, -235, 8753, 266, 10957, 293, 11419, 838, 11230, 1315, 11866, 1315, 11704, 797, 11912, 281, 12786, -235, 12786, -388)
+
+[node name="Polygon2D5" type="Polygon2D" parent="Map/Terrain"]
+position = Vector2(-2135.0254, -1640.6206)
+color = Color(0.6105006, 0.45372212, 0.31134853, 1)
+polygon = PackedVector2Array(-5157, -975, -5157, -621, -4735, -308, -3684, 30, -2818, 704, 1741, 705, 1741, 963, 1989, 1899, 2240, 2410, 2625, 2411, 3788, 1594, 4186, 962, 4188, 729, 4276, 231, 4481, -186, 4680, -325, 4782, -456, 3560, -456, 3144, -219, 2166, -219, 2166, -573, 1741, -574, 1742, 156, -1589, 156, -1588, -975)
+
+[node name="Polygon2D6" type="Polygon2D" parent="Map/Terrain"]
+position = Vector2(-2121.0254, -1644.6206)
+color = Color(0.6105006, 0.45372212, 0.31134853, 1)
+polygon = PackedVector2Array(9742, -3772, 10621, -3772, 10621, -1535, 9742, -1535)
+
+[node name="Polygon2D8" type="Polygon2D" parent="Map/Terrain"]
+position = Vector2(-4942.0254, 1962.3794)
+color = Color(0.6105006, 0.45372212, 0.31134853, 1)
+polygon = PackedVector2Array(9660, -2710, 9660, -2530, 10314, -2530, 10314, -2710)
+
+[node name="Polygon2D9" type="Polygon2D" parent="Map/Terrain"]
+position = Vector2(-5577.0254, 2674.3794)
+color = Color(0.6105006, 0.45372212, 0.31134853, 1)
+polygon = PackedVector2Array(9654, -2710, 9655, -2526, 10328, -2526, 10328, -2710)
+
+[node name="Polygon2D10" type="Polygon2D" parent="Map/Terrain"]
+position = Vector2(-7369.0254, 3311.3794)
+color = Color(0.6105006, 0.45372212, 0.31134853, 1)
+polygon = PackedVector2Array(9616, -2709, 9616, -2538, 10329, -2538, 10329, -2708)
+
+[node name="Polygon2D7" type="Polygon2D" parent="Map/Terrain"]
+position = Vector2(-6141.0254, 1320.3794)
+color = Color(0.6105006, 0.45372212, 0.31134853, 1)
+polygon = PackedVector2Array(9661, -2710, 9661, -2526, 10328, -2526, 10328, -2710)
+
+[node name="Polygon2D11" type="Polygon2D" parent="Map/Terrain"]
+position = Vector2(-18502.025, 1082.3794)
+color = Color(0.6105006, 0.45372212, 0.31134853, 1)
+polygon = PackedVector2Array(9661, -2710, 9661, -2526, 10328, -2526, 10328, -2710)
+
+[node name="FlatWall" type="StaticBody2D" parent="Map"]
+collision_layer = 32
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/FlatWall"]
+position = Vector2(10551.397, -2654)
+shape = SubResource("RectangleShape2D_um1gb")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Map/FlatWall"]
+position = Vector2(-938, 2593.5)
+shape = SubResource("RectangleShape2D_j276l")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Map/FlatWall"]
+position = Vector2(-1652.5, -399.5)
+shape = SubResource("RectangleShape2D_5go0j")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Map/FlatWall"]
+position = Vector2(9812, -2658)
+shape = SubResource("RectangleShape2D_um1gb")
+
+[node name="flat2" type="Polygon2D" parent="Map/FlatWall"]
+color = Color(0.42365062, 0.42365065, 0.42365062, 1)
+polygon = PackedVector2Array(-8294, 1328, -882, 1328, -942, 1390, -8242, 1390)
+
+[node name="flat3" type="Polygon2D" parent="Map/FlatWall"]
+position = Vector2(3123, -2299)
+color = Color(0.42365062, 0.42365065, 0.42365062, 1)
+polygon = PackedVector2Array(-8294, 1328, -4725, 1328, -4783, 1390, -8242, 1390)
+
+[node name="flat6" type="Polygon2D" parent="Map/FlatWall"]
+position = Vector2(15702, -1717)
+color = Color(0.42365062, 0.42365065, 0.42365062, 1)
+polygon = PackedVector2Array(-8294, 1328, -2916, 1329, -2971, 1390, -8242, 1390)
+
+[node name="flat15" type="Polygon2D" parent="Map/FlatWall"]
+position = Vector2(19464, -6334)
+color = Color(0.42365062, 0.42365065, 0.42365062, 1)
+polygon = PackedVector2Array(-6840, 1330, -2916, 1329, -2971, 1390, -6782, 1390)
+
+[node name="flat9" type="Polygon2D" parent="Map/FlatWall"]
+position = Vector2(18415, -145)
+color = Color(0.42365062, 0.42365065, 0.42365062, 1)
+polygon = PackedVector2Array(-8294, 1328, -7135, 1328, -7196, 1390, -8242, 1390)
+
+[node name="flat10" type="Polygon2D" parent="Map/FlatWall"]
+position = Vector2(13935, -1073)
+color = Color(0.42365062, 0.42365065, 0.42365062, 1)
+polygon = PackedVector2Array(-8294, 1328, -7628, 1328, -7685, 1390, -8242, 1390)
+
+[node name="flat16" type="Polygon2D" parent="Map/FlatWall"]
+position = Vector2(1575, -1311)
+color = Color(0.42365062, 0.42365065, 0.42365062, 1)
+polygon = PackedVector2Array(-8294, 1328, -7628, 1328, -7685, 1390, -8242, 1390)
+
+[node name="flat11" type="Polygon2D" parent="Map/FlatWall"]
+position = Vector2(15133, -431)
+color = Color(0.42365062, 0.42365065, 0.42365062, 1)
+polygon = PackedVector2Array(-8294, 1328, -7640, 1328, -7685, 1390, -8242, 1390)
+
+[node name="flat12" type="Polygon2D" parent="Map/FlatWall"]
+position = Vector2(14492, 281)
+color = Color(0.42365062, 0.42365065, 0.42365062, 1)
+polygon = PackedVector2Array(-8294, 1328, -7620, 1328, -7685, 1390, -8242, 1390)
+
+[node name="flat13" type="Polygon2D" parent="Map/FlatWall"]
+position = Vector2(12663, 919)
+color = Color(0.42365062, 0.42365065, 0.42365062, 1)
+polygon = PackedVector2Array(-8294, 1328, -7582, 1328, -7639, 1390, -8242, 1390)
+
+[node name="flat14" type="Polygon2D" parent="Map/FlatWall"]
+position = Vector2(18036, -5101)
+color = Color(0.42365062, 0.42365065, 0.42365062, 1)
+polygon = PackedVector2Array(-8294, 1328, -7415, 1328, -7414, 3566, -7480, 3504, -7482, 1390, -8242, 1390, -8230, 3512, -8294, 3566)
+
+[node name="flat8" type="Polygon2D" parent="Map/FlatWall"]
+position = Vector2(18654, -1143)
+color = Color(0.42365062, 0.42365065, 0.42365062, 1)
+polygon = PackedVector2Array(-5864, 1977, -4959, 1977, -4997, 2024, -5823, 2023)
+
+[node name="flat7" type="Polygon2D" parent="Map/FlatWall"]
+position = Vector2(7418, 2524)
+color = Color(0.42365062, 0.42365065, 0.42365062, 1)
+polygon = PackedVector2Array(-8307, 1328, -5788, 1328, -4194, 360, 1898, 367, 1780, 442, -4188, 438, -5746, 1391, -8366, 1390)
+
+[node name="flat18" type="Polygon2D" parent="Map/FlatWall"]
+position = Vector2(6578, -1169)
+color = Color(0.42365062, 0.42365065, 0.42365062, 1)
+polygon = PackedVector2Array(-4854, 598, -4428, 599, -4499, 658, -4789, 659)
+
+[node name="flat5" type="Polygon2D" parent="Map/FlatWall"]
+position = Vector2(6581, -1169)
+color = Color(0.42365062, 0.42365065, 0.42365062, 1)
+polygon = PackedVector2Array(-8183, 1328, -4854, 1329, -4912, 1390, -8246, 1390)
+
+[node name="flat17" type="Polygon2D" parent="Map/FlatWall"]
+position = Vector2(6581, -1169)
+color = Color(0.42365062, 0.42365065, 0.42365062, 1)
+polygon = PackedVector2Array(-4429.595, 954, -3452, 954, -3036, 716, -1813, 717, -1857, 773, -3008, 772, -3429, 1014, -4375, 1017)
+
+[node name="flat4" type="Polygon2D" parent="Map/FlatWall"]
+position = Vector2(-720, -2300)
+color = Color(0.42365062, 0.42365065, 0.42365062, 1)
+polygon = PackedVector2Array(-882, 1328, -942, 1389, -945, 2522, -883, 2462)
+
+[node name="flat1" type="Polygon2D" parent="Map/FlatWall"]
+color = Color(0.42365062, 0.42365065, 0.42365062, 1)
+polygon = PackedVector2Array(-882, 1328, -942, 1389, -947, 3914, -878, 3858)
+
+[node name="flat19" type="Polygon2D" parent="Map/FlatWall"]
+position = Vector2(18654, -1143)
+color = Color(0.42365062, 0.42365065, 0.42365062, 1)
+polygon = PackedVector2Array(-4960, 1329, -2916, 1329, -2971, 1385, -4913, 1385)
+
+[node name="flat20" type="Polygon2D" parent="Map/FlatWall"]
+position = Vector2(18654, -1143)
+color = Color(0.42365062, 0.42365065, 0.42365062, 1)
+polygon = PackedVector2Array(-6829, 2326, -5865, 2326, -5915, 2379, -6770, 2379)
+
+[node name="Ledge" type="StaticBody2D" parent="Map"]
+collision_layer = 64
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/Ledge"]
+position = Vector2(1783, -514)
+shape = SubResource("RectangleShape2D_uesv1")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Map/Ledge"]
+position = Vector2(-938.25, 1384)
+shape = SubResource("RectangleShape2D_uesv1")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Map/Ledge"]
+position = Vector2(-6664, 73)
+shape = SubResource("RectangleShape2D_uesv1")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Map/Ledge"]
+position = Vector2(-6108, 74)
+shape = SubResource("RectangleShape2D_uesv1")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="Map/Ledge"]
+position = Vector2(-1658, -915)
+shape = SubResource("RectangleShape2D_uesv1")
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="Map/Ledge"]
+position = Vector2(-5115, -915)
+shape = SubResource("RectangleShape2D_uesv1")
+
+[node name="CollisionShape2D7" type="CollisionShape2D" parent="Map/Ledge"]
+position = Vector2(4424, 2304)
+shape = SubResource("RectangleShape2D_uesv1")
+
+[node name="CollisionShape2D8" type="CollisionShape2D" parent="Map/Ledge"]
+position = Vector2(5026, 2304)
+shape = SubResource("RectangleShape2D_uesv1")
+
+[node name="CollisionShape2D9" type="CollisionShape2D" parent="Map/Ledge"]
+position = Vector2(6253, 1666)
+shape = SubResource("RectangleShape2D_uesv1")
+
+[node name="CollisionShape2D10" type="CollisionShape2D" parent="Map/Ledge"]
+position = Vector2(6817, 1666)
+shape = SubResource("RectangleShape2D_uesv1")
+
+[node name="CollisionShape2D11" type="CollisionShape2D" parent="Map/Ledge"]
+position = Vector2(6894, 954)
+shape = SubResource("RectangleShape2D_uesv1")
+
+[node name="CollisionShape2D12" type="CollisionShape2D" parent="Map/Ledge"]
+position = Vector2(7438, 954)
+shape = SubResource("RectangleShape2D_uesv1")
+
+[node name="CollisionShape2D13" type="CollisionShape2D" parent="Map/Ledge"]
+position = Vector2(5696, 311)
+shape = SubResource("RectangleShape2D_uesv1")
+
+[node name="CollisionShape2D14" type="CollisionShape2D" parent="Map/Ledge"]
+position = Vector2(6252, 311)
+shape = SubResource("RectangleShape2D_uesv1")
+
+[node name="CollisionShape2D15" type="CollisionShape2D" parent="Map/Ledge"]
+position = Vector2(7464, -332)
+shape = SubResource("RectangleShape2D_uesv1")
+
+[node name="CollisionShape2D16" type="CollisionShape2D" parent="Map/Ledge"]
+position = Vector2(7464, -332)
+shape = SubResource("RectangleShape2D_uesv1")
+
+[node name="CollisionShape2D17" type="CollisionShape2D" parent="Map/Ledge"]
+position = Vector2(12727, -332)
+shape = SubResource("RectangleShape2D_uesv1")
+
+[node name="CollisionShape2D18" type="CollisionShape2D" parent="Map/Ledge"]
+position = Vector2(13750, 244)
+shape = SubResource("RectangleShape2D_uesv1")
+
+[node name="CollisionShape2D19" type="CollisionShape2D" parent="Map/Ledge"]
+position = Vector2(12846, 890)
+shape = SubResource("RectangleShape2D_uesv1")
+
+[node name="CollisionShape2D20" type="CollisionShape2D" parent="Map/Ledge"]
+position = Vector2(10565, -3717)
+shape = SubResource("RectangleShape2D_uesv1")
+
+[node name="CollisionShape2D21" type="CollisionShape2D" parent="Map/Ledge"]
+position = Vector2(9798, -3716)
+shape = SubResource("RectangleShape2D_uesv1")
+
+[node name="CollisionShape2D22" type="CollisionShape2D" parent="Map/Ledge"]
+position = Vector2(12681, -4944)
+shape = SubResource("RectangleShape2D_uesv1")
+
+[node name="Parallax2D" type="Parallax2D" parent="Map"]
+z_index = -2
+repeat_size = Vector2(1350, 1350)
+repeat_times = 8
+
+[node name="12" type="Sprite2D" parent="Map/Parallax2D"]
+visible = false
+modulate = Color(1, 1, 1, 0.14901961)
+position = Vector2(1920, 1080)
+scale = Vector2(6, 6)
+texture = ExtResource("1_yd2ji")
+
+[node name="UnlockObject" type="Node2D" parent="Map" node_paths=PackedStringArray("Player")]
+script = ExtResource("2_7rkdf")
+Player = NodePath("../../Node2D")
+
+[node name="UnlockDash" type="Area2D" parent="Map/UnlockObject"]
+position = Vector2(135, 3453)
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/UnlockObject/UnlockDash"]
+position = Vector2(82.1897, 209.30518)
+shape = SubResource("RectangleShape2D_4e3bk")
+
+[node name="Label" type="Label" parent="Map/UnlockObject/UnlockDash"]
+offset_left = -149.0
+offset_top = -58.0
+offset_right = 310.0
+offset_bottom = 51.0
+text = "[대쉬 해금]
+지상 또는 공중에서 C / RT"
+label_settings = ExtResource("7_mbmqb")
+horizontal_alignment = 1
+
+[node name="Polygon2D" type="Polygon2D" parent="Map/UnlockObject/UnlockDash"]
+polygon = PackedVector2Array(72, 114, 41, 186, 80, 290, 123, 214)
+
+[node name="UnlockWallAction" type="Area2D" parent="Map/UnlockObject"]
+position = Vector2(10109.061, -767.43604)
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/UnlockObject/UnlockWallAction"]
+position = Vector2(82.1897, 209.30518)
+shape = SubResource("RectangleShape2D_4e3bk")
+
+[node name="Label" type="Label" parent="Map/UnlockObject/UnlockWallAction"]
+offset_left = -283.06055
+offset_top = -227.56396
+offset_right = 477.93945
+offset_bottom = -6.563965
+text = "[벽 액션 해금]
+이제 벽에 닿으면 이단 점프와 공중 대쉬 회복
+벽에서 위 방향 입력 -> 벽을 타고 오름
+벽 방향 입력 -> 벽을 붙잡음"
+label_settings = ExtResource("7_mbmqb")
+horizontal_alignment = 1
+
+[node name="Polygon2D" type="Polygon2D" parent="Map/UnlockObject/UnlockWallAction"]
+polygon = PackedVector2Array(72, 114, 41, 186, 80, 290, 123, 214)
+
+[node name="UnlockDoubleJump" type="Area2D" parent="Map/UnlockObject"]
+position = Vector2(-6659.442, 719.6382)
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/UnlockObject/UnlockDoubleJump"]
+position = Vector2(82.1897, 209.30518)
+shape = SubResource("RectangleShape2D_4e3bk")
+
+[node name="Label" type="Label" parent="Map/UnlockObject/UnlockDoubleJump"]
+offset_left = -45.558105
+offset_top = 3.4360352
+offset_right = 204.4419
+offset_bottom = 56.436035
+text = "[더블 점프 해금]"
+label_settings = ExtResource("7_mbmqb")
+horizontal_alignment = 1
+
+[node name="Polygon2D" type="Polygon2D" parent="Map/UnlockObject/UnlockDoubleJump"]
+polygon = PackedVector2Array(72, 114, 41, 186, 80, 290, 123, 214)
+
+[node name="Node2D" parent="." instance=ExtResource("5_ab4so")]
+position = Vector2(-156, -121)
+floor_snap_length = 32.0
+
+[node name="Camera" type="Camera2D" parent="." node_paths=PackedStringArray("Player")]
+script = ExtResource("6_qs11g")
+Player = NodePath("../Node2D")
+
+[node name="Label" type="Label" parent="Camera"]
+offset_left = -1902.267
+offset_top = -1065.5032
+offset_right = -1824.267
+offset_bottom = -1012.5032
+text = "FPS"
+label_settings = ExtResource("7_mbmqb")
+script = ExtResource("8_1wdv8")
+metadata/_edit_use_anchors_ = true
+
+[node name="Timer" type="Timer" parent="Camera"]
+wait_time = 0.6
+one_shot = true
+
+[node name="ResolutionButton" type="OptionButton" parent="Camera"]
+offset_left = -1606.0
+offset_top = -1049.0
+offset_right = -1574.0
+offset_bottom = -1029.0
+focus_mode = 0
+theme_override_font_sizes/font_size = 32
+script = ExtResource("9_djirn")
+metadata/_edit_use_anchors_ = true
+
+[node name="UI" type="Control" parent="Camera" node_paths=PackedStringArray("Player", "mapUI")]
+custom_minimum_size = Vector2(3840, 2160)
+layout_mode = 3
+anchors_preset = 0
+offset_left = -1920.0
+offset_top = -1080.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+script = ExtResource("10_6j3f5")
+Player = NodePath("../../Node2D")
+mapUI = NodePath("MapUI")
+
+[node name="MapUI" parent="Camera/UI" instance=ExtResource("11_6j3f5")]
+layout_mode = 1
+
+[node name="Label" type="Label" parent="."]
+offset_left = -496.0
+offset_top = -709.0
+offset_right = 106.0
+offset_bottom = -544.0
+text = "[기본 조작법]
+점프 : 스페이스바/페이스 버튼 하단
+이동 : 방향키/왼쪽 스틱이나 디패드"
+label_settings = ExtResource("7_mbmqb")
+horizontal_alignment = 1
+
+[connection signal="body_entered" from="Map/UnlockObject/UnlockDash" to="Map/UnlockObject" method="_on_unlock_dash_body_entered"]
+[connection signal="body_entered" from="Map/UnlockObject/UnlockWallAction" to="Map/UnlockObject" method="_on_unlock_wall_action_body_entered"]
+[connection signal="body_entered" from="Map/UnlockObject/UnlockDoubleJump" to="Map/UnlockObject" method="_on_unlock_double_jump_body_entered"]
+[connection signal="timeout" from="Camera/Timer" to="Camera" method="_on_timer_timeout"]
+[connection signal="item_selected" from="Camera/ResolutionButton" to="Camera/ResolutionButton" method="_on_item_selected"]

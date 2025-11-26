@@ -1,0 +1,7 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://be6ogjw1qq42i"]
+
+[ext_resource type="FontFile" uid="uid://d3vdyx3d1df5x" path="res://resources/Pretendard-Medium.otf" id="1_pkdg7"]
+
+[resource]
+font = ExtResource("1_pkdg7")
+font_size = 64

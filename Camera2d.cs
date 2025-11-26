@@ -13,62 +13,18 @@ public partial class Camera2d : Camera2D
     public override void _Ready()
     {
         offset = Player.GlobalPosition + Base;
+        GlobalPosition = offset;
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        Vector2 newPosition;
 
-        newPosition = Player.GlobalPosition + offset;
-
-        GlobalPosition = newPosition;
     }
 
     public override void _Process(double delta)
     {
-        if (Player.StateMachine_Move.CurrentState.Name == "Idle")
-        {
-            if (InputManager.Instance.Vertical < 0)
-            {
-                if (InputTime_Up > 0)
-                {
-                    InputTime_Up -= delta;
-                    return;
-                }
-                else
-                {
-                    MoveCamera_Up();
-                    return;
-                }
-            }
-            else if (InputManager.Instance.Vertical > 0)
-            {
-                if (InputTime_Up > 0)
-                {
-                    InputTime_Up -= delta;
-                    return;
-                }
-                else
-                {
-                    MoveCamera_Down();
-                    return;
-                }
-            }
-            else // 상하 입력 해제 시
-            {
-                InputTime_Up = 0.5;
-                InputTime_Down = 0.5;
-                InitializeCamera();
-                return;
-            }
-        }
-        else
-        {
-            InputTime_Up = 0.5;
-            InputTime_Down = 0.5;
-            InitializeCamera();
-            return;
-        }
+        offset = Player.GlobalPosition + Base;
+        GlobalPosition = offset;
     }
 
     private void MoveCamera_Up()
